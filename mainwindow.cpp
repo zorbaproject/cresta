@@ -1,0 +1,399 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+    init_database();
+    ui->students_table->resizeColumnsToContents();
+    ui->ranking_table->resizeColumnsToContents();
+    ui->cities_table->resizeColumnsToContents();
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::init_database()
+{
+    dbfile = "";
+    database = QJsonDocument::fromJson(QString("{\"cities\":[],\"students\":[],\"ranking\":[]}").toUtf8()).object();
+}
+
+
+void MainWindow::on_actionSave_project_triggered()
+{
+    if (dbfile == "") {
+        on_actionSave_project_as_triggered();
+        return;
+    }
+
+    if (!(dbfile.isEmpty())) {
+        cities2db();
+        students2db();
+        ranking2db();
+        QString dbstr = QJsonDocument(database).toJson();
+        QFile file(dbfile);
+        if (file.open(QIODevice::ReadWrite | QIODevice::Text)) {
+            QTextStream stream(&file);
+            stream.setCodec("UTF-8");
+            stream << dbstr;
+        }
+    }
+}
+
+void MainWindow::on_actionSave_project_as_triggered()
+{
+    dbfile = QFileDialog::getSaveFileName(this, tr("Save project"), QDir::currentPath(), "*.cresta|Cresta Project (*.cresta)");
+    setWindowTitle(dbfile);
+    on_actionSave_project_triggered();
+}
+
+void MainWindow::on_actionOpen_project_triggered()
+{
+    dbfile = QFileDialog::getOpenFileName(this, tr("Open project"), QDir::currentPath(), "*.cresta|Cresta Project (*.cresta)");
+    if (!(dbfile.isEmpty())) {
+        QFile file(dbfile);
+        QString data = "";
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+            return;
+        QTextStream in(&file);
+        while (!in.atEnd()) {
+            data += in.readLine();
+        }
+        file.close();
+        database = QJsonDocument::fromJson(data.toUtf8()).object();
+    }
+    db2cities();
+    db2ranking();
+    db2students();
+    setWindowTitle(dbfile);
+}
+
+void MainWindow::on_new_student_clicked()
+{
+    int row = ui->students_table->rowCount();
+    if (ui->students_table->selectedItems().count() > 0) row = ui->students_table->selectedItems()[0]->row() + 1;
+    ui->students_table->insertRow(row);
+    QTableWidgetItem *titem = new QTableWidgetItem ;
+    titem->setText("");
+    ui->students_table->setItem(row,0,titem);
+    ui->students_table->setCurrentCell(row,0);
+}
+
+void MainWindow::on_actionExit_triggered()
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, tr("Close"),tr("Do you really want to close this program?"), QMessageBox::Yes|QMessageBox::Cancel);
+    if (reply == QMessageBox::Cancel) {
+        return;
+    }
+    QCoreApplication::quit();
+}
+
+void MainWindow::on_del_student_clicked()
+{
+    if (ui->students_table->selectedItems().count() > 0) ui->students_table->removeRow(ui->students_table->selectedItems()[0]->row());
+}
+
+void MainWindow::on_save_student_clicked()
+{
+    if (ui->students_table->selectedItems().count() == 0) {
+        on_new_student_clicked();
+    }
+    if (ui->students_table->selectedItems().count() > 0) {
+        int row = ui->students_table->selectedItems()[0]->row();
+
+        for (int column = 0; column < ui->students_table->columnCount(); column++) {
+            QString mytext = "";
+            if (column == 3) mytext = ui->frm_curricola->text();
+            if (column == 8) mytext = ui->frm_dest1->text();
+            if (column == 9) mytext = ui->frm_dest2->text();
+            if (column == 10) mytext = ui->frm_dest3->text();
+            if (column == 11) mytext = ui->frm_dest4->text();
+            if (column == 7 && ui->frm_former->isChecked()) mytext = "1";
+            if (column == 7 && !ui->frm_former->isChecked()) mytext = "0";
+            if (column == 0) mytext = ui->frm_ID->text();
+            if (column == 5) mytext = ui->frm_meanvote->text();
+            if (column == 1) mytext = ui->frm_name->text();
+            if (column == 4) mytext = ui->frm_registration->currentText();
+            if (column == 6 && ui->frm_requisites->isChecked()) mytext = "1";
+            if (column == 6 && !ui->frm_requisites->isChecked()) mytext = "0";
+            if (column == 2) mytext = ui->frm_surname->text();
+            QTableWidgetItem *newItem = new QTableWidgetItem(mytext);
+            ui->students_table->setItem(row, column, newItem);
+        }
+    }
+    students2db();
+}
+
+
+void MainWindow::on_new_city_clicked()
+{
+    int row = ui->cities_table->rowCount();
+    if (ui->cities_table->selectedItems().count() > 0) row = ui->cities_table->selectedItems()[0]->row() + 1;
+    ui->cities_table->insertRow(row);
+    QTableWidgetItem *titem = new QTableWidgetItem ;
+    titem->setText("");
+    ui->cities_table->setItem(row,0,titem);
+    ui->cities_table->setCurrentCell(row,0);
+}
+
+void MainWindow::on_del_city_clicked()
+{
+    if (ui->cities_table->selectedItems().count() > 0) ui->cities_table->removeRow(ui->cities_table->selectedItems()[0]->row());
+}
+
+void MainWindow::on_Save_cities_clicked()
+{
+    cities2db();
+}
+
+
+void MainWindow::cities2db()
+{
+    database.insert("cities",QJsonArray());
+    QJsonArray allrows;
+    for (int row = 0; row < ui->cities_table->rowCount(); row++) {
+        QStringList thisrow;
+        for (int col = 0; col < ui->cities_table->columnCount(); col++) {
+            thisrow.append(ui->cities_table->item(row,col)->text());
+        }
+        allrows.append(QJsonArray::fromStringList(thisrow));
+    }
+    database.insert("cities",allrows);
+}
+
+void MainWindow::students2db()
+{
+    database.insert("students",QJsonArray());
+    QJsonArray allrows;
+    for (int row = 0; row < ui->students_table->rowCount(); row++) {
+        QStringList thisrow;
+        for (int col = 0; col < ui->students_table->columnCount(); col++) {
+            thisrow.append(ui->students_table->item(row,col)->text());
+        }
+        allrows.append(QJsonArray::fromStringList(thisrow));
+    }
+    database.insert("students",allrows);
+}
+
+void MainWindow::ranking2db()
+{
+    database.insert("ranking",QJsonArray());
+    QJsonArray allrows;
+    for (int row = 0; row < ui->ranking_table->rowCount(); row++) {
+        QStringList thisrow;
+        for (int col = 0; col < ui->ranking_table->columnCount(); col++) {
+            thisrow.append(ui->ranking_table->item(row,col)->text());
+        }
+        allrows.append(QJsonArray::fromStringList(thisrow));
+    }
+    database.insert("ranking",allrows);
+}
+
+void MainWindow::db2students()
+{
+    for (int row = 0; row < database["students"].toArray().count(); row++) {
+        if (ui->students_table->rowCount() <= row) ui->students_table->insertRow(row);
+        for (int col = 0; col < database["students"].toArray().at(row).toArray().count(); col++) {
+            QString mytext = database["students"].toArray().at(row).toArray().at(col).toString();
+            QTableWidgetItem *newItem = new QTableWidgetItem(mytext);
+            ui->students_table->setItem(row, col, newItem);
+        }
+    }
+}
+
+void MainWindow::db2cities()
+{
+    for (int row = 0; row < database["cities"].toArray().count(); row++) {
+        if (ui->cities_table->rowCount() <= row) ui->cities_table->insertRow(row);
+        for (int col = 0; col < database["cities"].toArray().at(row).toArray().count(); col++) {
+            QString mytext = database["cities"].toArray().at(row).toArray().at(col).toString();
+            QTableWidgetItem *newItem = new QTableWidgetItem(mytext);
+            ui->cities_table->setItem(row, col, newItem);
+        }
+    }
+}
+
+void MainWindow::db2ranking()
+{
+    for (int row = 0; row < database["ranking"].toArray().count(); row++) {
+        if (ui->ranking_table->rowCount() <= row) ui->ranking_table->insertRow(row);
+        for (int col = 0; col < database["ranking"].toArray().at(row).toArray().count(); col++) {
+            QString mytext = database["ranking"].toArray().at(row).toArray().at(col).toString();
+            QTableWidgetItem *newItem = new QTableWidgetItem(mytext);
+            ui->ranking_table->setItem(row, col, newItem);
+        }
+    }
+}
+
+void MainWindow::on_checkincomplete_clicked()
+{
+    for (int row = 0; row < ui->students_table->rowCount(); row++) {
+        for (int col = 0; col < ui->students_table->columnCount(); col++) {
+            if (ui->students_table->item(row,col)->text().isEmpty()) ui->students_table->item(row, col)->setBackgroundColor(Qt::red);
+        }
+    }
+}
+
+void MainWindow::on_next_student_clicked()
+{
+    int row = ui->students_table->rowCount() -1;
+    if (ui->students_table->selectedItems().count() > 0) row = ui->students_table->selectedItems()[0]->row() + 1;
+    if (row < ui->students_table->rowCount()) ui->students_table->selectRow(row);
+}
+
+void MainWindow::on_prev_student_clicked()
+{
+    int row = 0;
+    if (ui->students_table->selectedItems().count() > 0) row = ui->students_table->selectedItems()[0]->row() - 1;
+    if (row >= 0) ui->students_table->selectRow(row);
+}
+
+void MainWindow::on_students_table_cellClicked(int row, int column)
+{
+    if (ui->students_table->selectedItems().count() > 0) {
+        for (int column = 0; column < ui->students_table->columnCount(); column++) {
+            QString mytext = ui->students_table->item(row,column)->text();
+            if (column == 3) ui->frm_curricola->setText(mytext);
+            if (column == 8) ui->frm_dest1->setText(mytext);
+            if (column == 9) ui->frm_dest2->setText(mytext);
+            if (column == 10) ui->frm_dest3->setText(mytext);
+            if (column == 11) ui->frm_dest4->setText(mytext);
+            if (column == 7 && mytext == "1") ui->frm_former->setChecked(true);
+            if (column == 7 && !(mytext == "1")) ui->frm_former->setChecked(false);
+            if (column == 0) ui->frm_ID->setText(mytext);
+            if (column == 5) ui->frm_meanvote->setText(mytext);
+            if (column == 1) ui->frm_name->setText(mytext);
+            if (column == 4) ui->frm_registration->setCurrentText(mytext);
+            if (column == 6 && mytext == "1") ui->frm_requisites->setChecked(true);
+            if (column == 6 && !(mytext == "1")) ui->frm_requisites->setChecked(false);
+            if (column == 2) ui->frm_surname->setText(mytext);
+        }
+    }
+}
+
+void MainWindow::on_frm_meanvote_textChanged(const QString &arg1)
+{
+    QString tmpstr(arg1);
+    tmpstr = tmpstr.replace(",",".");
+    tmpstr = tmpstr.replace(QRegExp("[^0-9\\.]",Qt::CaseInsensitive),"");
+    ui->frm_meanvote->setText(tmpstr);
+    bool ok;
+    double tmpvote = tmpstr.toDouble(&ok);
+    if (ok == false) {
+        QMessageBox::warning(this,tr("This is a problem"),tr("This is not a number. And it should be. It really should."));
+    } else if (tmpvote < 18 || tmpvote > 31) {
+        ui->frm_meanvote->setStyleSheet("QLineEdit {background-color: red;}");
+    } else {
+        ui->frm_meanvote->setStyleSheet("QLineEdit {background-color: white;}");
+    }
+}
+
+void MainWindow::on_frm_ID_textChanged(const QString &arg1)
+{
+    QString tmpstr(arg1);
+    tmpstr = tmpstr.replace(QRegExp("[^0-9A-Z]",Qt::CaseInsensitive),"");
+    ui->frm_ID->setText(tmpstr);
+}
+
+void MainWindow::on_frm_name_textChanged(const QString &arg1)
+{
+    QString tmpstr(arg1);
+    tmpstr = tmpstr.replace(QRegExp("[^A-Z'\\- ]",Qt::CaseInsensitive),"");
+    ui->frm_name->setText(tmpstr);
+}
+
+void MainWindow::on_frm_surname_textChanged(const QString &arg1)
+{
+    QString tmpstr(arg1);
+    tmpstr = tmpstr.replace(QRegExp("[^A-Z'\\- ]",Qt::CaseInsensitive),"");
+    ui->frm_surname->setText(tmpstr);
+}
+
+double MainWindow::map(double x, double in_min, double in_max, double out_min, double out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+void MainWindow::on_calculateRanking_clicked()
+{
+    do_ranking();
+    assign_destinations();
+}
+
+void MainWindow::do_ranking()
+{
+    //il calcolo è questo: diamo dagli 80 ai 10 punti in base all'anno che si frequenta
+    //(di 20 in 20 a eccezione dell'ultimo anno della laurea magistrale che ne prende solo 10)
+    //poi diamo altri 20 punti in base alla media dei voti.
+    //Se lo studente non ha i requisiti linguistici, il suo punteggio è 0.
+    //Quindi il range del punteggio è da 0 a 100.
+    //Se due studenti hanno lo stesso punteggio, quello dei due che ha già avuto una borsa Erasmus perde 0.5 punti.
+    int rankingcol= 4;
+    for (int row = 0; row < ui->students_table->rowCount(); row++) {
+        ui->ranking_table->insertRow(row);
+        for (int col = 0; col < 4; col++) {
+            QTableWidgetItem *titem = new QTableWidgetItem ;
+            titem->setText(ui->students_table->item(row,col)->text());
+            ui->ranking_table->setItem(row,col,titem);
+        }
+        double ranking = 0.0;
+
+        //current year
+        if (ui->students_table->item(row,4)->text() == "4") ranking += 80;
+        if (ui->students_table->item(row,4)->text() == "2") ranking += 60;
+        if (ui->students_table->item(row,4)->text() == "1") ranking += 40;
+        if (ui->students_table->item(row,4)->text() == "3") ranking += 20;
+        if (ui->students_table->item(row,4)->text() == "5") ranking += 10;
+        ranking += map(ui->students_table->item(row,5)->text().toDouble(),18,31,1,20); //mean vote
+        ranking = ranking*ui->students_table->item(row,6)->text().toDouble(); //requisites
+
+        QTableWidgetItem *titem = new QTableWidgetItem ;
+        titem->setText(QString::number(ranking));
+        ui->ranking_table->setItem(row,rankingcol,titem);
+    }
+
+    ui->ranking_table->sortByColumn(rankingcol,Qt::DescendingOrder);
+    double oldranking = 0.0;
+    for (int row = 0; row < ui->ranking_table->rowCount(); row++) {
+        double ranking = ui->ranking_table->item(row,rankingcol)->text().toDouble();
+        if (ranking == oldranking) {
+            int strow = ui->students_table->findItems(ui->ranking_table->item(row,0)->text(),Qt::MatchExactly)[0]->row();
+            ranking = ranking - (ui->students_table->item(strow,7)->text().toDouble()*0.5); //former student
+            if (ranking <= 0.0) ranking = 0.0;
+            QTableWidgetItem *titem = new QTableWidgetItem ;
+            titem->setText(QString::number(ranking));
+            ui->ranking_table->setItem(row,rankingcol,titem);
+        } else {
+            oldranking = ranking;
+        }
+        if (ranking == 0) ui->ranking_table->item(row,rankingcol)->setBackgroundColor(Qt::red);
+    }
+}
+
+void MainWindow::assign_destinations()
+{
+    //Nothing here. At least now. Stay tuned.
+}
+
+void MainWindow::on_actionAbout_Cresta_triggered()
+{
+    QString message = "Cresta means Code Ranking Erasmus Students for Trieste Automatically. It's a program designed for automatically ranking Erasmus candidates for University of Trieste's standards.";
+    QMessageBox::about(this,tr("About Cresta"), tr(qPrintable(message)));
+}
+
+void MainWindow::on_actionHelp_triggered()
+{
+    QString message = "Votes should be a number between 18 and 31 (which is 30 + laude).";
+    QMessageBox::information(this,tr("About Cresta"), tr(qPrintable(message)));
+}
+
+void MainWindow::on_actionAbout_Qt_triggered()
+{
+    QMessageBox::aboutQt(this,"About Qt Libraries");
+}
