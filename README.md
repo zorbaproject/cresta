@@ -12,11 +12,13 @@ Cresta works with Qt 5.9 graphical libraries (Ubuntu: https://launchpad.net/~bei
 * Press all keys at the same time
 
 Ok, now seriously:
-*Open the program
-*Load a project (e.g.: test.cresta)
-*Check cities and students tab, if you want you can change values in the tables
-*Click on "Calculate ranking"
-*If you want, you can manually change destinations for every student using the last column
+* Open the program
+* Load a project (e.g.: test.cresta)
+* Check cities and students tab, if you want you can change values in the tables
+* Click on "Calculate ranking"
+* If you want, you can manually change destinations for every student using the last column. 
+
+Using test.cresta, after ranking students automatically, in Bill Gates row you can choose Hogwarts instead of Cortile, and then it's possible to assign Cortile to Amedeo Mango)
 
 # Credits
 
