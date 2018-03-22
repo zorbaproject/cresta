@@ -1,0 +1,158 @@
+{
+    "cities": [
+        [
+            "UK",
+            "Hogwarts",
+            "2"
+        ],
+        [
+            "IT",
+            "Cortile",
+            "2"
+        ]
+    ],
+    "ranking": [
+    ],
+    "students": [
+        [
+            "AB31415926535",
+            "Gianni",
+            "Barbagianni",
+            "Fanfaluche",
+            "2",
+            "27.7",
+            "1",
+            "0",
+            "Cocamonga",
+            "Springfield",
+            "Walla walla",
+            "Keokuk"
+        ],
+        [
+            "AB1234567890",
+            "Amedeo",
+            "Mango",
+            "Musica e salmoni",
+            "5",
+            "21",
+            "1",
+            "0",
+            "Cortile",
+            "Gremito",
+            "Cartoonia",
+            "Keokuk"
+        ],
+        [
+            "AB3830389095",
+            "Renato",
+            "Zero",
+            "Zerologia",
+            "3",
+            "25",
+            "1",
+            "0",
+            "Hogwarts",
+            "Godric's Hollow",
+            "Azkaban",
+            "Diagon Alley"
+        ],
+        [
+            "RT9820984093",
+            "Gino",
+            "Il pollo",
+            "Flash Player",
+            "2",
+            "21",
+            "1",
+            "0",
+            "Cortile",
+            "Edinburgo",
+            "Iraq",
+            "Diagon Alley"
+        ],
+        [
+            "RT982094987",
+            "Rubeus",
+            "Hagrid",
+            "Zerologia",
+            "4",
+            "21",
+            "1",
+            "0",
+            "Hogwarts",
+            "Godric's Hollow",
+            "Azkaban",
+            "Diagon Alley"
+        ],
+        [
+            "AB17223119405",
+            "Homer",
+            "Simpson",
+            "Ciambelle",
+            "2",
+            "30",
+            "1",
+            "0",
+            "Springfield",
+            "Capital city",
+            "Azkaban",
+            "Diagon Alley"
+        ],
+        [
+            "GH7802983830",
+            "Monty",
+            "Burns",
+            "Radioattività",
+            "5",
+            "25",
+            "0",
+            "0",
+            "Inferno",
+            "Godric's Hollow",
+            "Azkaban",
+            "Diagon Alley"
+        ],
+        [
+            "WQ3798702984",
+            "Page",
+            "Master",
+            "Librologia",
+            "3",
+            "25",
+            "1",
+            "1",
+            "Chiedi",
+            "Consiglio",
+            "Ai libri",
+            "Diagon Alley"
+        ],
+        [
+            "EW33877028749",
+            "Bill",
+            "Gates",
+            "PC for dummies",
+            "2",
+            "20",
+            "1",
+            "0",
+            "Silicon valley",
+            "Houston",
+            "Cortile",
+            "Hogwarts"
+        ],
+        [
+            "AB9873032094",
+            "Dottor",
+            "Male",
+            "Laseroni",
+            "4",
+            "28",
+            "1",
+            "0",
+            "Luna",
+            "Vulcano",
+            "Azkaban",
+            "Olanda"
+        ]
+    ]
+}

@@ -238,6 +238,7 @@ void MainWindow::on_checkincomplete_clicked()
             if (ui->students_table->item(row,col)->text().isEmpty()) ui->students_table->item(row, col)->setBackgroundColor(Qt::red);
         }
     }
+    // TODO: check if ID is unique
 }
 
 void MainWindow::on_next_student_clicked()
@@ -245,6 +246,7 @@ void MainWindow::on_next_student_clicked()
     int row = ui->students_table->rowCount() -1;
     if (ui->students_table->selectedItems().count() > 0) row = ui->students_table->selectedItems()[0]->row() + 1;
     if (row < ui->students_table->rowCount()) ui->students_table->selectRow(row);
+    on_students_table_cellClicked(row, 0);
 }
 
 void MainWindow::on_prev_student_clicked()
@@ -252,6 +254,7 @@ void MainWindow::on_prev_student_clicked()
     int row = 0;
     if (ui->students_table->selectedItems().count() > 0) row = ui->students_table->selectedItems()[0]->row() - 1;
     if (row >= 0) ui->students_table->selectRow(row);
+    on_students_table_cellClicked(row, 0);
 }
 
 void MainWindow::on_students_table_cellClicked(int row, int column)
@@ -317,11 +320,13 @@ void MainWindow::on_frm_surname_textChanged(const QString &arg1)
 
 double MainWindow::map(double x, double in_min, double in_max, double out_min, double out_max)
 {
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
 void MainWindow::on_calculateRanking_clicked()
 {
+    QMessageBox::information(this,"Attezione", "Since this is only a test version, it doesn't flush old data and you can use only one time this function. You'll need to reopen the program if you want to calculate ranking again.");
+    for (int j; j < ui->ranking_table->rowCount(); j++) ui->ranking_table->removeRow(j);
     do_ranking();
     assign_destinations();
 }
@@ -334,9 +339,8 @@ void MainWindow::do_ranking()
     //Se lo studente non ha i requisiti linguistici, il suo punteggio è 0.
     //Quindi il range del punteggio è da 0 a 100.
     //Se due studenti hanno lo stesso punteggio, quello dei due che ha già avuto una borsa Erasmus perde 0.5 punti.
-    int rankingcol= 4;
     for (int row = 0; row < ui->students_table->rowCount(); row++) {
-        ui->ranking_table->insertRow(row);
+        if (ui->ranking_table->rowCount() <= row) ui->ranking_table->insertRow(row);
         for (int col = 0; col < 4; col++) {
             QTableWidgetItem *titem = new QTableWidgetItem ;
             titem->setText(ui->students_table->item(row,col)->text());
@@ -363,37 +367,129 @@ void MainWindow::do_ranking()
     for (int row = 0; row < ui->ranking_table->rowCount(); row++) {
         double ranking = ui->ranking_table->item(row,rankingcol)->text().toDouble();
         if (ranking == oldranking) {
-            int strow = ui->students_table->findItems(ui->ranking_table->item(row,0)->text(),Qt::MatchExactly)[0]->row();
-            ranking = ranking - (ui->students_table->item(strow,7)->text().toDouble()*0.5); //former student
-            if (ranking <= 0.0) ranking = 0.0;
-            QTableWidgetItem *titem = new QTableWidgetItem ;
-            titem->setText(QString::number(ranking));
-            ui->ranking_table->setItem(row,rankingcol,titem);
+            for (int tmprow = (row-1); tmprow < (row+1); tmprow++) {  //we check both this and previous student
+                int strow = ui->students_table->findItems(ui->ranking_table->item(tmprow,0)->text(),Qt::MatchExactly)[0]->row();
+                ranking = ranking - (ui->students_table->item(strow,7)->text().toDouble()*0.5); //former student
+                if (ranking <= 0.0) ranking = 0.0;
+                QTableWidgetItem *titem = new QTableWidgetItem ;
+                titem->setText(QString::number(ranking));
+                ui->ranking_table->setItem(tmprow,rankingcol,titem);
+            }
         } else {
             oldranking = ranking;
         }
         if (ranking == 0) ui->ranking_table->item(row,rankingcol)->setBackgroundColor(Qt::red);
+        ui->ranking_table->sortByColumn(rankingcol,Qt::DescendingOrder);
     }
 }
 
 void MainWindow::assign_destinations()
 {
-    //Nothing here. At least now. Stay tuned.
+    ui->ranking_table->sortByColumn(rankingcol,Qt::DescendingOrder);
+    for (int row = 0; row < ui->ranking_table->rowCount(); row++) {
+        int strow = ui->students_table->findItems(ui->ranking_table->item(row,0)->text(),Qt::MatchExactly)[0]->row();
+        QStringList destinations;
+        destinations.append(ui->students_table->item(strow,8)->text());
+        destinations.append(ui->students_table->item(strow,9)->text());
+        destinations.append(ui->students_table->item(strow,10)->text());
+        destinations.append(ui->students_table->item(strow,11)->text());
+        for (int i = 0; i < destinations.count(); i++) {
+            if (ui->cities_table->findItems(destinations[i],Qt::MatchExactly).count() == 1) {
+                int cityrow = ui->cities_table->findItems(destinations[i],Qt::MatchExactly)[0]->row();
+                int maxavailable = ui->cities_table->item(cityrow,2)->text().toInt();
+                int alreadyassigned = ui->ranking_table->findItems(destinations[i],Qt::MatchExactly).count();
+                if (maxavailable > alreadyassigned) {
+                    QTableWidgetItem *titem = new QTableWidgetItem ;
+                    titem->setText(destinations[i]);
+                    ui->ranking_table->setItem(row,autodestcol,titem);
+                    break;
+                }
+            }
+        }
+    }
+
+    for (int row = 0; row < ui->ranking_table->rowCount(); row++) {
+        if (ui->ranking_table->item(row,autodestcol) && !ui->ranking_table->item(row,manualdestcol)) {
+            QTableWidgetItem *titem = new QTableWidgetItem ;
+            titem->setText(ui->ranking_table->item(row,autodestcol)->text());
+            ui->ranking_table->setItem(row,manualdestcol,titem);
+        }
+    }
 }
 
 void MainWindow::on_actionAbout_Cresta_triggered()
 {
-    QString message = "Cresta means Code Ranking Erasmus Students for Trieste Automatically. It's a program designed for automatically ranking Erasmus candidates for University of Trieste's standards.";
+    QString message = "Cresta means Code Ranking Erasmus Students for Trieste Automatically. It's a program designed for automatically ranking Erasmus candidates using University of Trieste's standards.";
     QMessageBox::about(this,tr("About Cresta"), tr(qPrintable(message)));
 }
 
 void MainWindow::on_actionHelp_triggered()
 {
-    QString message = "Votes should be a number between 18 and 31 (which is 30 + laude).";
+    QString message = "Votes should be a number between 18 and 31 (which is 30 + laude). You can change destinations manually, but you are offered only places still available.";
     QMessageBox::information(this,tr("About Cresta"), tr(qPrintable(message)));
 }
 
 void MainWindow::on_actionAbout_Qt_triggered()
 {
     QMessageBox::aboutQt(this,"About Qt Libraries");
+}
+
+void MainWindow::on_ranking_table_cellClicked(int row, int column)
+{
+    if (column == manualdestcol) {
+    int strow = ui->students_table->findItems(ui->ranking_table->item(row,0)->text(),Qt::MatchExactly)[0]->row();
+    QStringList destinations;
+    destinations.append(ui->students_table->item(strow,8)->text());
+    destinations.append(ui->students_table->item(strow,9)->text());
+    destinations.append(ui->students_table->item(strow,10)->text());
+    destinations.append(ui->students_table->item(strow,11)->text());
+    QComboBox *editor = new QComboBox(ui->ranking_table);
+    editor->addItem("");
+    for (int i = 0; i < destinations.count(); i++) {
+        if (findItemInColumn(ui->cities_table,destinations[i],1).count() == 1) {
+            int cityrow = findItemInColumn(ui->cities_table,destinations[i],1)[0]->row();
+            int maxavailable = ui->cities_table->item(cityrow,2)->text().toInt();
+            int alreadyassigned = findItemInColumn(ui->ranking_table,destinations[i],manualdestcol).count();
+            if (ui->ranking_table->item(row,manualdestcol)) {
+                if (ui->ranking_table->item(row,manualdestcol)->text() == destinations[i]) {
+                    alreadyassigned = alreadyassigned -1;
+                }
+            }
+            if (maxavailable > alreadyassigned) {
+                editor->addItem(destinations[i]);
+            }
+        }
+    }
+    if (ui->ranking_table->item(row,autodestcol)) editor->setCurrentText(ui->ranking_table->item(row,autodestcol)->text());
+
+/* on Qt5.6    connect(
+        editor, &QComboBox::currentTextChanged,
+        [=]( const QString &newValue ) { this->changerankingitem(newValue,row, column); }
+    );*/
+    connect(
+            editor, QOverload<const QString &>::of(&QComboBox::activated),
+            [=]( const QString &newValue ) { this->changerankingitem(newValue,row, column); }
+        );
+
+    ui->ranking_table->setCellWidget(row,manualdestcol,editor);
+    } else {
+        QMessageBox::information(this,"A friendly suggestion","You really should not edit these values. You can perform your magic show in the last column, that's for editing.");
+    }
+}
+
+QList<QTableWidgetItem *> MainWindow::findItemInColumn(QTableWidget *table, QString pattern, int column, Qt::MatchFlags match)
+{
+    QList<QTableWidgetItem *> result;
+    for (int i = 0; i < table->findItems(pattern,match).count(); i++) {
+        if (table->findItems(pattern,match)[i]->column() == column) result.append(table->findItems(pattern,match)[i]);
+    }
+    return result;
+}
+
+void MainWindow::changerankingitem(const QString &arg1, int row, int column)
+{
+    QTableWidgetItem *titem = new QTableWidgetItem;
+    titem->setText(arg1);
+    ui->ranking_table->removeCellWidget(row,column);
+    ui->ranking_table->setItem(row,column,titem);
 }

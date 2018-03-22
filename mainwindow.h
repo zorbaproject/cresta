@@ -18,6 +18,8 @@
 #include <QString>
 #include <QColor>
 #include <QRegExp>
+#include <QComboBox>
+#include <QFlags>
 
 namespace Ui {
 class MainWindow;
@@ -32,6 +34,7 @@ public:
     ~MainWindow();
     QJsonObject database;
     double map(double x, double in_min, double in_max, double out_min, double out_max);
+    QList<QTableWidgetItem*> findItemInColumn(QTableWidget *table, QString pattern, int column, Qt::MatchFlags match = Qt::MatchExactly);
 
 private slots:
 
@@ -79,6 +82,10 @@ private slots:
 
     void on_actionAbout_Qt_triggered();
 
+    void on_ranking_table_cellClicked(int row, int column);
+
+    void changerankingitem(const QString &arg1, int row, int column);
+
 private:
     Ui::MainWindow *ui;
     QString dbfile;
@@ -91,6 +98,10 @@ private:
     void db2ranking();
     void do_ranking();
     void assign_destinations();
+
+    int rankingcol= 4;
+    int autodestcol= 5;
+    int manualdestcol= 6;
 };
 
 #endif // MAINWINDOW_H
