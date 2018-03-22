@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->students_table->resizeColumnsToContents();
     ui->ranking_table->resizeColumnsToContents();
     ui->cities_table->resizeColumnsToContents();
+    ui->st_tab->setCurrentIndex(0);
 }
 
 MainWindow::~MainWindow()
@@ -160,7 +161,11 @@ void MainWindow::cities2db()
     for (int row = 0; row < ui->cities_table->rowCount(); row++) {
         QStringList thisrow;
         for (int col = 0; col < ui->cities_table->columnCount(); col++) {
-            thisrow.append(ui->cities_table->item(row,col)->text());
+            if (ui->cities_table->item(row,col)) {
+                thisrow.append(ui->cities_table->item(row,col)->text());
+            } else {
+                thisrow.append(QString(""));
+            }
         }
         allrows.append(QJsonArray::fromStringList(thisrow));
     }
@@ -174,7 +179,11 @@ void MainWindow::students2db()
     for (int row = 0; row < ui->students_table->rowCount(); row++) {
         QStringList thisrow;
         for (int col = 0; col < ui->students_table->columnCount(); col++) {
+            if (ui->students_table->item(row,col)) {
             thisrow.append(ui->students_table->item(row,col)->text());
+            } else {
+                thisrow.append(QString(""));
+            }
         }
         allrows.append(QJsonArray::fromStringList(thisrow));
     }
@@ -188,7 +197,11 @@ void MainWindow::ranking2db()
     for (int row = 0; row < ui->ranking_table->rowCount(); row++) {
         QStringList thisrow;
         for (int col = 0; col < ui->ranking_table->columnCount(); col++) {
-            thisrow.append(ui->ranking_table->item(row,col)->text());
+            if (ui->ranking_table->item(row,col)) {
+                thisrow.append(ui->ranking_table->item(row,col)->text());
+            } else {
+                thisrow.append(QString(""));
+            }
         }
         allrows.append(QJsonArray::fromStringList(thisrow));
     }
@@ -325,8 +338,7 @@ double MainWindow::map(double x, double in_min, double in_max, double out_min, d
 
 void MainWindow::on_calculateRanking_clicked()
 {
-    QMessageBox::information(this,"Attezione", "Since this is only a test version, it doesn't flush old data and you can use only one time this function. You'll need to reopen the program if you want to calculate ranking again.");
-    for (int j; j < ui->ranking_table->rowCount(); j++) ui->ranking_table->removeRow(j);
+    ui->ranking_table->setRowCount(0);
     do_ranking();
     assign_destinations();
 }
@@ -344,6 +356,7 @@ void MainWindow::do_ranking()
         for (int col = 0; col < 4; col++) {
             QTableWidgetItem *titem = new QTableWidgetItem ;
             titem->setText(ui->students_table->item(row,col)->text());
+            titem->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
             ui->ranking_table->setItem(row,col,titem);
         }
         double ranking = 0.0;
@@ -359,10 +372,12 @@ void MainWindow::do_ranking()
 
         QTableWidgetItem *titem = new QTableWidgetItem ;
         titem->setText(QString::number(ranking));
+        titem->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
         ui->ranking_table->setItem(row,rankingcol,titem);
     }
 
     ui->ranking_table->sortByColumn(rankingcol,Qt::DescendingOrder);
+    //TODO: it would be useful to repeat this until there are no students with the same score
     double oldranking = 0.0;
     for (int row = 0; row < ui->ranking_table->rowCount(); row++) {
         double ranking = ui->ranking_table->item(row,rankingcol)->text().toDouble();
@@ -373,6 +388,7 @@ void MainWindow::do_ranking()
                 if (ranking <= 0.0) ranking = 0.0;
                 QTableWidgetItem *titem = new QTableWidgetItem ;
                 titem->setText(QString::number(ranking));
+                titem->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
                 ui->ranking_table->setItem(tmprow,rankingcol,titem);
             }
         } else {
@@ -401,10 +417,17 @@ void MainWindow::assign_destinations()
                 if (maxavailable > alreadyassigned) {
                     QTableWidgetItem *titem = new QTableWidgetItem ;
                     titem->setText(destinations[i]);
+                    titem->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
                     ui->ranking_table->setItem(row,autodestcol,titem);
                     break;
                 }
             }
+        }
+        if (!ui->ranking_table->item(row,autodestcol)){
+            QTableWidgetItem *titem = new QTableWidgetItem ;
+            titem->setText("");
+            titem->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+            ui->ranking_table->setItem(row,autodestcol,titem);
         }
     }
 
@@ -462,10 +485,6 @@ void MainWindow::on_ranking_table_cellClicked(int row, int column)
     }
     if (ui->ranking_table->item(row,autodestcol)) editor->setCurrentText(ui->ranking_table->item(row,autodestcol)->text());
 
-/* on Qt5.6    connect(
-        editor, &QComboBox::currentTextChanged,
-        [=]( const QString &newValue ) { this->changerankingitem(newValue,row, column); }
-    );*/
     connect(
             editor, QOverload<const QString &>::of(&QComboBox::activated),
             [=]( const QString &newValue ) { this->changerankingitem(newValue,row, column); }
@@ -473,7 +492,7 @@ void MainWindow::on_ranking_table_cellClicked(int row, int column)
 
     ui->ranking_table->setCellWidget(row,manualdestcol,editor);
     } else {
-        QMessageBox::information(this,"A friendly suggestion","You really should not edit these values. You can perform your magic show in the last column, that's for editing.");
+        //nothing here
     }
 }
 

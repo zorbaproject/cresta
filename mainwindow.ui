@@ -173,7 +173,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="label_6">
             <property name="text">
-             <string>Curricola:</string>
+             <string>Curricula:</string>
             </property>
            </widget>
           </item>
@@ -294,7 +294,7 @@
           </column>
           <column>
            <property name="text">
-            <string>Curricola</string>
+            <string>Curricula</string>
            </property>
           </column>
           <column>
@@ -386,7 +386,7 @@
          </column>
          <column>
           <property name="text">
-           <string>Curricola</string>
+           <string>Curricula</string>
           </property>
          </column>
          <column>
