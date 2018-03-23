@@ -37,6 +37,8 @@ void MainWindow::on_actionSave_project_triggered()
         students2db();
         ranking2db();
         QString dbstr = QJsonDocument(database).toJson();
+        QString problem = "    ]}    ]}";
+        dbstr = dbstr.replace(problem,"    ]}");
         QFile file(dbfile);
         if (file.open(QIODevice::ReadWrite | QIODevice::Text)) {
             QTextStream stream(&file);
@@ -49,8 +51,14 @@ void MainWindow::on_actionSave_project_triggered()
 void MainWindow::on_actionSave_project_as_triggered()
 {
     dbfile = QFileDialog::getSaveFileName(this, tr("Save project"), QDir::currentPath(), "*.cresta|Cresta Project (*.cresta)");
-    setWindowTitle(dbfile);
-    on_actionSave_project_triggered();
+    if (!dbfile.isEmpty()) {
+        if (dbfile.right(7)!=".cresta") {
+            if (dbfile.right(1)!=".") dbfile = dbfile + ".";
+            dbfile = dbfile + "cresta";
+        }
+        setWindowTitle(dbfile);
+        on_actionSave_project_triggered();
+    }
 }
 
 void MainWindow::on_actionOpen_project_triggered()
@@ -66,6 +74,9 @@ void MainWindow::on_actionOpen_project_triggered()
             data += in.readLine();
         }
         file.close();
+
+        QString problem = "    ]}    ]}";
+        data = data.replace(problem,"    ]}");
         database = QJsonDocument::fromJson(data.toUtf8()).object();
     }
     db2cities();
@@ -180,7 +191,7 @@ void MainWindow::students2db()
         QStringList thisrow;
         for (int col = 0; col < ui->students_table->columnCount(); col++) {
             if (ui->students_table->item(row,col)) {
-            thisrow.append(ui->students_table->item(row,col)->text());
+                thisrow.append(ui->students_table->item(row,col)->text());
             } else {
                 thisrow.append(QString(""));
             }
@@ -460,37 +471,37 @@ void MainWindow::on_actionAbout_Qt_triggered()
 void MainWindow::on_ranking_table_cellClicked(int row, int column)
 {
     if (column == manualdestcol) {
-    int strow = ui->students_table->findItems(ui->ranking_table->item(row,0)->text(),Qt::MatchExactly)[0]->row();
-    QStringList destinations;
-    destinations.append(ui->students_table->item(strow,8)->text());
-    destinations.append(ui->students_table->item(strow,9)->text());
-    destinations.append(ui->students_table->item(strow,10)->text());
-    destinations.append(ui->students_table->item(strow,11)->text());
-    QComboBox *editor = new QComboBox(ui->ranking_table);
-    editor->addItem("");
-    for (int i = 0; i < destinations.count(); i++) {
-        if (findItemInColumn(ui->cities_table,destinations[i],1).count() == 1) {
-            int cityrow = findItemInColumn(ui->cities_table,destinations[i],1)[0]->row();
-            int maxavailable = ui->cities_table->item(cityrow,2)->text().toInt();
-            int alreadyassigned = findItemInColumn(ui->ranking_table,destinations[i],manualdestcol).count();
-            if (ui->ranking_table->item(row,manualdestcol)) {
-                if (ui->ranking_table->item(row,manualdestcol)->text() == destinations[i]) {
-                    alreadyassigned = alreadyassigned -1;
+        int strow = ui->students_table->findItems(ui->ranking_table->item(row,0)->text(),Qt::MatchExactly)[0]->row();
+        QStringList destinations;
+        destinations.append(ui->students_table->item(strow,8)->text());
+        destinations.append(ui->students_table->item(strow,9)->text());
+        destinations.append(ui->students_table->item(strow,10)->text());
+        destinations.append(ui->students_table->item(strow,11)->text());
+        QComboBox *editor = new QComboBox(ui->ranking_table);
+        editor->addItem("");
+        for (int i = 0; i < destinations.count(); i++) {
+            if (findItemInColumn(ui->cities_table,destinations[i],1).count() == 1) {
+                int cityrow = findItemInColumn(ui->cities_table,destinations[i],1)[0]->row();
+                int maxavailable = ui->cities_table->item(cityrow,2)->text().toInt();
+                int alreadyassigned = findItemInColumn(ui->ranking_table,destinations[i],manualdestcol).count();
+                if (ui->ranking_table->item(row,manualdestcol)) {
+                    if (ui->ranking_table->item(row,manualdestcol)->text() == destinations[i]) {
+                        alreadyassigned = alreadyassigned -1;
+                    }
+                }
+                if (maxavailable > alreadyassigned) {
+                    editor->addItem(destinations[i]);
                 }
             }
-            if (maxavailable > alreadyassigned) {
-                editor->addItem(destinations[i]);
-            }
         }
-    }
-    if (ui->ranking_table->item(row,autodestcol)) editor->setCurrentText(ui->ranking_table->item(row,autodestcol)->text());
+        if (ui->ranking_table->item(row,autodestcol)) editor->setCurrentText(ui->ranking_table->item(row,autodestcol)->text());
 
-    connect(
-            editor, QOverload<const QString &>::of(&QComboBox::activated),
-            [=]( const QString &newValue ) { this->changerankingitem(newValue,row, column); }
+        connect(
+                    editor, QOverload<const QString &>::of(&QComboBox::activated),
+                    [=]( const QString &newValue ) { this->changerankingitem(newValue,row, column); }
         );
 
-    ui->ranking_table->setCellWidget(row,manualdestcol,editor);
+        ui->ranking_table->setCellWidget(row,manualdestcol,editor);
     } else {
         //nothing here
     }
