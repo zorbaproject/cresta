@@ -92,8 +92,8 @@ void MainWindow::on_new_student_clicked()
     ui->students_table->insertRow(row);
     QTableWidgetItem *titem = new QTableWidgetItem ;
     titem->setText("");
-    ui->students_table->setItem(row,0,titem);
-    ui->students_table->setCurrentCell(row,0);
+    ui->students_table->setItem(row,IDcol,titem);
+    ui->students_table->setCurrentCell(row,IDcol);
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -119,22 +119,27 @@ void MainWindow::on_save_student_clicked()
     if (ui->students_table->selectedItems().count() > 0) {
         int row = ui->students_table->selectedItems()[0]->row();
 
+        if (findItemInColumn(ui->students_table,ui->frm_ID->text(),IDcol).count() > 0) {
+            QMessageBox::critical(this,"This is not funny","You can't have two students with the same ID");
+            return;
+        }
+
         for (int column = 0; column < ui->students_table->columnCount(); column++) {
             QString mytext = "";
-            if (column == 3) mytext = ui->frm_curricola->text();
-            if (column == 8) mytext = ui->frm_dest1->text();
-            if (column == 9) mytext = ui->frm_dest2->text();
-            if (column == 10) mytext = ui->frm_dest3->text();
-            if (column == 11) mytext = ui->frm_dest4->text();
-            if (column == 7 && ui->frm_former->isChecked()) mytext = "1";
-            if (column == 7 && !ui->frm_former->isChecked()) mytext = "0";
-            if (column == 0) mytext = ui->frm_ID->text();
-            if (column == 5) mytext = ui->frm_meanvote->text();
-            if (column == 1) mytext = ui->frm_name->text();
-            if (column == 4) mytext = ui->frm_registration->currentText();
-            if (column == 6 && ui->frm_requisites->isChecked()) mytext = "1";
-            if (column == 6 && !ui->frm_requisites->isChecked()) mytext = "0";
-            if (column == 2) mytext = ui->frm_surname->text();
+            if (column == curriculacol) mytext = ui->frm_curricola->text();
+            if (column == dest1col) mytext = ui->frm_dest1->text();
+            if (column == dest2col) mytext = ui->frm_dest2->text();
+            if (column == dest3col) mytext = ui->frm_dest3->text();
+            if (column == dest4col) mytext = ui->frm_dest4->text();
+            if (column == formercol && ui->frm_former->isChecked()) mytext = "1";
+            if (column == formercol && !ui->frm_former->isChecked()) mytext = "0";
+            if (column == IDcol) mytext = ui->frm_ID->text();
+            if (column == votecol) mytext = ui->frm_meanvote->text();
+            if (column == namecol) mytext = ui->frm_name->text();
+            if (column == yearcol) mytext = ui->frm_registration->currentText();
+            if (column == requisitescol && ui->frm_requisites->isChecked()) mytext = "1";
+            if (column == requisitescol && !ui->frm_requisites->isChecked()) mytext = "0";
+            if (column == surnamecol) mytext = ui->frm_surname->text();
             QTableWidgetItem *newItem = new QTableWidgetItem(mytext);
             ui->students_table->setItem(row, column, newItem);
         }
@@ -261,8 +266,11 @@ void MainWindow::on_checkincomplete_clicked()
         for (int col = 0; col < ui->students_table->columnCount(); col++) {
             if (ui->students_table->item(row,col)->text().isEmpty()) ui->students_table->item(row, col)->setBackgroundColor(Qt::red);
         }
+        if (findItemInColumn(ui->students_table,ui->students_table->item(row,IDcol)->text(),IDcol).count() > 1) {
+            QMessageBox::critical(this,"This is not funny","You can't have two students with the same ID");
+            ui->students_table->item(row, IDcol)->setBackgroundColor(Qt::red);
+        }
     }
-    // TODO: check if ID is unique
 }
 
 void MainWindow::on_next_student_clicked()
@@ -270,7 +278,7 @@ void MainWindow::on_next_student_clicked()
     int row = ui->students_table->rowCount() -1;
     if (ui->students_table->selectedItems().count() > 0) row = ui->students_table->selectedItems()[0]->row() + 1;
     if (row < ui->students_table->rowCount()) ui->students_table->selectRow(row);
-    on_students_table_cellClicked(row, 0);
+    on_students_table_cellClicked(row, IDcol);
 }
 
 void MainWindow::on_prev_student_clicked()
@@ -278,7 +286,7 @@ void MainWindow::on_prev_student_clicked()
     int row = 0;
     if (ui->students_table->selectedItems().count() > 0) row = ui->students_table->selectedItems()[0]->row() - 1;
     if (row >= 0) ui->students_table->selectRow(row);
-    on_students_table_cellClicked(row, 0);
+    on_students_table_cellClicked(row, IDcol);
 }
 
 void MainWindow::on_students_table_cellClicked(int row, int column)
@@ -286,20 +294,20 @@ void MainWindow::on_students_table_cellClicked(int row, int column)
     if (ui->students_table->selectedItems().count() > 0) {
         for (int column = 0; column < ui->students_table->columnCount(); column++) {
             QString mytext = ui->students_table->item(row,column)->text();
-            if (column == 3) ui->frm_curricola->setText(mytext);
-            if (column == 8) ui->frm_dest1->setText(mytext);
-            if (column == 9) ui->frm_dest2->setText(mytext);
-            if (column == 10) ui->frm_dest3->setText(mytext);
-            if (column == 11) ui->frm_dest4->setText(mytext);
-            if (column == 7 && mytext == "1") ui->frm_former->setChecked(true);
-            if (column == 7 && !(mytext == "1")) ui->frm_former->setChecked(false);
-            if (column == 0) ui->frm_ID->setText(mytext);
-            if (column == 5) ui->frm_meanvote->setText(mytext);
-            if (column == 1) ui->frm_name->setText(mytext);
-            if (column == 4) ui->frm_registration->setCurrentText(mytext);
-            if (column == 6 && mytext == "1") ui->frm_requisites->setChecked(true);
-            if (column == 6 && !(mytext == "1")) ui->frm_requisites->setChecked(false);
-            if (column == 2) ui->frm_surname->setText(mytext);
+            if (column == curriculacol) ui->frm_curricola->setText(mytext);
+            if (column == dest1col) ui->frm_dest1->setText(mytext);
+            if (column == dest2col) ui->frm_dest2->setText(mytext);
+            if (column == dest3col) ui->frm_dest3->setText(mytext);
+            if (column == dest4col) ui->frm_dest4->setText(mytext);
+            if (column == formercol && mytext == "1") ui->frm_former->setChecked(true);
+            if (column == formercol && !(mytext == "1")) ui->frm_former->setChecked(false);
+            if (column == IDcol) ui->frm_ID->setText(mytext);
+            if (column == votecol) ui->frm_meanvote->setText(mytext);
+            if (column == namecol) ui->frm_name->setText(mytext);
+            if (column == yearcol) ui->frm_registration->setCurrentText(mytext);
+            if (column == requisitescol && mytext == "1") ui->frm_requisites->setChecked(true);
+            if (column == requisitescol && !(mytext == "1")) ui->frm_requisites->setChecked(false);
+            if (column == surnamecol) ui->frm_surname->setText(mytext);
         }
     }
 }
@@ -312,7 +320,7 @@ void MainWindow::on_frm_meanvote_textChanged(const QString &arg1)
     ui->frm_meanvote->setText(tmpstr);
     bool ok;
     double tmpvote = tmpstr.toDouble(&ok);
-    if (ok == false) {
+    if (ok == false && tmpstr != "") {
         QMessageBox::warning(this,tr("This is a problem"),tr("This is not a number. And it should be. It really should."));
     } else if (tmpvote < 18 || tmpvote > 31) {
         ui->frm_meanvote->setStyleSheet("QLineEdit {background-color: red;}");
@@ -394,7 +402,7 @@ void MainWindow::do_ranking()
         double ranking = ui->ranking_table->item(row,rankingcol)->text().toDouble();
         if (ranking == oldranking) {
             for (int tmprow = (row-1); tmprow < (row+1); tmprow++) {  //we check both this and previous student
-                int strow = ui->students_table->findItems(ui->ranking_table->item(tmprow,0)->text(),Qt::MatchExactly)[0]->row();
+                int strow = findItemInColumn(ui->students_table,ui->ranking_table->item(tmprow,IDcol)->text(),IDcol)[0]->row();
                 ranking = ranking - (ui->students_table->item(strow,7)->text().toDouble()*0.5); //former student
                 if (ranking <= 0.0) ranking = 0.0;
                 QTableWidgetItem *titem = new QTableWidgetItem ;
@@ -414,17 +422,17 @@ void MainWindow::assign_destinations()
 {
     ui->ranking_table->sortByColumn(rankingcol,Qt::DescendingOrder);
     for (int row = 0; row < ui->ranking_table->rowCount(); row++) {
-        int strow = ui->students_table->findItems(ui->ranking_table->item(row,0)->text(),Qt::MatchExactly)[0]->row();
+        int strow = findItemInColumn(ui->students_table,ui->ranking_table->item(row,IDcol)->text(),IDcol)[0]->row();
         QStringList destinations;
-        destinations.append(ui->students_table->item(strow,8)->text());
-        destinations.append(ui->students_table->item(strow,9)->text());
-        destinations.append(ui->students_table->item(strow,10)->text());
-        destinations.append(ui->students_table->item(strow,11)->text());
+        destinations.append(ui->students_table->item(strow,dest1col)->text());
+        destinations.append(ui->students_table->item(strow,dest2col)->text());
+        destinations.append(ui->students_table->item(strow,dest3col)->text());
+        destinations.append(ui->students_table->item(strow,dest4col)->text());
         for (int i = 0; i < destinations.count(); i++) {
-            if (ui->cities_table->findItems(destinations[i],Qt::MatchExactly).count() == 1) {
-                int cityrow = ui->cities_table->findItems(destinations[i],Qt::MatchExactly)[0]->row();
-                int maxavailable = ui->cities_table->item(cityrow,2)->text().toInt();
-                int alreadyassigned = ui->ranking_table->findItems(destinations[i],Qt::MatchExactly).count();
+            if (findItemInColumn(ui->cities_table,destinations[i],citycol).count() == 1) {
+                int cityrow = findItemInColumn(ui->cities_table,destinations[i],citycol)[0]->row();
+                int maxavailable = ui->cities_table->item(cityrow,availablecol)->text().toInt();
+                int alreadyassigned = findItemInColumn(ui->ranking_table,destinations[i],autodestcol).count();
                 if (maxavailable > alreadyassigned) {
                     QTableWidgetItem *titem = new QTableWidgetItem ;
                     titem->setText(destinations[i]);
@@ -471,18 +479,18 @@ void MainWindow::on_actionAbout_Qt_triggered()
 void MainWindow::on_ranking_table_cellClicked(int row, int column)
 {
     if (column == manualdestcol) {
-        int strow = ui->students_table->findItems(ui->ranking_table->item(row,0)->text(),Qt::MatchExactly)[0]->row();
+        int strow = findItemInColumn(ui->students_table,ui->ranking_table->item(row,IDcol)->text(),IDcol)[0]->row();
         QStringList destinations;
-        destinations.append(ui->students_table->item(strow,8)->text());
-        destinations.append(ui->students_table->item(strow,9)->text());
-        destinations.append(ui->students_table->item(strow,10)->text());
-        destinations.append(ui->students_table->item(strow,11)->text());
+        destinations.append(ui->students_table->item(strow,dest1col)->text());
+        destinations.append(ui->students_table->item(strow,dest2col)->text());
+        destinations.append(ui->students_table->item(strow,dest3col)->text());
+        destinations.append(ui->students_table->item(strow,dest4col)->text());
         QComboBox *editor = new QComboBox(ui->ranking_table);
         editor->addItem("");
         for (int i = 0; i < destinations.count(); i++) {
-            if (findItemInColumn(ui->cities_table,destinations[i],1).count() == 1) {
-                int cityrow = findItemInColumn(ui->cities_table,destinations[i],1)[0]->row();
-                int maxavailable = ui->cities_table->item(cityrow,2)->text().toInt();
+            if (findItemInColumn(ui->cities_table,destinations[i],citycol).count() == 1) {
+                int cityrow = findItemInColumn(ui->cities_table,destinations[i],citycol)[0]->row();
+                int maxavailable = ui->cities_table->item(cityrow,availablecol)->text().toInt();
                 int alreadyassigned = findItemInColumn(ui->ranking_table,destinations[i],manualdestcol).count();
                 if (ui->ranking_table->item(row,manualdestcol)) {
                     if (ui->ranking_table->item(row,manualdestcol)->text() == destinations[i]) {
@@ -522,4 +530,23 @@ void MainWindow::changerankingitem(const QString &arg1, int row, int column)
     titem->setText(arg1);
     ui->ranking_table->removeCellWidget(row,column);
     ui->ranking_table->setItem(row,column,titem);
+}
+
+void MainWindow::on_actionNew_triggered()
+{
+    ui->cities_table->setRowCount(0);
+    ui->students_table->setRowCount(0);
+    ui->ranking_table->setRowCount(0);
+    ui->frm_curricola->setText("");
+    ui->frm_dest1->setText("");
+    ui->frm_dest2->setText("");
+    ui->frm_dest3->setText("");
+    ui->frm_dest4->setText("");
+    ui->frm_former->setChecked(false);
+    ui->frm_ID->setText("");
+    ui->frm_meanvote->setText("");
+    ui->frm_name->setText("");
+    ui->frm_registration->setCurrentIndex(0);
+    ui->frm_requisites->setChecked(false);
+    ui->frm_surname->setText("");
 }

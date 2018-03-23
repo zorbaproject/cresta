@@ -86,6 +86,8 @@ private slots:
 
     void changerankingitem(const QString &arg1, int row, int column);
 
+    void on_actionNew_triggered();
+
 private:
     Ui::MainWindow *ui;
     QString dbfile;
@@ -98,6 +100,23 @@ private:
     void db2ranking();
     void do_ranking();
     void assign_destinations();
+
+    int countycol = 0;
+    int citycol = 1;
+    int availablecol =2;
+
+    int IDcol = 0;
+    int namecol = 1;
+    int surnamecol = 2;
+    int curriculacol = 3;
+    int yearcol = 4;
+    int votecol = 5;
+    int requisitescol = 6;
+    int formercol = 7;
+    int dest1col = 8;
+    int dest2col = 9;
+    int dest3col = 10;
+    int dest4col = 11;
 
     int rankingcol= 4;
     int autodestcol= 5;
