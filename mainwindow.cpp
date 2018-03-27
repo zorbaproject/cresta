@@ -120,7 +120,7 @@ void MainWindow::on_save_student_clicked()
         int row = ui->students_table->selectedItems()[0]->row();
 
         if (findItemInColumn(ui->students_table,ui->frm_ID->text(),IDcol).count() > 0) {
-            QMessageBox::critical(this,"This is not funny","You can't have two students with the same ID");
+            QMessageBox::critical(this,tr("This is not funny"),tr("You can't have two students with the same ID"));
             return;
         }
 
@@ -267,7 +267,7 @@ void MainWindow::on_checkincomplete_clicked()
             if (ui->students_table->item(row,col)->text().isEmpty()) ui->students_table->item(row, col)->setBackgroundColor(Qt::red);
         }
         if (findItemInColumn(ui->students_table,ui->students_table->item(row,IDcol)->text(),IDcol).count() > 1) {
-            QMessageBox::critical(this,"This is not funny","You can't have two students with the same ID");
+            QMessageBox::critical(this,tr("This is not funny"),tr("You can't have two students with the same ID"));
             ui->students_table->item(row, IDcol)->setBackgroundColor(Qt::red);
         }
     }

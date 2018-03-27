@@ -18,3 +18,5 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
+
+TRANSLATIONS = languages/Translation_en.ts  languages/Translation_it.ts languages/Translation_de.ts languages/Translation_fr.ts languages/Translation_es.ts languages/Translation_pt.ts
