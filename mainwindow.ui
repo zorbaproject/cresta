@@ -159,7 +159,7 @@
           <item row="1" column="4">
            <widget class="QLabel" name="label_8">
             <property name="text">
-             <string>Mean vote:</string>
+             <string>Average mark:</string>
             </property>
            </widget>
           </item>
@@ -237,6 +237,9 @@
           </item>
           <item row="1" column="3">
            <widget class="QComboBox" name="frm_registration">
+            <property name="currentText">
+             <string notr="true">1</string>
+            </property>
             <item>
              <property name="text">
               <string>1</string>
@@ -304,7 +307,7 @@
           </column>
           <column>
            <property name="text">
-            <string>Mean vote</string>
+            <string>Average mark</string>
            </property>
           </column>
           <column>
@@ -396,12 +399,12 @@
          </column>
          <column>
           <property name="text">
-           <string>Auto choosen</string>
+           <string>Auto chosen</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Manually choosen</string>
+           <string>Manually chosen</string>
           </property>
          </column>
         </widget>

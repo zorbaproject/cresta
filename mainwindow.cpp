@@ -461,7 +461,7 @@ void MainWindow::assign_destinations()
 
 void MainWindow::on_actionAbout_Cresta_triggered()
 {
-    QString message = "Cresta means Code Ranking Erasmus Students for Trieste Automatically. It's a program designed for automatically ranking Erasmus candidates using University of Trieste's standards.";
+    QString message = "Cresta means Code Ranking Erasmus Students for Trieste Automatically. It's a program designed for automatically ranking Erasmus candidates using University of Trieste's standards. This program has been written by Luca Tringali. Translations by Floriana Sciumbata.";
     QMessageBox::about(this,tr("About Cresta"), tr(qPrintable(message)));
 }
 
