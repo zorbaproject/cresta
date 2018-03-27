@@ -19,4 +19,20 @@ HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
 
-TRANSLATIONS = languages/Translation_en.ts  languages/Translation_it.ts languages/Translation_de.ts languages/Translation_fr.ts languages/Translation_es.ts languages/Translation_pt.ts
+LANGUAGES = en it de fr es pt
+
+defineReplace(prependAll) {
+ for(a,$$1):result += $$2$${a}$$3
+ return($$result)
+}
+
+TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/languages/Translation_, .ts)
+
+qtPrepareTool(LRELEASE, lrelease)
+ for(tsfile, TRANSLATIONS) {
+     command = $$LRELEASE $$tsfile
+     system($$command)|error("Failed to run: $$command")
+ }
+
+RESOURCES += \
+    languages.qrc

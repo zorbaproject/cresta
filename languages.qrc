@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>languages/Translation_de.qm</file>
+        <file>languages/Translation_en.qm</file>
+        <file>languages/Translation_es.qm</file>
+        <file>languages/Translation_fr.qm</file>
+        <file>languages/Translation_it.qm</file>
+        <file>languages/Translation_pt.qm</file>
+        <file>languages/de.png</file>
+        <file>languages/en.png</file>
+        <file>languages/es.png</file>
+        <file>languages/fr.png</file>
+        <file>languages/it.png</file>
+        <file>languages/pt.png</file>
+        <file>cresta.png</file>
+    </qresource>
+</RCC>

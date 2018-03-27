@@ -7,15 +7,110 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     init_database();
+    createLanguageMenu();
+    loadLanguage(QString("it"));
+    resetUi();
+    QIcon icon(":/cresta.png");
+    setWindowIcon(icon);
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::resetUi()
+{
     ui->students_table->resizeColumnsToContents();
     ui->ranking_table->resizeColumnsToContents();
     ui->cities_table->resizeColumnsToContents();
     ui->st_tab->setCurrentIndex(0);
 }
 
-MainWindow::~MainWindow()
+void MainWindow::createLanguageMenu(void)
 {
-    delete ui;
+    QActionGroup* langGroup = new QActionGroup(ui->menuLanguage);
+    langGroup->setExclusive(true);
+
+    connect(langGroup, SIGNAL (triggered(QAction *)), this, SLOT (slotLanguageChanged(QAction *)));
+
+    QString defaultLocale = QLocale::system().name();
+    defaultLocale.truncate(defaultLocale.lastIndexOf('_'));
+
+    m_langPath = ":/languages/";
+    QDir dir(m_langPath);
+    QStringList fileNames = dir.entryList(QStringList("Translation_*.qm"));
+
+    for (int i = 0; i < fileNames.size(); ++i) {
+        QString locale;
+        locale = fileNames[i];
+        locale.truncate(locale.lastIndexOf('.'));
+        locale.remove(0, locale.indexOf('_') + 1);
+
+        QString lang = QLocale::languageToString(QLocale(locale).language());
+        QIcon ico(QString("%1/%2.png").arg(m_langPath).arg(locale));
+
+        QAction *action = new QAction(ico, lang, this);
+        action->setCheckable(true);
+        action->setData(locale);
+
+        ui->menuLanguage->addAction(action);
+        langGroup->addAction(action);
+
+        if (defaultLocale == locale)
+        {
+            action->setChecked(true);
+        }
+    }
+}
+
+void MainWindow::slotLanguageChanged(QAction* action)
+{
+    if(0 != action) {
+        loadLanguage(action->data().toString());
+        setWindowIcon(action->icon());
+    }
+}
+
+void switchTranslator(QTranslator& translator, const QString& filename)
+{
+    qApp->removeTranslator(&translator);
+
+    if(translator.load(filename)) {
+        qApp->installTranslator(&translator);
+    }
+}
+
+void MainWindow::loadLanguage(const QString& rLanguage)
+{
+    if(m_currLang != rLanguage) {
+        m_currLang = rLanguage;
+        QLocale locale = QLocale(m_currLang);
+        QLocale::setDefault(locale);
+        switchTranslator(m_translator, m_langPath + QString("Translation_%1.qm").arg(rLanguage));
+        QString tr_qtpath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+        if (tr_qtpath.right(1) != "/") tr_qtpath.append("/");
+        switchTranslator(m_translatorQt, tr_qtpath + QString("qt_%1.qm").arg(rLanguage));
+    }
+}
+
+void MainWindow::changeEvent(QEvent* event)
+{
+    if(0 != event) {
+        // this event is send if a translator is loaded
+        if (event->type() == QEvent::LanguageChange) {
+            ui->retranslateUi(this);
+            resetUi();
+        }
+
+        // this event is send if the system language changes
+        if (event->type() == QEvent::LocaleChange) {
+            QString locale = QLocale::system().name();
+            locale.truncate(locale.lastIndexOf('_'));
+            loadLanguage(locale);
+        }
+    }
+    QMainWindow::changeEvent(event);
 }
 
 void MainWindow::init_database()

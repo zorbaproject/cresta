@@ -20,6 +20,8 @@
 #include <QRegExp>
 #include <QComboBox>
 #include <QFlags>
+#include <QTranslator>
+#include <QLibraryInfo>
 
 namespace Ui {
 class MainWindow;
@@ -35,6 +37,7 @@ public:
     QJsonObject database;
     double map(double x, double in_min, double in_max, double out_min, double out_max);
     QList<QTableWidgetItem*> findItemInColumn(QTableWidget *table, QString pattern, int column, Qt::MatchFlags match = Qt::MatchExactly);
+    void resetUi();
 
 private slots:
 
@@ -121,6 +124,20 @@ private:
     int rankingcol= 4;
     int autodestcol= 5;
     int manualdestcol= 6;
+
+    void loadLanguage(const QString& rLanguage);
+    void createLanguageMenu(void);
+    QTranslator m_translator;
+    QTranslator m_translatorQt;
+    QString m_currLang;
+    QString m_langPath;
+
+protected:
+    void changeEvent(QEvent*);
+
+protected slots:
+    void slotLanguageChanged(QAction* action);
+
 };
 
 #endif // MAINWINDOW_H
