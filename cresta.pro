@@ -28,11 +28,13 @@ defineReplace(prependAll) {
 
 TRANSLATIONS = $$prependAll(LANGUAGES, $$PWD/languages/Translation_, .ts)
 
+unix {
 qtPrepareTool(LRELEASE, lrelease)
  for(tsfile, TRANSLATIONS) {
      command = $$LRELEASE $$tsfile
      system($$command)|error("Failed to run: $$command")
  }
+}
 
 RESOURCES += \
     languages.qrc

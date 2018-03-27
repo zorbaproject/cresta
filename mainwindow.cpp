@@ -10,8 +10,6 @@ MainWindow::MainWindow(QWidget *parent) :
     createLanguageMenu();
     loadLanguage(QString("it"));
     resetUi();
-    QIcon icon(":/cresta.png");
-    setWindowIcon(icon);
 }
 
 MainWindow::~MainWindow()
@@ -25,6 +23,8 @@ void MainWindow::resetUi()
     ui->ranking_table->resizeColumnsToContents();
     ui->cities_table->resizeColumnsToContents();
     ui->st_tab->setCurrentIndex(0);
+    QIcon icon(":/cresta.png");
+    setWindowIcon(icon);
 }
 
 void MainWindow::createLanguageMenu(void)
