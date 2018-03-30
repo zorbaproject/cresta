@@ -28,23 +28,23 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <widget class="QPushButton" name="Save_cities">
+           <widget class="QPushButton" name="check_cities">
             <property name="text">
-             <string>Save</string>
+             <string>Check destinations</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="del_city">
             <property name="text">
-             <string>Delete city</string>
+             <string>Delete destination</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="new_city">
             <property name="text">
-             <string>New city</string>
+             <string>New destination</string>
             </property>
            </widget>
           </item>
@@ -59,7 +59,7 @@
           </column>
           <column>
            <property name="text">
-            <string>City</string>
+            <string>Destination</string>
            </property>
           </column>
           <column>
@@ -95,21 +95,21 @@
           <item>
            <widget class="QPushButton" name="checkincomplete">
             <property name="text">
-             <string>Check incomplete</string>
+             <string>Check data</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="new_student">
             <property name="text">
-             <string>New</string>
+             <string>Save as new student</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="save_student">
             <property name="text">
-             <string>Save</string>
+             <string>Modify student</string>
             </property>
            </widget>
           </item>
@@ -546,7 +546,6 @@
   <tabstop>checkincomplete</tabstop>
   <tabstop>new_city</tabstop>
   <tabstop>del_city</tabstop>
-  <tabstop>Save_cities</tabstop>
  </tabstops>
  <resources/>
  <connections/>

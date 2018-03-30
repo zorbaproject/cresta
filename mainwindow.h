@@ -38,6 +38,7 @@ public:
     double map(double x, double in_min, double in_max, double out_min, double out_max);
     QList<QTableWidgetItem*> findItemInColumn(QTableWidget *table, QString pattern, int column, Qt::MatchFlags match = Qt::MatchExactly);
     void resetUi();
+    bool checkvalid = false;
 
 private slots:
 
@@ -91,6 +92,8 @@ private slots:
 
     void on_actionNew_triggered();
 
+    void on_check_cities_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString dbfile;
@@ -104,10 +107,12 @@ private:
     void do_ranking();
     void assign_destinations();
 
+    //columns in cities table
     int countycol = 0;
     int citycol = 1;
     int availablecol =2;
 
+    //columns in students table
     int IDcol = 0;
     int namecol = 1;
     int surnamecol = 2;
@@ -121,6 +126,7 @@ private:
     int dest3col = 10;
     int dest4col = 11;
 
+    //columns in ranking table
     int rankingcol= 4;
     int autodestcol= 5;
     int manualdestcol= 6;

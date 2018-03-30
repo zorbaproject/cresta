@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     createLanguageMenu();
     loadLanguage(QString("it"));
     resetUi();
+    on_actionNew_triggered();
 }
 
 MainWindow::~MainWindow()
@@ -182,6 +183,10 @@ void MainWindow::on_actionOpen_project_triggered()
 
 void MainWindow::on_new_student_clicked()
 {
+    if (findItemInColumn(ui->students_table,ui->frm_ID->text(),IDcol).count() > 0) {
+        QMessageBox::critical(this,tr("This is not funny"),tr("You can't have two students with the same ID"));
+        return;
+    }
     int row = ui->students_table->rowCount();
     if (ui->students_table->selectedItems().count() > 0) row = ui->students_table->selectedItems()[0]->row() + 1;
     ui->students_table->insertRow(row);
@@ -189,6 +194,7 @@ void MainWindow::on_new_student_clicked()
     titem->setText("");
     ui->students_table->setItem(row,IDcol,titem);
     ui->students_table->setCurrentCell(row,IDcol);
+    on_save_student_clicked();
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -213,11 +219,6 @@ void MainWindow::on_save_student_clicked()
     }
     if (ui->students_table->selectedItems().count() > 0) {
         int row = ui->students_table->selectedItems()[0]->row();
-
-        if (findItemInColumn(ui->students_table,ui->frm_ID->text(),IDcol).count() > 0) {
-            QMessageBox::critical(this,tr("This is not funny"),tr("You can't have two students with the same ID"));
-            return;
-        }
 
         for (int column = 0; column < ui->students_table->columnCount(); column++) {
             QString mytext = "";
@@ -357,35 +358,49 @@ void MainWindow::db2ranking()
 
 void MainWindow::on_checkincomplete_clicked()
 {
+    checkvalid = false;
     for (int row = 0; row < ui->students_table->rowCount(); row++) {
         for (int col = 0; col < ui->students_table->columnCount(); col++) {
-            if (ui->students_table->item(row,col)->text().isEmpty()) ui->students_table->item(row, col)->setBackgroundColor(Qt::red);
+            ui->students_table->item(row, col)->setBackgroundColor(Qt::white);
+            if (ui->students_table->item(row,col)->text().isEmpty() && col != dest3col && col != dest4col) {
+                ui->students_table->item(row, col)->setBackgroundColor(Qt::red);
+                return;
+            }
         }
         if (findItemInColumn(ui->students_table,ui->students_table->item(row,IDcol)->text(),IDcol).count() > 1) {
+            ui->students_table->item(row, IDcol)->setBackgroundColor(Qt::white);
             QMessageBox::critical(this,tr("This is not funny"),tr("You can't have two students with the same ID"));
             ui->students_table->item(row, IDcol)->setBackgroundColor(Qt::red);
+            return;
         }
+        on_students_table_cellClicked(row,0);
     }
+    checkvalid = true;
 }
 
 void MainWindow::on_next_student_clicked()
 {
     int row = ui->students_table->rowCount() -1;
     if (ui->students_table->selectedItems().count() > 0) row = ui->students_table->selectedItems()[0]->row() + 1;
-    if (row < ui->students_table->rowCount()) ui->students_table->selectRow(row);
-    on_students_table_cellClicked(row, IDcol);
+    if (row < ui->students_table->rowCount()) {
+        ui->students_table->selectRow(row);
+        on_students_table_cellClicked(row, IDcol);
+    }
 }
 
 void MainWindow::on_prev_student_clicked()
 {
     int row = 0;
     if (ui->students_table->selectedItems().count() > 0) row = ui->students_table->selectedItems()[0]->row() - 1;
-    if (row >= 0) ui->students_table->selectRow(row);
-    on_students_table_cellClicked(row, IDcol);
+    if (row >= 0){
+        ui->students_table->selectRow(row);
+        on_students_table_cellClicked(row, IDcol);
+    }
 }
 
 void MainWindow::on_students_table_cellClicked(int row, int column)
 {
+    if (row >= ui->students_table->rowCount() || column >= ui->students_table->columnCount()) return;
     if (ui->students_table->selectedItems().count() > 0) {
         for (int column = 0; column < ui->students_table->columnCount(); column++) {
             QString mytext = ui->students_table->item(row,column)->text();
@@ -417,8 +432,10 @@ void MainWindow::on_frm_meanvote_textChanged(const QString &arg1)
     double tmpvote = tmpstr.toDouble(&ok);
     if (ok == false && tmpstr != "") {
         QMessageBox::warning(this,tr("This is a problem"),tr("This is not a number. And it should be. It really should."));
+        checkvalid = false;
     } else if (tmpvote < 18 || tmpvote > 31) {
         ui->frm_meanvote->setStyleSheet("QLineEdit {background-color: red;}");
+        checkvalid = false;
     } else {
         ui->frm_meanvote->setStyleSheet("QLineEdit {background-color: white;}");
     }
@@ -452,6 +469,9 @@ double MainWindow::map(double x, double in_min, double in_max, double out_min, d
 
 void MainWindow::on_calculateRanking_clicked()
 {
+    on_checkincomplete_clicked();
+    on_check_cities_clicked();
+    if (checkvalid == false) return;
     ui->ranking_table->setRowCount(0);
     do_ranking();
     assign_destinations();
@@ -462,9 +482,9 @@ void MainWindow::do_ranking()
     //il calcolo è questo: diamo dagli 80 ai 10 punti in base all'anno che si frequenta
     //(di 20 in 20 a eccezione dell'ultimo anno della laurea magistrale che ne prende solo 10)
     //poi diamo altri 20 punti in base alla media dei voti.
-    //Se lo studente non ha i requisiti linguistici, il suo punteggio è 0.
-    //Quindi il range del punteggio è da 0 a 100.
-    //Se due studenti hanno lo stesso punteggio, quello dei due che ha già avuto una borsa Erasmus perde 0.5 punti.
+    //Se lo studente è già stato in erasmus, il suo punteggio va da 0 a 100, se non è stato
+    //in erasmus il punteggio viene mappato da 100 a 200.
+    //Alla fine, se lo studente non ha i requisiti linguistici, il suo punteggio è 0.
     for (int row = 0; row < ui->students_table->rowCount(); row++) {
         if (ui->ranking_table->rowCount() <= row) ui->ranking_table->insertRow(row);
         for (int col = 0; col < 4; col++) {
@@ -482,35 +502,15 @@ void MainWindow::do_ranking()
         if (ui->students_table->item(row,4)->text() == "3") ranking += 20;
         if (ui->students_table->item(row,4)->text() == "5") ranking += 10;
         ranking += map(ui->students_table->item(row,5)->text().toDouble(),18,31,1,20); //mean vote
+        if (ui->students_table->item(row,7)->text().toDouble() == 0) ranking  =  map(ranking,0,100,100,200); //former erasmus student or not
         ranking = ranking*ui->students_table->item(row,6)->text().toDouble(); //requisites
 
         QTableWidgetItem *titem = new QTableWidgetItem ;
-        titem->setText(QString::number(ranking));
+        titem->setData(Qt::EditRole,ranking);
         titem->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
         ui->ranking_table->setItem(row,rankingcol,titem);
     }
-
     ui->ranking_table->sortByColumn(rankingcol,Qt::DescendingOrder);
-    //TODO: it would be useful to repeat this until there are no students with the same score
-    double oldranking = 0.0;
-    for (int row = 0; row < ui->ranking_table->rowCount(); row++) {
-        double ranking = ui->ranking_table->item(row,rankingcol)->text().toDouble();
-        if (ranking == oldranking) {
-            for (int tmprow = (row-1); tmprow < (row+1); tmprow++) {  //we check both this and previous student
-                int strow = findItemInColumn(ui->students_table,ui->ranking_table->item(tmprow,IDcol)->text(),IDcol)[0]->row();
-                ranking = ranking - (ui->students_table->item(strow,7)->text().toDouble()*0.5); //former student
-                if (ranking <= 0.0) ranking = 0.0;
-                QTableWidgetItem *titem = new QTableWidgetItem ;
-                titem->setText(QString::number(ranking));
-                titem->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
-                ui->ranking_table->setItem(tmprow,rankingcol,titem);
-            }
-        } else {
-            oldranking = ranking;
-        }
-        if (ranking == 0) ui->ranking_table->item(row,rankingcol)->setBackgroundColor(Qt::red);
-        ui->ranking_table->sortByColumn(rankingcol,Qt::DescendingOrder);
-    }
 }
 
 void MainWindow::assign_destinations()
@@ -644,4 +644,27 @@ void MainWindow::on_actionNew_triggered()
     ui->frm_registration->setCurrentIndex(0);
     ui->frm_requisites->setChecked(false);
     ui->frm_surname->setText("");
+    dbfile = "";
+    setWindowTitle("Cresta");
+}
+
+void MainWindow::on_check_cities_clicked()
+{
+    checkvalid = false;
+    for (int row = 0; row < ui->cities_table->rowCount(); row++) {
+        for (int col = 0; col < ui->cities_table->columnCount(); col++) {
+            ui->cities_table->item(row, col)->setBackgroundColor(Qt::white);
+            if (ui->cities_table->item(row,col)->text().isEmpty()) {
+                ui->cities_table->item(row, col)->setBackgroundColor(Qt::red);
+                return;
+            }
+        }
+        if (findItemInColumn(ui->cities_table,ui->cities_table->item(row,citycol)->text(),citycol).count() > 1) {
+            ui->cities_table->item(row, citycol)->setBackgroundColor(Qt::white);
+            QMessageBox::critical(this,tr("This is not funny"),tr("You can't have two destinations with the same name"));
+            ui->cities_table->item(row, citycol)->setBackgroundColor(Qt::red);
+            return;
+        }
+    }
+    checkvalid = true;
 }

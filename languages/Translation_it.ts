@@ -14,20 +14,16 @@
         <translation>Destinazioni</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="33"/>
-        <location filename="../mainwindow.ui" line="112"/>
         <source>Save</source>
-        <translation>Salva</translation>
+        <translation type="vanished">Salva</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="40"/>
         <source>Delete city</source>
-        <translation>Cancella destinazione</translation>
+        <translation type="vanished">Cancella destinazione</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="47"/>
         <source>New city</source>
-        <translation>Nuova destinazione</translation>
+        <translation type="vanished">Nuova destinazione</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="57"/>
@@ -35,9 +31,8 @@
         <translation>Nazione</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="62"/>
         <source>City</source>
-        <translation>Destinazione</translation>
+        <translation type="vanished">Destinazione</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="67"/>
@@ -60,14 +55,12 @@
         <translation>Cancella</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="98"/>
         <source>Check incomplete</source>
-        <translation>Controlla</translation>
+        <translation type="vanished">Controlla</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="105"/>
         <source>New</source>
-        <translation>Nuovo</translation>
+        <translation type="vanished">Nuovo</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="119"/>
@@ -87,6 +80,41 @@
     <message>
         <source>Mean vote:</source>
         <translation type="vanished">Media ponderata:</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="33"/>
+        <source>Check destinations</source>
+        <translation>Controlla destinazioni</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="40"/>
+        <source>Delete destination</source>
+        <translation>Cancella destinazione</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="47"/>
+        <source>New destination</source>
+        <translation>Nuova destinazione</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="62"/>
+        <source>Destination</source>
+        <translation>Destinazione</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="98"/>
+        <source>Check data</source>
+        <translation>Controlla dati</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="105"/>
+        <source>Save as new student</source>
+        <translation>Inserisci nuovo studente</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="112"/>
+        <source>Modify student</source>
+        <translation>Modifica studente</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="162"/>
@@ -354,42 +382,48 @@
         <translation>Apri progetto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="198"/>
+        <location filename="../mainwindow.cpp" line="203"/>
         <source>Close</source>
         <translation>Chiudi</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="198"/>
+        <location filename="../mainwindow.cpp" line="203"/>
         <source>Do you really want to close this program?</source>
         <translation>Sei sicuro di voler chiudere questo programma?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="219"/>
-        <location filename="../mainwindow.cpp" line="366"/>
+        <location filename="../mainwindow.cpp" line="187"/>
+        <location filename="../mainwindow.cpp" line="372"/>
+        <location filename="../mainwindow.cpp" line="664"/>
         <source>This is not funny</source>
         <translation>Non è divertente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="219"/>
-        <location filename="../mainwindow.cpp" line="366"/>
+        <location filename="../mainwindow.cpp" line="187"/>
+        <location filename="../mainwindow.cpp" line="372"/>
         <source>You can&apos;t have two students with the same ID</source>
         <translation>Non possono esserci due studenti con la stessa matricola</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="420"/>
+        <location filename="../mainwindow.cpp" line="434"/>
         <source>This is a problem</source>
         <translation>Questo è un problema</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="420"/>
+        <location filename="../mainwindow.cpp" line="434"/>
         <source>This is not a number. And it should be. It really should.</source>
         <translation>Un voto dovrebbe essere un numero. </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="561"/>
-        <location filename="../mainwindow.cpp" line="567"/>
+        <location filename="../mainwindow.cpp" line="560"/>
+        <location filename="../mainwindow.cpp" line="566"/>
         <source>About Cresta</source>
         <translation>About cresta</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="664"/>
+        <source>You can&apos;t have two destinations with the same name</source>
+        <translation>Non puoi avere due destinazioni con lo stesso nome</translation>
     </message>
 </context>
 </TS>
