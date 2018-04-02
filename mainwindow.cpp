@@ -258,6 +258,7 @@ void MainWindow::on_new_city_clicked()
 void MainWindow::on_del_city_clicked()
 {
     if (ui->cities_table->selectedItems().count() > 0) ui->cities_table->removeRow(ui->cities_table->selectedItems()[0]->row());
+    on_cities_table_cellChanged(0,citycol);
 }
 
 void MainWindow::on_Save_cities_clicked()
@@ -374,6 +375,7 @@ void MainWindow::on_checkincomplete_clicked()
             return;
         }
         on_students_table_cellClicked(row,0);
+        //TODO: warning if city is not in the list
     }
     checkvalid = true;
 }
@@ -646,6 +648,7 @@ void MainWindow::on_actionNew_triggered()
     ui->frm_surname->setText("");
     dbfile = "";
     setWindowTitle("Cresta");
+    on_cities_table_cellChanged(0,citycol);
 }
 
 void MainWindow::on_check_cities_clicked()
@@ -667,4 +670,21 @@ void MainWindow::on_check_cities_clicked()
         }
     }
     checkvalid = true;
+}
+
+void MainWindow::on_cities_table_cellChanged(int row, int column)
+{
+    QStringList wordList;
+    if (ui->cities_table->item(row,column)) {
+        for (int row = 0; row < ui->cities_table->rowCount(); row++) {
+            if (ui->cities_table->item(row,citycol)) wordList.append(ui->cities_table->item(row,citycol)->text());
+        }
+    }
+    QCompleter *completer = new QCompleter(wordList, this);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    ui->frm_dest1->setCompleter(completer);
+    ui->frm_dest2->setCompleter(completer);
+    ui->frm_dest3->setCompleter(completer);
+    ui->frm_dest4->setCompleter(completer);
+
 }

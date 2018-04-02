@@ -22,6 +22,7 @@
 #include <QFlags>
 #include <QTranslator>
 #include <QLibraryInfo>
+#include <QCompleter>
 
 namespace Ui {
 class MainWindow;
@@ -60,8 +61,6 @@ private slots:
 
     void on_del_city_clicked();
 
-    void on_Save_cities_clicked();
-
     void on_checkincomplete_clicked();
 
     void on_next_student_clicked();
@@ -94,6 +93,8 @@ private slots:
 
     void on_check_cities_clicked();
 
+    void on_cities_table_cellChanged(int row, int column);
+
 private:
     Ui::MainWindow *ui;
     QString dbfile;
@@ -106,6 +107,8 @@ private:
     void db2ranking();
     void do_ranking();
     void assign_destinations();
+
+    void on_Save_cities_clicked();
 
     //columns in cities table
     int countycol = 0;
