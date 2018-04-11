@@ -216,6 +216,7 @@ void MainWindow::on_save_student_clicked()
 {
     if (ui->students_table->selectedItems().count() == 0) {
         on_new_student_clicked();
+        return;
     }
     if (ui->students_table->selectedItems().count() > 0) {
         int row = ui->students_table->selectedItems()[0]->row();
@@ -405,21 +406,23 @@ void MainWindow::on_students_table_cellClicked(int row, int column)
     if (row >= ui->students_table->rowCount() || column >= ui->students_table->columnCount()) return;
     if (ui->students_table->selectedItems().count() > 0) {
         for (int column = 0; column < ui->students_table->columnCount(); column++) {
-            QString mytext = ui->students_table->item(row,column)->text();
-            if (column == curriculacol) ui->frm_curricola->setText(mytext);
-            if (column == dest1col) ui->frm_dest1->setText(mytext);
-            if (column == dest2col) ui->frm_dest2->setText(mytext);
-            if (column == dest3col) ui->frm_dest3->setText(mytext);
-            if (column == dest4col) ui->frm_dest4->setText(mytext);
-            if (column == formercol && mytext == "1") ui->frm_former->setChecked(true);
-            if (column == formercol && !(mytext == "1")) ui->frm_former->setChecked(false);
-            if (column == IDcol) ui->frm_ID->setText(mytext);
-            if (column == votecol) ui->frm_meanvote->setText(mytext);
-            if (column == namecol) ui->frm_name->setText(mytext);
-            if (column == yearcol) ui->frm_registration->setCurrentText(mytext);
-            if (column == requisitescol && mytext == "1") ui->frm_requisites->setChecked(true);
-            if (column == requisitescol && !(mytext == "1")) ui->frm_requisites->setChecked(false);
-            if (column == surnamecol) ui->frm_surname->setText(mytext);
+            if(ui->students_table->item(row,column)){
+                QString mytext = ui->students_table->item(row,column)->text();
+                if (column == curriculacol) ui->frm_curricola->setText(mytext);
+                if (column == dest1col) ui->frm_dest1->setText(mytext);
+                if (column == dest2col) ui->frm_dest2->setText(mytext);
+                if (column == dest3col) ui->frm_dest3->setText(mytext);
+                if (column == dest4col) ui->frm_dest4->setText(mytext);
+                if (column == formercol && mytext == "1") ui->frm_former->setChecked(true);
+                if (column == formercol && !(mytext == "1")) ui->frm_former->setChecked(false);
+                if (column == IDcol) ui->frm_ID->setText(mytext);
+                if (column == votecol) ui->frm_meanvote->setText(mytext);
+                if (column == namecol) ui->frm_name->setText(mytext);
+                if (column == yearcol) ui->frm_registration->setCurrentText(mytext);
+                if (column == requisitescol && mytext == "1") ui->frm_requisites->setChecked(true);
+                if (column == requisitescol && !(mytext == "1")) ui->frm_requisites->setChecked(false);
+                if (column == surnamecol) ui->frm_surname->setText(mytext);
+            }
         }
     }
 }
@@ -687,4 +690,102 @@ void MainWindow::on_cities_table_cellChanged(int row, int column)
     ui->frm_dest3->setCompleter(completer);
     ui->frm_dest4->setCompleter(completer);
 
+}
+
+void MainWindow::on_actionImport_xls_triggered()
+{
+    QString xlsxfile = QFileDialog::getOpenFileName(this, tr("Open XLSX"), QDir::currentPath(), "*.xlsx|Xlsx spreadsheet (*.xlsx)");
+    if (!(xlsxfile.isEmpty())) {
+        QXlsx::Document xlsx(xlsxfile);
+
+        //qDebug()<<xlsx.read("B1");
+
+        //int xls_IDcol = 1;
+        int xls_IDcol = 2;
+        int xls_surnamecol = 3;
+        int xls_namecol = 4;
+        int xls_curriculacol = 7;
+        int xls_yearcol = 10;
+        int xls_lslmcol = 9;
+        int xls_prioritycol = 11;
+        int xls_destcol = 13;
+
+        //TODO: show header and let user choose columns
+
+        int xlsmaxrow = 0;
+        for (int row=1; row<100000; row++) {
+            if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_IDcol)) {
+                if (cell->value().toString().isEmpty()) break;
+                xlsmaxrow = row;
+            }
+        }
+
+        for (int row=2; row<xlsmaxrow+1; row++) {
+            QString xlsID = "";
+            if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_IDcol)) {
+                xlsID = cell->value().toString();
+            }
+
+            if (findItemInColumn(ui->students_table,xlsID,IDcol).count() <= 0) {
+                int strow = ui->students_table->rowCount();
+                if (ui->students_table->selectedItems().count() > 0) strow = ui->students_table->selectedItems()[0]->row() + 1;
+                ui->students_table->insertRow(strow);
+                QTableWidgetItem *newItem = new QTableWidgetItem(xlsID);
+                ui->students_table->setItem(strow, IDcol, newItem);
+                ui->students_table->setCurrentCell(strow,IDcol);
+            }
+
+            if (findItemInColumn(ui->students_table,xlsID,IDcol).count() > 0) {
+                int strow = findItemInColumn(ui->students_table,xlsID,IDcol)[0]->row();
+
+                QString xlsname = "";
+                if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_namecol)) {
+                    xlsname = cell->value().toString();
+                }
+                QTableWidgetItem *newItemname = new QTableWidgetItem(xlsname);
+                ui->students_table->setItem(strow, namecol, newItemname);
+                ui->students_table->setCurrentCell(strow,namecol);
+
+                QString xlssurname = "";
+                if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_surnamecol)) {
+                    xlssurname = cell->value().toString();
+                }
+                QTableWidgetItem *newItemsurname = new QTableWidgetItem(xlssurname);
+                ui->students_table->setItem(strow, surnamecol, newItemsurname);
+                ui->students_table->setCurrentCell(strow,surnamecol);
+
+                QString xlscurricula = "";
+                if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_curriculacol)) {
+                    xlscurricula = cell->value().toString();
+                }
+                QTableWidgetItem *newItemcurricula = new QTableWidgetItem(xlscurricula);
+                ui->students_table->setItem(strow, curriculacol, newItemcurricula);
+                ui->students_table->setCurrentCell(strow,curriculacol);
+
+                QString xlsyear = "";
+                if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_yearcol)) {
+                    xlsyear = cell->value().toString();
+                }
+                if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_lslmcol)) {
+                    if (cell->value().toString() == "LM") xlsyear = QString::number(xlsyear.toInt() + 3);
+                }
+                QTableWidgetItem *newItemyear = new QTableWidgetItem(xlsyear);
+                ui->students_table->setItem(strow, yearcol, newItemyear);
+                ui->students_table->setCurrentCell(strow,yearcol);
+
+                QString xlsdest = "";
+                if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_destcol)) {
+                    xlsdest = cell->value().toString();
+                }
+                int thisdestcol = dest1col;
+                if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_prioritycol)) {
+                    if (cell->value().toString() == "2") thisdestcol = dest2col;
+                }
+                QTableWidgetItem *newItemdest = new QTableWidgetItem(xlsdest);
+                ui->students_table->setItem(strow, thisdestcol, newItemdest);
+                ui->students_table->setCurrentCell(strow,thisdestcol);
+            }
+
+        }
+    }
 }

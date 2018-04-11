@@ -23,6 +23,7 @@
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QCompleter>
+#include "xlsxdocument.h"
 
 namespace Ui {
 class MainWindow;
@@ -94,6 +95,8 @@ private slots:
     void on_check_cities_clicked();
 
     void on_cities_table_cellChanged(int row, int column);
+
+    void on_actionImport_xls_triggered();
 
 private:
     Ui::MainWindow *ui;

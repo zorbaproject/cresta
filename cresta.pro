@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = cresta
 TEMPLATE = app
 
+include(3rdparty/qtxslx/src/xlsx/qtxlsx.pri)
 
 SOURCES += main.cpp\
         mainwindow.cpp
@@ -38,3 +39,16 @@ qtPrepareTool(LRELEASE, lrelease)
 
 RESOURCES += \
     languages.qrc
+
+SUBDIRS += \
+    3rdparty/qtxslx/src/xlsx/doc/snippets/doc_src_qtxlsx.pro \
+    3rdparty/qtxslx/src/xlsx/xlsx.pro \
+    3rdparty/qtxslx/src/src.pro
+
+DISTFILES += \
+    3rdparty/qtxslx/src/xlsx/qtxlsx.pri \
+    3rdparty/qtxslx/src/xlsx/doc/qtxlsx.qdocconf \
+    3rdparty/qtxslx/src/xlsx/doc/src/examples.qdoc \
+    3rdparty/qtxslx/src/xlsx/doc/src/qtxlsx-index.qdoc \
+    3rdparty/qtxslx/src/xlsx/doc/src/qtxlsx.qdoc \
+    3rdparty/qtxslx/src/xlsx/doc/src/usage.qdoc
