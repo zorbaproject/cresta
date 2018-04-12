@@ -26,6 +26,7 @@ void MainWindow::resetUi()
     ui->st_tab->setCurrentIndex(0);
     QIcon icon(":/cresta.png");
     setWindowIcon(icon);
+    setWindowTitle(tr("Cresta"));
 }
 
 void MainWindow::createLanguageMenu(void)
@@ -474,6 +475,8 @@ double MainWindow::map(double x, double in_min, double in_max, double out_min, d
 
 void MainWindow::on_calculateRanking_clicked()
 {
+    sanitizeTable(ui->cities_table);
+    sanitizeTable(ui->students_table);
     on_checkincomplete_clicked();
     on_check_cities_clicked();
     if (checkvalid == false) return;
@@ -492,7 +495,7 @@ void MainWindow::do_ranking()
     //Alla fine, se lo studente non ha i requisiti linguistici, il suo punteggio è 0.
     for (int row = 0; row < ui->students_table->rowCount(); row++) {
         if (ui->ranking_table->rowCount() <= row) ui->ranking_table->insertRow(row);
-        for (int col = 0; col < 4; col++) {
+        for (int col = 0; col < rankingcol; col++) {
             QTableWidgetItem *titem = new QTableWidgetItem ;
             titem->setText(ui->students_table->item(row,col)->text());
             titem->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
@@ -501,14 +504,17 @@ void MainWindow::do_ranking()
         double ranking = 0.0;
 
         //current year
-        if (ui->students_table->item(row,4)->text() == "4") ranking += 80;
-        if (ui->students_table->item(row,4)->text() == "2") ranking += 60;
-        if (ui->students_table->item(row,4)->text() == "1") ranking += 40;
-        if (ui->students_table->item(row,4)->text() == "3") ranking += 20;
-        if (ui->students_table->item(row,4)->text() == "5") ranking += 10;
-        ranking += map(ui->students_table->item(row,5)->text().toDouble(),18,31,1,20); //mean vote
-        if (ui->students_table->item(row,7)->text().toDouble() == 0) ranking  =  map(ranking,0,100,100,200); //former erasmus student or not
-        ranking = ranking*ui->students_table->item(row,6)->text().toDouble(); //requisites
+        if (ui->students_table->item(row,yearcol)->text() == "4") ranking += 80;
+        if (ui->students_table->item(row,yearcol)->text() == "2") ranking += 60;
+        if (ui->students_table->item(row,yearcol)->text() == "1") ranking += 40;
+        if (ui->students_table->item(row,yearcol)->text() == "3") ranking += 20;
+        if (ui->students_table->item(row,yearcol)->text() == "5") ranking += 10;
+        //mean vote
+        double vote = ui->students_table->item(row,votecol)->text().toDouble();
+        if (vote < 18.0) vote = 18.0;
+        ranking += map(vote,18,31,1,20);
+        if (ui->students_table->item(row,formercol)->text().toDouble() == 0) ranking  =  map(ranking,0,100,100,200); //former erasmus student or not
+        ranking = ranking*ui->students_table->item(row,requisitescol)->text().toDouble(); //requisites
 
         QTableWidgetItem *titem = new QTableWidgetItem ;
         titem->setData(Qt::EditRole,ranking);
@@ -697,7 +703,6 @@ void MainWindow::on_actionImport_xls_triggered()
     QString xlsxfile = QFileDialog::getOpenFileName(this, tr("Open XLSX"), QDir::currentPath(), "*.xlsx|Xlsx spreadsheet (*.xlsx)");
     if (!(xlsxfile.isEmpty())) {
         QXlsx::Document xlsx(xlsxfile);
-
         //qDebug()<<xlsx.read("B1");
 
         //int xls_IDcol = 1;
@@ -709,8 +714,40 @@ void MainWindow::on_actionImport_xls_triggered()
         int xls_lslmcol = 9;
         int xls_prioritycol = 11;
         int xls_destcol = 13;
+        QString lmtext = "LM";
 
-        //TODO: show header and let user choose columns
+        xlsxsettings dialog(this);
+        QStringList header;
+        for (int col=1; col<100000; col++) {
+            if (QXlsx::Cell *cell=xlsx.cellAt(1, col)) {
+                if (cell->value().toString().isEmpty()) break;
+                header.append(cell->value().toString());
+            }
+        }
+
+        dialog.set_ID(header,xls_IDcol);
+        dialog.set_surname(header,xls_surnamecol);
+        dialog.set_name(header,xls_namecol);
+        dialog.set_curricula(header,xls_curriculacol);
+        dialog.set_year(header,xls_yearcol);
+        dialog.set_priority(header,xls_prioritycol);
+        dialog.set_dest(header,xls_destcol);
+        dialog.set_lslm(header,xls_lslmcol);
+        dialog.set_lm(lmtext);
+        dialog.setWindowTitle(tr("XLSX file settings"));
+        if(dialog.exec() == QDialog::Accepted){
+            xls_IDcol = dialog.get_ID();
+            xls_surnamecol = dialog.get_surname();
+            xls_namecol = dialog.get_name();
+            xls_curriculacol = dialog.get_curricula();
+            xls_yearcol = dialog.get_year();
+            xls_prioritycol = dialog.get_priority();
+            xls_destcol = dialog.get_dest();
+            xls_lslmcol = dialog.get_lslm();
+            lmtext = dialog.get_lm();
+        } else {
+            return;
+        }
 
         int xlsmaxrow = 0;
         for (int row=1; row<100000; row++) {
@@ -767,7 +804,7 @@ void MainWindow::on_actionImport_xls_triggered()
                     xlsyear = cell->value().toString();
                 }
                 if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_lslmcol)) {
-                    if (cell->value().toString() == "LM") xlsyear = QString::number(xlsyear.toInt() + 3);
+                    if (cell->value().toString() == lmtext) xlsyear = QString::number(xlsyear.toInt() + 3);
                 }
                 QTableWidgetItem *newItemyear = new QTableWidgetItem(xlsyear);
                 ui->students_table->setItem(strow, yearcol, newItemyear);
@@ -784,8 +821,39 @@ void MainWindow::on_actionImport_xls_triggered()
                 QTableWidgetItem *newItemdest = new QTableWidgetItem(xlsdest);
                 ui->students_table->setItem(strow, thisdestcol, newItemdest);
                 ui->students_table->setCurrentCell(strow,thisdestcol);
+
+                if (dialog.get_requisites()) {
+                    QTableWidgetItem *newItemrequisites = new QTableWidgetItem("1");
+                    ui->students_table->setItem(strow, requisitescol, newItemrequisites);
+                    ui->students_table->setCurrentCell(strow,requisitescol);
+                }
+
+                if (dialog.get_addcities()) {
+                    if (findItemInColumn(ui->cities_table,xlsdest,citycol).count() <= 0) {
+                        int crow = ui->cities_table->rowCount();
+                        if (ui->cities_table->selectedItems().count() > 0) crow = ui->cities_table->selectedItems()[0]->row() + 1;
+                        ui->cities_table->insertRow(crow);
+                        QTableWidgetItem *newItemcity = new QTableWidgetItem(xlsdest);
+                        ui->cities_table->setItem(crow, citycol, newItemcity);
+                        QTableWidgetItem *newItemav = new QTableWidgetItem("0");
+                        ui->cities_table->setItem(crow, availablecol, newItemav);
+                        QTableWidgetItem *newItemcountry = new QTableWidgetItem(xlsdest.split(" ").at(0));
+                        ui->cities_table->setItem(crow, countycol, newItemcountry);
+                    }
+                }
             }
 
+        }
+    }
+}
+
+void MainWindow::sanitizeTable(QTableWidget *table) {
+    for (int row=0; row < table->rowCount(); row++) {
+        for (int col=0; col < table->columnCount(); col++) {
+            if (!table->item(row,col)) {
+                QTableWidgetItem *newItem = new QTableWidgetItem("");
+                table->setItem(row, col, newItem);
+            }
         }
     }
 }

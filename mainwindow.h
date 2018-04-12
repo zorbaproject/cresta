@@ -24,6 +24,7 @@
 #include <QLibraryInfo>
 #include <QCompleter>
 #include "xlsxdocument.h"
+#include "xlsxsettings.h"
 
 namespace Ui {
 class MainWindow;
@@ -39,6 +40,7 @@ public:
     QJsonObject database;
     double map(double x, double in_min, double in_max, double out_min, double out_max);
     QList<QTableWidgetItem*> findItemInColumn(QTableWidget *table, QString pattern, int column, Qt::MatchFlags match = Qt::MatchExactly);
+    void sanitizeTable(QTableWidget *table);
     void resetUi();
     bool checkvalid = false;
 

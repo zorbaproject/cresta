@@ -139,7 +139,7 @@
     <message>
         <location filename="../mainwindow.ui" line="193"/>
         <source>ID:</source>
-        <translation>Matricola:</translation>
+        <translation>CF:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="200"/>
@@ -197,7 +197,7 @@
         <location filename="../mainwindow.ui" line="285"/>
         <location filename="../mainwindow.ui" line="377"/>
         <source>ID</source>
-        <translation>Matricola</translation>
+        <translation>CF</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="290"/>
@@ -236,6 +236,16 @@
         <location filename="../mainwindow.ui" line="407"/>
         <source>Manually chosen</source>
         <translation>Scelto manualmente</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="453"/>
+        <source>L&amp;anguage</source>
+        <translation>Lingua</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="504"/>
+        <source>&amp;Import xlsx</source>
+        <translation>Importa &amp;xlsx</translation>
     </message>
     <message>
         <source>Mean vote</source>
@@ -297,9 +307,8 @@
         <translation>A&amp;bout</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="453"/>
         <source>La&amp;nguage</source>
-        <translation>&amp;Lingua</translation>
+        <translation type="vanished">&amp;Lingua</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="464"/>
@@ -352,9 +361,8 @@
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="504"/>
         <source>&amp;Import xls</source>
-        <translation>&amp;Importa xls</translation>
+        <translation type="vanished">&amp;Importa xls</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="509"/>
@@ -372,58 +380,145 @@
         <translation>About &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="149"/>
+        <location filename="../mainwindow.cpp" line="150"/>
         <source>Save project</source>
         <translation>Salva progetto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="162"/>
+        <location filename="../mainwindow.cpp" line="163"/>
         <source>Open project</source>
         <translation>Apri progetto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="203"/>
+        <location filename="../mainwindow.cpp" line="204"/>
         <source>Close</source>
         <translation>Chiudi</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="203"/>
+        <location filename="../mainwindow.cpp" line="204"/>
         <source>Do you really want to close this program?</source>
         <translation>Sei sicuro di voler chiudere questo programma?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="187"/>
-        <location filename="../mainwindow.cpp" line="372"/>
-        <location filename="../mainwindow.cpp" line="664"/>
+        <location filename="../mainwindow.cpp" line="188"/>
+        <location filename="../mainwindow.cpp" line="375"/>
+        <location filename="../mainwindow.cpp" line="676"/>
         <source>This is not funny</source>
         <translation>Non è divertente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="187"/>
-        <location filename="../mainwindow.cpp" line="372"/>
+        <location filename="../mainwindow.cpp" line="29"/>
+        <source>Cresta</source>
+        <translation>Cresta</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="188"/>
+        <location filename="../mainwindow.cpp" line="375"/>
         <source>You can&apos;t have two students with the same ID</source>
         <translation>Non possono esserci due studenti con la stessa matricola</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="434"/>
+        <location filename="../mainwindow.cpp" line="440"/>
         <source>This is a problem</source>
         <translation>Questo è un problema</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="434"/>
+        <location filename="../mainwindow.cpp" line="440"/>
         <source>This is not a number. And it should be. It really should.</source>
         <translation>Un voto dovrebbe essere un numero. </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="560"/>
-        <location filename="../mainwindow.cpp" line="566"/>
+        <location filename="../mainwindow.cpp" line="571"/>
+        <location filename="../mainwindow.cpp" line="577"/>
         <source>About Cresta</source>
         <translation>About cresta</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="664"/>
+        <location filename="../mainwindow.cpp" line="676"/>
         <source>You can&apos;t have two destinations with the same name</source>
         <translation>Non puoi avere due destinazioni con lo stesso nome</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="703"/>
+        <source>Open XLSX</source>
+        <translation>Apri XLSX</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="737"/>
+        <source>XLSX file settings</source>
+        <translation>Impostazioni file XLSX</translation>
+    </message>
+</context>
+<context>
+    <name>xlsxsettings</name>
+    <message>
+        <location filename="../xlsxsettings.ui" line="14"/>
+        <source>Dialog</source>
+        <translation>Impostazioni file XLSX</translation>
+    </message>
+    <message>
+        <source>Select which column contains data (if in doubt just press Ok):</source>
+        <translation type="vanished">Scegli la colonna che contiene ciascun dato (nel dubbio premi solo Ok):</translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="20"/>
+        <source>Select which column contains which data (if in doubt just press Ok):</source>
+        <translation>Scegli la colonna relativa a ciascun dato (nel dubbio premi Ok):</translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="29"/>
+        <source>Year:</source>
+        <translation>Anno di iscrizione:</translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="36"/>
+        <source>LM identifier:</source>
+        <translation>Codice per LM:</translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="43"/>
+        <source>Destination priority:</source>
+        <translation>Priorità destinazione:</translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="53"/>
+        <source>Surname:</source>
+        <translation>Cognome:</translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="66"/>
+        <source>ID:</source>
+        <translation>CF:</translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="73"/>
+        <source>Destination:</source>
+        <translation>Destinazione:</translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="83"/>
+        <source>Name:</source>
+        <translation>Nome:</translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="102"/>
+        <source>Curricula:</source>
+        <translation>Corso di studi:</translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="109"/>
+        <source>L2 or LM:</source>
+        <translation>Tipo di laurea:</translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="121"/>
+        <source>Automatically fill list of available destinations</source>
+        <translation>Inserisci atenei nella lista delle destinazioni disponibili</translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="128"/>
+        <source>Set every student requisites as satisfied</source>
+        <translation>Considera soddisfatti i requisiti di ogni studente</translation>
     </message>
 </context>
 </TS>

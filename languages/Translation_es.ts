@@ -175,6 +175,16 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mainwindow.ui" line="453"/>
+        <source>L&amp;anguage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="504"/>
+        <source>&amp;Import xlsx</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../mainwindow.ui" line="325"/>
         <source>Destination1</source>
         <translation type="unfinished"></translation>
@@ -257,11 +267,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="453"/>
-        <source>La&amp;nguage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="464"/>
         <source>&amp;New project</source>
         <translation type="unfinished"></translation>
@@ -312,11 +317,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="504"/>
-        <source>&amp;Import xls</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="509"/>
         <source>&amp;About Cresta</source>
         <translation type="unfinished"></translation>
@@ -332,57 +332,140 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="149"/>
+        <location filename="../mainwindow.cpp" line="150"/>
         <source>Save project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="162"/>
+        <location filename="../mainwindow.cpp" line="163"/>
         <source>Open project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="203"/>
+        <location filename="../mainwindow.cpp" line="204"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="203"/>
+        <location filename="../mainwindow.cpp" line="204"/>
         <source>Do you really want to close this program?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="187"/>
-        <location filename="../mainwindow.cpp" line="372"/>
-        <location filename="../mainwindow.cpp" line="664"/>
+        <location filename="../mainwindow.cpp" line="188"/>
+        <location filename="../mainwindow.cpp" line="375"/>
+        <location filename="../mainwindow.cpp" line="676"/>
         <source>This is not funny</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="187"/>
-        <location filename="../mainwindow.cpp" line="372"/>
+        <location filename="../mainwindow.cpp" line="29"/>
+        <source>Cresta</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="188"/>
+        <location filename="../mainwindow.cpp" line="375"/>
         <source>You can&apos;t have two students with the same ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="434"/>
+        <location filename="../mainwindow.cpp" line="440"/>
         <source>This is a problem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="434"/>
+        <location filename="../mainwindow.cpp" line="440"/>
         <source>This is not a number. And it should be. It really should.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="560"/>
-        <location filename="../mainwindow.cpp" line="566"/>
+        <location filename="../mainwindow.cpp" line="571"/>
+        <location filename="../mainwindow.cpp" line="577"/>
         <source>About Cresta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="664"/>
+        <location filename="../mainwindow.cpp" line="676"/>
         <source>You can&apos;t have two destinations with the same name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="703"/>
+        <source>Open XLSX</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="737"/>
+        <source>XLSX file settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>xlsxsettings</name>
+    <message>
+        <location filename="../xlsxsettings.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="20"/>
+        <source>Select which column contains which data (if in doubt just press Ok):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="29"/>
+        <source>Year:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="36"/>
+        <source>LM identifier:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="43"/>
+        <source>Destination priority:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="53"/>
+        <source>Surname:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="66"/>
+        <source>ID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="73"/>
+        <source>Destination:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="83"/>
+        <source>Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="102"/>
+        <source>Curricula:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="109"/>
+        <source>L2 or LM:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="121"/>
+        <source>Automatically fill list of available destinations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../xlsxsettings.ui" line="128"/>
+        <source>Set every student requisites as satisfied</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

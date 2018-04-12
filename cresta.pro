@@ -14,11 +14,14 @@ TEMPLATE = app
 include(3rdparty/qtxslx/src/xlsx/qtxlsx.pri)
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    xlsxsettings.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    xlsxsettings.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    xlsxsettings.ui
 
 LANGUAGES = en it de fr es pt
 
