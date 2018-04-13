@@ -546,12 +546,12 @@
     <message>
         <location filename="../xlsxsettings.ui" line="121"/>
         <source>Automatically fill list of available destinations</source>
-        <translation>Inserisci atenei nella lista delle destinazioni disponibili</translation>
+        <translation>Estrai automaticamente destinazioni dal file</translation>
     </message>
     <message>
         <location filename="../xlsxsettings.ui" line="128"/>
         <source>Set every student requisites as satisfied</source>
-        <translation>Considera soddisfatti i requisiti di ogni studente</translation>
+        <translation>Tutti gli studenti hanno i requisiti linguistici</translation>
     </message>
 </context>
 </TS>

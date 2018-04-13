@@ -298,6 +298,9 @@
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
            <widget class="QPushButton" name="new_student">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(170, 255, 127);</string>
+            </property>
             <property name="text">
              <string>Save as new student</string>
             </property>
@@ -305,6 +308,9 @@
           </item>
           <item>
            <widget class="QPushButton" name="del_student">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 0, 0);</string>
+            </property>
             <property name="text">
              <string>Delete</string>
             </property>
@@ -312,6 +318,9 @@
           </item>
           <item>
            <widget class="QPushButton" name="save_student">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 127);</string>
+            </property>
             <property name="text">
              <string>Modify student</string>
             </property>

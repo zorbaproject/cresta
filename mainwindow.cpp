@@ -12,6 +12,9 @@ MainWindow::MainWindow(QWidget *parent) :
     resetUi();
     on_actionNew_triggered();
 
+    ui->next_student->hide();
+    ui->prev_student->hide();
+
     QHeaderView *header = qobject_cast<QTableView *>(ui->students_table)->horizontalHeader();
     connect(header, &QHeaderView::sectionClicked, [this](int logicalIndex){
         ui->students_table->sortByColumn(logicalIndex,Qt::AscendingOrder);
@@ -207,7 +210,7 @@ void MainWindow::on_new_student_clicked()
     if (ui->students_table->selectedItems().count() > 0) row = ui->students_table->selectedItems()[0]->row() + 1;
     ui->students_table->insertRow(row);
     QTableWidgetItem *titem = new QTableWidgetItem ;
-    titem->setText("");
+    titem->setText(ui->frm_ID->text());
     ui->students_table->setItem(row,IDcol,titem);
     ui->students_table->setCurrentCell(row,IDcol);
     on_save_student_clicked();
@@ -379,11 +382,13 @@ void MainWindow::on_checkincomplete_clicked()
     checkvalid = false;
     for (int row = 0; row < ui->students_table->rowCount(); row++) {
         for (int col = 0; col < ui->students_table->columnCount(); col++) {
+            if (!ui->students_table->item(row,col)) sanitizeTable(ui->students_table);
             ui->students_table->item(row, col)->setBackgroundColor(Qt::white);
-            if (ui->students_table->item(row,col)->text().isEmpty() && col != dest3col && col != dest4col) {
+            if (ui->students_table->item(row,col)->text().isEmpty() && col != dest2col && col != dest3col && col != dest4col) {
                 ui->students_table->item(row, col)->setBackgroundColor(Qt::red);
-                return;
+                if (col != votecol && col != formercol && col != requisitescol) return;
             }
+            ui->students_table->setCurrentCell(row,col);
         }
         if (findItemInColumn(ui->students_table,ui->students_table->item(row,IDcol)->text(),IDcol).count() > 1) {
             ui->students_table->item(row, IDcol)->setBackgroundColor(Qt::white);
@@ -391,8 +396,14 @@ void MainWindow::on_checkincomplete_clicked()
             ui->students_table->item(row, IDcol)->setBackgroundColor(Qt::red);
             return;
         }
-        on_students_table_cellClicked(row,0);
-        //TODO: warning if city is not in the list
+        ui->students_table->item(row, votecol)->setBackgroundColor(Qt::white);
+        if (ui->students_table->item(row,votecol)->text().toDouble() < 18 || ui->students_table->item(row,votecol)->text().toDouble() > 31) ui->students_table->item(row, votecol)->setBackgroundColor(Qt::red);
+        ui->students_table->item(row, yearcol)->setBackgroundColor(Qt::white);
+        if (ui->students_table->item(row,yearcol)->text() != "1" && ui->students_table->item(row,yearcol)->text() != "2" && ui->students_table->item(row,yearcol)->text() != "3" && ui->students_table->item(row,yearcol)->text() != "4" && ui->students_table->item(row,yearcol)->text() != "5") ui->students_table->item(row, yearcol)->setBackgroundColor(Qt::red);
+        ui->students_table->item(row, requisitescol)->setBackgroundColor(Qt::white);
+        if (ui->students_table->item(row,requisitescol)->text() != "1" && ui->students_table->item(row,requisitescol)->text() != "0") ui->students_table->item(row, requisitescol)->setBackgroundColor(Qt::red);
+        ui->students_table->item(row, formercol)->setBackgroundColor(Qt::white);
+        if (ui->students_table->item(row,formercol)->text() != "1" && ui->students_table->item(row,formercol)->text() != "0") ui->students_table->item(row, formercol)->setBackgroundColor(Qt::red);
     }
     checkvalid = true;
 }
@@ -493,6 +504,7 @@ void MainWindow::on_calculateRanking_clicked()
     sanitizeTable(ui->cities_table);
     sanitizeTable(ui->students_table);
     on_checkincomplete_clicked();
+    if (checkvalid == false) return;
     on_check_cities_clicked();
     if (checkvalid == false) return;
     ui->ranking_table->setRowCount(0);
@@ -518,12 +530,15 @@ void MainWindow::do_ranking()
         }
         double ranking = 0.0;
 
+        if (!ui->students_table->item(row,yearcol)) return;
         //current year
-        if (ui->students_table->item(row,yearcol)->text() == "4") ranking += 80;
-        if (ui->students_table->item(row,yearcol)->text() == "2") ranking += 60;
-        if (ui->students_table->item(row,yearcol)->text() == "1") ranking += 40;
-        if (ui->students_table->item(row,yearcol)->text() == "3") ranking += 20;
-        if (ui->students_table->item(row,yearcol)->text() == "5") ranking += 10;
+        QString year = ui->students_table->item(row,yearcol)->text();
+        if (year == "4") ranking += 80;
+        if (year == "2") ranking += 60;
+        if (year == "1") ranking += 40;
+        if (year == "3") ranking += 20;
+        if (year == "5") ranking += 10;
+        if (year != "1" && year != "2" && year != "3" && year != "4" && year != "5") ranking += 10;
         //mean vote
         double vote = ui->students_table->item(row,votecol)->text().toDouble();
         if (vote < 18.0) vote = 18.0;
