@@ -45,14 +45,14 @@
         <translation>Studenti</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="84"/>
+        <location filename="../mainwindow.ui" line="137"/>
         <source>Previous</source>
         <translation>Precedente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="91"/>
+        <location filename="../mainwindow.ui" line="309"/>
         <source>Delete</source>
-        <translation>Cancella</translation>
+        <translation>Rimuovi lo studente attuale</translation>
     </message>
     <message>
         <source>Check incomplete</source>
@@ -63,17 +63,17 @@
         <translation type="vanished">Nuovo</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="119"/>
+        <location filename="../mainwindow.ui" line="144"/>
         <source>Next</source>
         <translation>Successivo</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="130"/>
+        <location filename="../mainwindow.ui" line="155"/>
         <source>Surname:</source>
         <translation>Cognome:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="146"/>
+        <location filename="../mainwindow.ui" line="171"/>
         <source>Destination2:</source>
         <translation>Destinazione2:</translation>
     </message>
@@ -102,148 +102,167 @@
         <translation>Destinazione</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="98"/>
         <source>Check data</source>
-        <translation>Controlla dati</translation>
+        <translation type="vanished">Controlla dati</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="105"/>
+        <location filename="../mainwindow.ui" line="302"/>
         <source>Save as new student</source>
-        <translation>Inserisci nuovo studente</translation>
+        <translation>Inserisci come nuovo studente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="112"/>
+        <location filename="../mainwindow.ui" line="316"/>
         <source>Modify student</source>
-        <translation>Modifica studente</translation>
+        <translation>Modifica lo studente attuale</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="162"/>
+        <location filename="../mainwindow.ui" line="187"/>
         <source>Average mark:</source>
         <translation>Media ponderata:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="169"/>
+        <location filename="../mainwindow.ui" line="94"/>
+        <source>Find</source>
+        <translation>Trova</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="108"/>
+        <source>in</source>
+        <translation>in</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="118"/>
+        <source>Start with first student</source>
+        <translation>Cerca dall&apos;inizio</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="125"/>
+        <source>Search student</source>
+        <translation>Cerca studente</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="194"/>
         <source>Destination1:</source>
         <translation>Destinazione1:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="176"/>
+        <location filename="../mainwindow.ui" line="201"/>
         <source>Curricula:</source>
         <translation>Corso di studi:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="183"/>
+        <location filename="../mainwindow.ui" line="208"/>
         <source>Current year:</source>
         <translation>Anno di corso:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="193"/>
+        <location filename="../mainwindow.ui" line="218"/>
         <source>ID:</source>
         <translation>CF:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="200"/>
+        <location filename="../mainwindow.ui" line="225"/>
         <source>Name:</source>
         <translation>Nome:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="210"/>
+        <location filename="../mainwindow.ui" line="235"/>
         <source>Destination4:</source>
         <translation>Destinazione4:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="217"/>
+        <location filename="../mainwindow.ui" line="242"/>
         <source>Destination3:</source>
         <translation>Destinazione3:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="227"/>
-        <location filename="../mainwindow.ui" line="315"/>
+        <location filename="../mainwindow.ui" line="252"/>
+        <location filename="../mainwindow.ui" line="365"/>
         <source>Requisites</source>
         <translation>Requisiti linguistici (test CLA)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="234"/>
-        <location filename="../mainwindow.ui" line="320"/>
+        <location filename="../mainwindow.ui" line="259"/>
+        <location filename="../mainwindow.ui" line="370"/>
         <source>Former Erasmus</source>
         <translation>Già stato in Erasmus</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="245"/>
+        <location filename="../mainwindow.ui" line="270"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="250"/>
+        <location filename="../mainwindow.ui" line="275"/>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="255"/>
+        <location filename="../mainwindow.ui" line="280"/>
         <source>3</source>
         <translation>3</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="260"/>
+        <location filename="../mainwindow.ui" line="285"/>
         <source>4</source>
         <translation>4</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="265"/>
+        <location filename="../mainwindow.ui" line="290"/>
         <source>5</source>
         <translation>5</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="285"/>
-        <location filename="../mainwindow.ui" line="377"/>
+        <location filename="../mainwindow.ui" line="335"/>
+        <location filename="../mainwindow.ui" line="427"/>
         <source>ID</source>
         <translation>CF</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="290"/>
-        <location filename="../mainwindow.ui" line="382"/>
+        <location filename="../mainwindow.ui" line="340"/>
+        <location filename="../mainwindow.ui" line="432"/>
         <source>Name</source>
         <translation>Nome</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="295"/>
-        <location filename="../mainwindow.ui" line="387"/>
+        <location filename="../mainwindow.ui" line="345"/>
+        <location filename="../mainwindow.ui" line="437"/>
         <source>Surname</source>
         <translation>Cognome</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="300"/>
-        <location filename="../mainwindow.ui" line="392"/>
+        <location filename="../mainwindow.ui" line="350"/>
+        <location filename="../mainwindow.ui" line="442"/>
         <source>Curricula</source>
         <translation>Corso di studi</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="305"/>
+        <location filename="../mainwindow.ui" line="355"/>
         <source>Current yr</source>
         <translation>Anno di corso</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="310"/>
+        <location filename="../mainwindow.ui" line="360"/>
         <source>Average mark</source>
         <translation>Media ponderata</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="402"/>
+        <location filename="../mainwindow.ui" line="452"/>
         <source>Auto chosen</source>
         <translation>Scelto automaticamente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="407"/>
+        <location filename="../mainwindow.ui" line="457"/>
         <source>Manually chosen</source>
         <translation>Scelto manualmente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="453"/>
+        <location filename="../mainwindow.ui" line="503"/>
         <source>L&amp;anguage</source>
         <translation>Lingua</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="504"/>
+        <location filename="../mainwindow.ui" line="554"/>
         <source>&amp;Import xlsx</source>
         <translation>Importa &amp;xlsx</translation>
     </message>
@@ -252,34 +271,34 @@
         <translation type="vanished">Media ponderata</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="325"/>
+        <location filename="../mainwindow.ui" line="375"/>
         <source>Destination1</source>
         <translation>Destinazione1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="330"/>
+        <location filename="../mainwindow.ui" line="380"/>
         <source>Destination2</source>
         <translation>Destinazione2</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="335"/>
+        <location filename="../mainwindow.ui" line="385"/>
         <source>Destination3</source>
         <translation>Destinazione3</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="340"/>
+        <location filename="../mainwindow.ui" line="390"/>
         <source>Destination4</source>
         <translation>Destinazione4</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="352"/>
-        <location filename="../mainwindow.ui" line="397"/>
+        <location filename="../mainwindow.ui" line="402"/>
+        <location filename="../mainwindow.ui" line="447"/>
         <source>Ranking</source>
         <translation>Punteggio</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="360"/>
-        <location filename="../mainwindow.ui" line="367"/>
+        <location filename="../mainwindow.ui" line="410"/>
+        <location filename="../mainwindow.ui" line="417"/>
         <source>Calculate ranking</source>
         <translation>Calcola graduatoria</translation>
     </message>
@@ -292,17 +311,17 @@
         <translation type="vanished">Scelto Manualmente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="428"/>
+        <location filename="../mainwindow.ui" line="478"/>
         <source>Fi&amp;le</source>
         <translation>F&amp;ile</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="439"/>
+        <location filename="../mainwindow.ui" line="489"/>
         <source>Pro&amp;ject</source>
         <translation>&amp;Progetto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="445"/>
+        <location filename="../mainwindow.ui" line="495"/>
         <source>Abo&amp;ut</source>
         <translation>A&amp;bout</translation>
     </message>
@@ -311,52 +330,52 @@
         <translation type="vanished">&amp;Lingua</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="464"/>
+        <location filename="../mainwindow.ui" line="514"/>
         <source>&amp;New project</source>
         <translation>&amp;Nuovo progetto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="467"/>
+        <location filename="../mainwindow.ui" line="517"/>
         <source>Ctrl+N</source>
         <translation>Ctrl+N</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="472"/>
+        <location filename="../mainwindow.ui" line="522"/>
         <source>&amp;Open project</source>
         <translation>Apri pr&amp;ogetto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="475"/>
+        <location filename="../mainwindow.ui" line="525"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="480"/>
+        <location filename="../mainwindow.ui" line="530"/>
         <source>&amp;Save project</source>
         <translation>&amp;Salva progetto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="483"/>
+        <location filename="../mainwindow.ui" line="533"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="488"/>
+        <location filename="../mainwindow.ui" line="538"/>
         <source>Save &amp;project as</source>
         <translation>Salva progetto &amp;con nome</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="491"/>
+        <location filename="../mainwindow.ui" line="541"/>
         <source>Ctrl+Shift+S</source>
         <translation>Ctrl+Shift+S</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="496"/>
+        <location filename="../mainwindow.ui" line="546"/>
         <source>&amp;Exit</source>
         <translation>&amp;Esci</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="499"/>
+        <location filename="../mainwindow.ui" line="549"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
@@ -365,44 +384,44 @@
         <translation type="vanished">&amp;Importa xls</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="509"/>
+        <location filename="../mainwindow.ui" line="559"/>
         <source>&amp;About Cresta</source>
         <translation>A&amp;bout Cresta</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="514"/>
+        <location filename="../mainwindow.ui" line="564"/>
         <source>&amp;Help</source>
         <translation>&amp;Aiuto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="519"/>
+        <location filename="../mainwindow.ui" line="569"/>
         <source>About &amp;Qt</source>
         <translation>About &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="150"/>
+        <location filename="../mainwindow.cpp" line="155"/>
         <source>Save project</source>
         <translation>Salva progetto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="163"/>
+        <location filename="../mainwindow.cpp" line="168"/>
         <source>Open project</source>
         <translation>Apri progetto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="204"/>
+        <location filename="../mainwindow.cpp" line="209"/>
         <source>Close</source>
         <translation>Chiudi</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="204"/>
+        <location filename="../mainwindow.cpp" line="209"/>
         <source>Do you really want to close this program?</source>
         <translation>Sei sicuro di voler chiudere questo programma?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="188"/>
-        <location filename="../mainwindow.cpp" line="375"/>
-        <location filename="../mainwindow.cpp" line="676"/>
+        <location filename="../mainwindow.cpp" line="193"/>
+        <location filename="../mainwindow.cpp" line="380"/>
+        <location filename="../mainwindow.cpp" line="685"/>
         <source>This is not funny</source>
         <translation>Non è divertente</translation>
     </message>
@@ -412,39 +431,39 @@
         <translation>Cresta</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="188"/>
-        <location filename="../mainwindow.cpp" line="375"/>
+        <location filename="../mainwindow.cpp" line="193"/>
+        <location filename="../mainwindow.cpp" line="380"/>
         <source>You can&apos;t have two students with the same ID</source>
-        <translation>Non possono esserci due studenti con la stessa matricola</translation>
+        <translation>Non possono esserci due studenti con lo stesso codice fiscale</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="440"/>
+        <location filename="../mainwindow.cpp" line="445"/>
         <source>This is a problem</source>
         <translation>Questo è un problema</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="440"/>
+        <location filename="../mainwindow.cpp" line="445"/>
         <source>This is not a number. And it should be. It really should.</source>
         <translation>Un voto dovrebbe essere un numero. </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="571"/>
         <location filename="../mainwindow.cpp" line="577"/>
+        <location filename="../mainwindow.cpp" line="583"/>
         <source>About Cresta</source>
         <translation>About cresta</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="676"/>
+        <location filename="../mainwindow.cpp" line="685"/>
         <source>You can&apos;t have two destinations with the same name</source>
         <translation>Non puoi avere due destinazioni con lo stesso nome</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="703"/>
+        <location filename="../mainwindow.cpp" line="712"/>
         <source>Open XLSX</source>
         <translation>Apri XLSX</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="737"/>
+        <location filename="../mainwindow.cpp" line="746"/>
         <source>XLSX file settings</source>
         <translation>Impostazioni file XLSX</translation>
     </message>

@@ -64,8 +64,6 @@ private slots:
 
     void on_del_city_clicked();
 
-    void on_checkincomplete_clicked();
-
     void on_next_student_clicked();
 
     void on_prev_student_clicked();
@@ -100,6 +98,10 @@ private slots:
 
     void on_actionImport_xls_triggered();
 
+    void on_searchst_clicked();
+
+    void on_students_table_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
+
 private:
     Ui::MainWindow *ui;
     QString dbfile;
@@ -114,6 +116,7 @@ private:
     void assign_destinations();
 
     void on_Save_cities_clicked();
+    void on_checkincomplete_clicked();
 
     //columns in cities table
     int countycol = 0;

@@ -77,39 +77,64 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="title">
+           <string/>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>Find</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="searchthis">
+             <property name="text">
+              <string notr="true">*</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>in</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="searchhere"/>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="searchfromstart">
+             <property name="text">
+              <string>Start with first student</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="searchst">
+             <property name="text">
+              <string>Search student</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
            <widget class="QPushButton" name="prev_student">
             <property name="text">
              <string>Previous</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="del_student">
-            <property name="text">
-             <string>Delete</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="checkincomplete">
-            <property name="text">
-             <string>Check data</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="new_student">
-            <property name="text">
-             <string>Save as new student</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="save_student">
-            <property name="text">
-             <string>Modify student</string>
             </property>
            </widget>
           </item>
@@ -265,6 +290,31 @@
               <string>5</string>
              </property>
             </item>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QPushButton" name="new_student">
+            <property name="text">
+             <string>Save as new student</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="del_student">
+            <property name="text">
+             <string>Delete</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="save_student">
+            <property name="text">
+             <string>Modify student</string>
+            </property>
            </widget>
           </item>
          </layout>
@@ -533,17 +583,13 @@
   <tabstop>frm_dest4</tabstop>
   <tabstop>frm_requisites</tabstop>
   <tabstop>frm_former</tabstop>
-  <tabstop>save_student</tabstop>
-  <tabstop>new_student</tabstop>
   <tabstop>next_student</tabstop>
   <tabstop>st_tab</tabstop>
   <tabstop>ranking_table</tabstop>
   <tabstop>prev_student</tabstop>
-  <tabstop>del_student</tabstop>
   <tabstop>students_table</tabstop>
   <tabstop>cities_table</tabstop>
   <tabstop>calculateRanking</tabstop>
-  <tabstop>checkincomplete</tabstop>
   <tabstop>new_city</tabstop>
   <tabstop>del_city</tabstop>
  </tabstops>

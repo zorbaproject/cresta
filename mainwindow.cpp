@@ -27,6 +27,10 @@ void MainWindow::resetUi()
     QIcon icon(":/cresta.png");
     setWindowIcon(icon);
     setWindowTitle(tr("Cresta"));
+    ui->searchhere->clear();
+    for (int i = 0; i < ui->students_table->columnCount(); i++) {
+        ui->searchhere->addItem(ui->students_table->horizontalHeaderItem(i)->text());
+    }
 }
 
 void MainWindow::createLanguageMenu(void)
@@ -110,6 +114,7 @@ void MainWindow::changeEvent(QEvent* event)
             QString locale = QLocale::system().name();
             locale.truncate(locale.lastIndexOf('_'));
             loadLanguage(locale);
+            resetUi();
         }
     }
     QMainWindow::changeEvent(event);
@@ -512,6 +517,7 @@ void MainWindow::do_ranking()
         //mean vote
         double vote = ui->students_table->item(row,votecol)->text().toDouble();
         if (vote < 18.0) vote = 18.0;
+        if (vote > 31.0) vote = 31.0;
         ranking += map(vote,18,31,1,20);
         if (ui->students_table->item(row,formercol)->text().toDouble() == 0) ranking  =  map(ranking,0,100,100,200); //former erasmus student or not
         ranking = ranking*ui->students_table->item(row,requisitescol)->text().toDouble(); //requisites
@@ -624,8 +630,11 @@ void MainWindow::on_ranking_table_cellClicked(int row, int column)
 QList<QTableWidgetItem *> MainWindow::findItemInColumn(QTableWidget *table, QString pattern, int column, Qt::MatchFlags match)
 {
     QList<QTableWidgetItem *> result;
-    for (int i = 0; i < table->findItems(pattern,match).count(); i++) {
-        if (table->findItems(pattern,match)[i]->column() == column) result.append(table->findItems(pattern,match)[i]);
+    QList<QTableWidgetItem *> tmpresult = table->findItems(pattern,match);
+    int maxresult = tmpresult.count();
+    //if (maxresult > 1000) maxresult = 1000;
+    for (int i = 0; i < maxresult; i++) {
+        if (tmpresult[i] && tmpresult[i]->column() == column) result.append(tmpresult[i]);
     }
     return result;
 }
@@ -855,5 +864,31 @@ void MainWindow::sanitizeTable(QTableWidget *table) {
                 table->setItem(row, col, newItem);
             }
         }
+    }
+}
+
+void MainWindow::on_searchst_clicked()
+{
+    //Qt::MatchFlags match = Qt::MatchContains;
+    Qt::MatchFlags match = Qt::MatchWildcard;
+    QList<QTableWidgetItem *> result = findItemInColumn(ui->students_table,ui->searchthis->text(),ui->searchhere->currentIndex(),match);
+    if (result.count() > 0) {
+        int i = 0;
+        int row = result[i]->row();
+        if (!ui->searchfromstart->isChecked() && ui->students_table->selectedItems().count() > 0) {
+            while (row <= ui->students_table->selectedItems()[0]->row()) {
+                i++;
+                if (i>=result.count()) break;
+                row = result[i]->row();
+            }
+        }
+        ui->students_table->setCurrentCell(row,ui->searchhere->currentIndex());
+    }
+}
+
+void MainWindow::on_students_table_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
+{
+    if (currentRow != previousRow || currentColumn != previousColumn) {
+        on_students_table_cellClicked(currentRow,currentColumn);
     }
 }
