@@ -489,6 +489,7 @@
      <string>Pro&amp;ject</string>
     </property>
     <addaction name="actionImport_xls"/>
+    <addaction name="actionExport_ranking_xslx"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -551,7 +552,7 @@
   </action>
   <action name="actionImport_xls">
    <property name="text">
-    <string>&amp;Import xlsx</string>
+    <string>&amp;Import students xlsx</string>
    </property>
   </action>
   <action name="actionAbout_Cresta">
@@ -567,6 +568,11 @@
   <action name="actionAbout_Qt">
    <property name="text">
     <string>About &amp;Qt</string>
+   </property>
+  </action>
+  <action name="actionExport_ranking_xslx">
+   <property name="text">
+    <string>&amp;Export ranking xslx</string>
    </property>
   </action>
  </widget>

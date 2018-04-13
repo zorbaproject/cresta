@@ -11,6 +11,16 @@ MainWindow::MainWindow(QWidget *parent) :
     loadLanguage(QString("it"));
     resetUi();
     on_actionNew_triggered();
+
+    QHeaderView *header = qobject_cast<QTableView *>(ui->students_table)->horizontalHeader();
+    connect(header, &QHeaderView::sectionClicked, [this](int logicalIndex){
+        ui->students_table->sortByColumn(logicalIndex,Qt::AscendingOrder);
+        //qDebug() << "Sorting by" << ui->students_table->horizontalHeaderItem(logicalIndex)->text();
+    });
+    QHeaderView *header2 = qobject_cast<QTableView *>(ui->cities_table)->horizontalHeader();
+    connect(header2, &QHeaderView::sectionClicked, [this](int logicalIndex){
+        ui->cities_table->sortByColumn(logicalIndex,Qt::AscendingOrder);
+    });
 }
 
 MainWindow::~MainWindow()
@@ -890,5 +900,28 @@ void MainWindow::on_students_table_currentCellChanged(int currentRow, int curren
 {
     if (currentRow != previousRow || currentColumn != previousColumn) {
         on_students_table_cellClicked(currentRow,currentColumn);
+    }
+}
+
+void MainWindow::on_actionExport_ranking_xslx_triggered()
+{
+    QString xlsxfile = QFileDialog::getSaveFileName(this, tr("Export ranking on xlsx file"), QDir::currentPath(), "*.xslx|Cresta Project (*.xlsx)");
+    if (!xlsxfile.isEmpty()) {
+        if (xlsxfile.right(5)!=".xlsx") {
+            if (xlsxfile.right(1)!=".") xlsxfile = xlsxfile + ".";
+            xlsxfile = xlsxfile + "xlsx";
+        }
+        QXlsx::Document xlsx;
+        for (int col = 0; col < ui->ranking_table->columnCount(); col++) {
+            xlsx.write(1,col+1,ui->ranking_table->horizontalHeaderItem(col)->text());
+        }
+        for (int row = 0; row < ui->ranking_table->rowCount(); row++) {
+            for (int col = 0; col < ui->ranking_table->columnCount(); col++) {
+                QVariant val(ui->ranking_table->item(row,col)->text());
+                if (col == rankingcol) val = ui->ranking_table->item(row,col)->text().toDouble();
+                if (ui->ranking_table->item(row,col)) xlsx.write(row+2,col+1,val);
+            }
+        }
+        xlsx.saveAs(xlsxfile);
     }
 }

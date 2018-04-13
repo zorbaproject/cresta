@@ -102,6 +102,8 @@ private slots:
 
     void on_students_table_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
 
+    void on_actionExport_ranking_xslx_triggered();
+
 private:
     Ui::MainWindow *ui;
     QString dbfile;
