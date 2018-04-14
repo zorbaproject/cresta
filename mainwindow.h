@@ -104,6 +104,8 @@ private slots:
 
     void on_actionExport_ranking_xslx_triggered();
 
+    void on_easteregg_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString dbfile;
@@ -150,6 +152,9 @@ private:
     QTranslator m_translatorQt;
     QString m_currLang;
     QString m_langPath;
+
+    int easteregg = 0;
+    QString cow;
 
 protected:
     void changeEvent(QEvent*);

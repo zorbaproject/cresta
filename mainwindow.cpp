@@ -599,7 +599,7 @@ void MainWindow::assign_destinations()
 void MainWindow::on_actionAbout_Cresta_triggered()
 {
     QString message = "Cresta means Code Ranking Erasmus Students for Trieste Automatically. It's a program designed for automatically ranking Erasmus candidates using University of Trieste's standards. This program has been written by Luca Tringali. Translations by Floriana Sciumbata.";
-    QMessageBox::about(this,tr("About Cresta"), tr(qPrintable(message)));
+    QMessageBox::about(this,tr("About Cresta"), tr(qPrintable(message))+cow);
 }
 
 void MainWindow::on_actionHelp_triggered()
@@ -938,5 +938,23 @@ void MainWindow::on_actionExport_ranking_xslx_triggered()
             }
         }
         xlsx.saveAs(xlsxfile);
+    }
+}
+
+void MainWindow::on_easteregg_clicked()
+{
+    easteregg++;
+    if (easteregg > 6) {
+        if ( easteregg % 2 != 0) {
+            ui->statusBar->showMessage("Developer mode enabled", 3000);
+            ui->prev_student->show();
+            ui->next_student->show();
+            cow = "\n\nThis program has supercow powers.\n                         (__)\n                        (oo) \n              /------\\/ \n             /  |       ||   \n            *  /\\---/\\ \n               ~~   ~~   \n           ....\"Have you mooed today?\"...";
+        } else {
+            ui->statusBar->showMessage("Developer mode disabled", 3000);
+            ui->prev_student->hide();
+            ui->next_student->hide();
+            cow = "";
+        }
     }
 }

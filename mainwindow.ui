@@ -309,7 +309,7 @@
           <item>
            <widget class="QPushButton" name="del_student">
             <property name="styleSheet">
-             <string notr="true">background-color: rgb(255, 0, 0);</string>
+             <string notr="true">background-color: rgb(255, 117, 117);</string>
             </property>
             <property name="text">
              <string>Delete</string>
@@ -414,9 +414,15 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QLabel" name="label">
+          <widget class="QPushButton" name="easteregg">
+           <property name="styleSheet">
+            <string notr="true">Text-align:left</string>
+           </property>
            <property name="text">
             <string>Calculate ranking</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -479,7 +485,7 @@
      <x>0</x>
      <y>0</y>
      <width>727</width>
-     <height>30</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -563,6 +569,9 @@
    <property name="text">
     <string>&amp;Import students xlsx</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
   </action>
   <action name="actionAbout_Cresta">
    <property name="text">
@@ -582,6 +591,9 @@
   <action name="actionExport_ranking_xslx">
    <property name="text">
     <string>&amp;Export ranking xslx</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
  </widget>
