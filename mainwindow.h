@@ -23,6 +23,8 @@
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QCompleter>
+#include <QStandardItemModel>
+#include <QStandardItem>
 #include "xlsxdocument.h"
 #include "xlsxsettings.h"
 
@@ -41,6 +43,8 @@ public:
     double map(double x, double in_min, double in_max, double out_min, double out_max);
     QList<QTableWidgetItem*> findItemInColumn(QTableWidget *table, QString pattern, int column, Qt::MatchFlags match = Qt::MatchExactly);
     void sanitizeTable(QTableWidget *table);
+    QJsonArray merge_qja(QJsonArray db1, QJsonArray db2, int arraytype);
+    QStringList extract_qsim_row(QStandardItemModel *db, int row);
     void resetUi();
     bool checkvalid = false;
 
@@ -105,6 +109,8 @@ private slots:
     void on_actionExport_ranking_xslx_triggered();
 
     void on_easteregg_clicked();
+
+    void on_actionMerge_projects_triggered();
 
 private:
     Ui::MainWindow *ui;

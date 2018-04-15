@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->next_student->hide();
     ui->prev_student->hide();
+    ui->actionMerge_projects->setVisible(false);
 
     QHeaderView *header = qobject_cast<QTableView *>(ui->students_table)->horizontalHeader();
     connect(header, &QHeaderView::sectionClicked, [this](int logicalIndex){
@@ -599,7 +600,7 @@ void MainWindow::assign_destinations()
 void MainWindow::on_actionAbout_Cresta_triggered()
 {
     QString message = "Cresta means Code Ranking Erasmus Students for Trieste Automatically. It's a program designed for automatically ranking Erasmus candidates using University of Trieste's standards. This program has been written by Luca Tringali. Translations by Floriana Sciumbata.";
-    QMessageBox::about(this,tr("About Cresta"), tr(qPrintable(message))+cow);
+    QMessageBox::about(this,tr("About Cresta"), QString("<html>")+message+cow+QString("</html>"));
 }
 
 void MainWindow::on_actionHelp_triggered()
@@ -949,12 +950,179 @@ void MainWindow::on_easteregg_clicked()
             ui->statusBar->showMessage("Developer mode enabled", 3000);
             ui->prev_student->show();
             ui->next_student->show();
+            ui->actionMerge_projects->setVisible(true);
+#ifdef Q_OS_WIN
             cow = "\n\nThis program has supercow powers.\n                         (__)\n                        (oo) \n              /------\\/ \n             /  |       ||   \n            *  /\\---/\\ \n               ~~   ~~   \n           ....\"Have you mooed today?\"...";
+#endif
+#ifdef Q_OS_LINUX
+            cow = "</br></br><pre>This program has supercow powers.</pre></br></br><pre>                    (__) </pre></br><pre>                    (oo) </pre></br><pre>              /------\\/ </pre></br><pre>             / |    ||   </pre></br><pre>            *  /\\---/\\ </pre></br><pre>               ~~   ~~   </pre></br><pre>   ...\"Have you mooed today?\"...</pre>";
+#endif
         } else {
             ui->statusBar->showMessage("Developer mode disabled", 3000);
             ui->prev_student->hide();
             ui->next_student->hide();
+            ui->actionMerge_projects->setVisible(false);
             cow = "";
         }
     }
+}
+
+void MainWindow::on_actionMerge_projects_triggered()
+{
+    //already loaded database
+    cities2db();
+    students2db();
+    ranking2db();
+
+    //the database we are importing
+    QJsonObject newdatabase;
+    QString tdbfile = QFileDialog::getOpenFileName(this, tr("Select project to merge"), QDir::currentPath(), "*.cresta|Cresta Project (*.cresta)");
+    if (!(tdbfile.isEmpty())) {
+        QFile file(tdbfile);
+        QString data = "";
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+            return;
+        QTextStream in(&file);
+        while (!in.atEnd()) {
+            data += in.readLine();
+        }
+        file.close();
+
+        QString problem = "    ]}    ]}";
+        data = data.replace(problem,"    ]}");
+        newdatabase = QJsonDocument::fromJson(data.toUtf8()).object();
+    }
+
+    if (newdatabase.isEmpty() || database == newdatabase) return;
+
+    //cities
+    QJsonArray ncities = merge_qja(database["cities"].toArray(), newdatabase["cities"].toArray(),1);
+    database.insert("cities",QJsonArray());
+    database.insert("cities",ncities);
+
+    //students
+    QJsonArray nstudents = merge_qja(database["students"].toArray(), newdatabase["students"].toArray(),2);
+    database.insert("students",QJsonArray());
+    database.insert("students",nstudents);
+    //ranking
+    QJsonArray nranking = merge_qja(database["ranking"].toArray(), newdatabase["ranking"].toArray(),3);
+    database.insert("ranking",QJsonArray());
+    database.insert("ranking",nranking);
+
+    db2cities();
+    db2students();
+    db2ranking();
+}
+
+QStringList MainWindow::extract_qsim_row(QStandardItemModel *db, int row) {
+    QStringList thisrow;
+    for (int col = 0; col < db->columnCount(); col++) {
+        if (db->item(row,col)) {
+            thisrow.append(db->item(row,col)->text());
+        } else {
+            thisrow.append(QString(""));
+        }
+    }
+    return thisrow;
+}
+
+QJsonArray MainWindow::merge_qja(QJsonArray db1, QJsonArray db2, int arraytype) {
+    //TODO: maybe it's better just to use QString arraytype with the same names of the tables
+    int uniquecol = 0;
+    if (arraytype == 1) {
+        uniquecol = citycol;
+    }
+    if (arraytype == 2) {
+        uniquecol = IDcol;
+    }
+    if (arraytype == 3) {
+        uniquecol = IDcol;
+    }
+    if (arraytype != 1 && arraytype !=2 && arraytype !=3) {
+        QJsonArray empty;
+        return empty;
+    }
+
+    QStandardItemModel db1table(db1.count(),db1[0].toArray().count());
+    for (int row = 0; row < db1.count(); row++) {
+        for (int col = 0; col < db1[row].toArray().count(); col++) {
+            QStandardItem *tmpitem = new QStandardItem(db1[row].toArray().at(col).toString());
+            db1table.setItem(row,col,tmpitem);
+        }
+    }
+    db1table.sort(uniquecol,Qt::AscendingOrder);
+
+    QStandardItemModel db2table(db2.count(),db2[0].toArray().count());
+    for (int row = 0; row < db2.count(); row++) {
+        for (int col = 0; col < db2[row].toArray().count(); col++) {
+            QStandardItem *tmpitem = new QStandardItem(db2[row].toArray().at(col).toString());
+            db2table.setItem(row,col,tmpitem);
+        }
+    }
+    db2table.sort(uniquecol,Qt::AscendingOrder);
+
+    QJsonArray result;
+    for (int row = 0; row < db1.count(); row++) {
+        QStringList thisrow1 = extract_qsim_row(&db1table, row);
+        QStringList thisrow2;
+        int row2 = -1;
+        QList<QStandardItem *> fRes = db2table.findItems(db1table.item(row,uniquecol)->text(),Qt::MatchExactly,uniquecol);
+        for (int f = 0; f < fRes.count(); f++) {
+            row2 = fRes.at(f)->row();
+        }
+        if (row2 >= 0 && row2 < db2table.rowCount()) {
+            thisrow2 = extract_qsim_row(&db2table, row2);
+
+            if (thisrow1 == thisrow2) {
+                result.append(QJsonArray::fromStringList(thisrow2));
+            } else {
+                QMessageBox::StandardButton reply;
+                QString first = QJsonDocument(QJsonArray::fromStringList(thisrow1)).toJson();
+                QString second = QJsonDocument(QJsonArray::fromStringList(thisrow2)).toJson();
+                QString msg = tr("Actual file record:")+QString("\n")+first+QString("\n")+tr("New file record:")+second+QString("\n")+tr("Do you want to replace the first with the second?");
+                reply = QMessageBox::question(this, tr("Close"),msg, QMessageBox::Yes|QMessageBox::No);
+                if (reply == QMessageBox::Yes) {
+                    result.append(QJsonArray::fromStringList(thisrow2));
+                } else {
+                    result.append(QJsonArray::fromStringList(thisrow1));
+                }
+            }
+        } else {
+            QMessageBox::StandardButton reply;
+            QString first = QJsonDocument(QJsonArray::fromStringList(thisrow1)).toJson();
+            QString msg = tr("Actual file record:")+QString("\n")+first+QString("\n")+QString("\n")+tr("is missing in the file you selected for merging. Do you want to keep it anyway?");
+            reply = QMessageBox::question(this, tr("Close"),msg, QMessageBox::Yes|QMessageBox::No);
+            if (reply == QMessageBox::Yes) {
+                result.append(QJsonArray::fromStringList(thisrow1));
+            }
+        }
+    }
+
+    for (int row = 0; row < db2.count(); row++) {
+        QStringList thisrow2 = extract_qsim_row(&db2table, row);
+        int row1 = -1;
+        QList<QStandardItem *> fRes = db1table.findItems(db2table.item(row,uniquecol)->text(),Qt::MatchExactly,uniquecol);
+        for (int f = 0; f < fRes.count(); f++) {
+            row1 = fRes.at(f)->row();
+        }
+        if (row1 < 0 || row1 >= db1table.rowCount()) {
+            QMessageBox::StandardButton reply;
+            QString second = QJsonDocument(QJsonArray::fromStringList(thisrow2)).toJson();
+            QString msg = tr("The new file record:")+QString("\n")+second+QString("\n")+QString("\n")+tr("is missing in the original project. Do you want to keep it anyway?");
+            reply = QMessageBox::question(this, tr("Close"),msg, QMessageBox::Yes|QMessageBox::No);
+            if (reply == QMessageBox::Yes) {
+                result.append(QJsonArray::fromStringList(thisrow2));
+            }
+        }
+    }
+
+/*    if (arraytype == 1) {
+        qDebug() << "FIRST";
+        qDebug() << db1;
+        qDebug() << "SECOND";
+        qDebug() << db2;
+        qDebug() << "RESULT";
+        qDebug() << result;
+    }*/
+    return result;
 }
