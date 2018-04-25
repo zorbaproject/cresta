@@ -20,8 +20,14 @@ Ok, now seriously:
 
 Using test.cresta, after ranking students automatically, in Bill Gates row you can choose Hogwarts instead of Cortile, and then it's possible to assign Cortile to Amedeo Mango)
 
+It's also possibile to import an XLSX file with students data.
+
+After you're done, you can export the complete ranking table into an XSLX spreadsheet.
+
 # Credits
 
 Cresta has been created by Luca Tringali and is relased under GNU GPL3. 
 
 Cresta is free software, you are free to fork it and apply as many changes as you like.
+
+Cresta uses QtXlsxWriter (https://github.com/VSRonin/QtXlsxWriter/) embedded in the source code, special thanks to the authors of this library.
