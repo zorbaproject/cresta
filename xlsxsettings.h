@@ -39,6 +39,9 @@ public:
     void set_lslm(QStringList options, int selected);
     int get_lslm();
 
+    void set_available(QStringList options, int selected);
+    int get_available();
+
     void set_lm(QString text);
     QString get_lm();
 

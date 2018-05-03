@@ -749,6 +749,7 @@ void MainWindow::on_actionImport_xls_triggered()
         int xls_lslmcol = 9;
         int xls_prioritycol = 11;
         int xls_destcol = 13;
+        int xls_availablecol = 14;
         QString lmtext = "LM";
 
         xlsxsettings dialog(this);
@@ -768,6 +769,7 @@ void MainWindow::on_actionImport_xls_triggered()
         dialog.set_priority(header,xls_prioritycol);
         dialog.set_dest(header,xls_destcol);
         dialog.set_lslm(header,xls_lslmcol);
+        dialog.set_available(header,xls_availablecol);
         dialog.set_lm(lmtext);
         dialog.setWindowTitle(tr("XLSX file settings"));
         if(dialog.exec() == QDialog::Accepted){
@@ -779,6 +781,7 @@ void MainWindow::on_actionImport_xls_triggered()
             xls_prioritycol = dialog.get_priority();
             xls_destcol = dialog.get_dest();
             xls_lslmcol = dialog.get_lslm();
+            xls_availablecol = dialog.get_available();
             lmtext = dialog.get_lm();
         } else {
             return;
@@ -845,6 +848,11 @@ void MainWindow::on_actionImport_xls_triggered()
                 ui->students_table->setItem(strow, yearcol, newItemyear);
                 ui->students_table->setCurrentCell(strow,yearcol);
 
+                QString xlsavailable = "0";
+                if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_availablecol)) {
+                    xlsavailable = cell->value().toString();
+                }
+
                 QString xlsdest = "";
                 if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_destcol)) {
                     xlsdest = cell->value().toString();
@@ -870,7 +878,7 @@ void MainWindow::on_actionImport_xls_triggered()
                         ui->cities_table->insertRow(crow);
                         QTableWidgetItem *newItemcity = new QTableWidgetItem(xlsdest);
                         ui->cities_table->setItem(crow, citycol, newItemcity);
-                        QTableWidgetItem *newItemav = new QTableWidgetItem("0");
+                        QTableWidgetItem *newItemav = new QTableWidgetItem(xlsavailable);
                         ui->cities_table->setItem(crow, availablecol, newItemav);
                         QTableWidgetItem *newItemcountry = new QTableWidgetItem(xlsdest.split(" ").at(0));
                         ui->cities_table->setItem(crow, countycol, newItemcountry);

@@ -85,6 +85,15 @@ int xlsxsettings::get_lslm() {
     return ui->xs_lslm->currentIndex()+1;
 }
 
+void xlsxsettings::set_available(QStringList options, int selected) {
+    ui->xs_available->addItems(options);
+    ui->xs_available->setCurrentIndex(selected-1);
+}
+
+int xlsxsettings::get_available() {
+    return ui->xs_available->currentIndex()+1;
+}
+
 void xlsxsettings::set_lm(QString text) {
     ui->xs_lm->setText(text);
 }
