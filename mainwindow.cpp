@@ -959,12 +959,7 @@ void MainWindow::on_easteregg_clicked()
             ui->prev_student->show();
             ui->next_student->show();
             ui->actionMerge_projects->setVisible(true);
-#ifdef Q_OS_WIN
-            cow = "\n\nThis program has supercow powers.\n                         (__)\n                        (oo) \n              /------\\/ \n             /  |       ||   \n            *  /\\---/\\ \n               ~~   ~~   \n           ....\"Have you mooed today?\"...";
-#endif
-#ifdef Q_OS_LINUX
             cow = "</br></br><pre>This program has supercow powers.</pre></br></br><pre>                    (__) </pre></br><pre>                    (oo) </pre></br><pre>              /------\\/ </pre></br><pre>             / |    ||   </pre></br><pre>            *  /\\---/\\ </pre></br><pre>               ~~   ~~   </pre></br><pre>   ...\"Have you mooed today?\"...</pre>";
-#endif
         } else {
             ui->statusBar->showMessage("Developer mode disabled", 3000);
             ui->prev_student->hide();
