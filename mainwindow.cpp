@@ -12,9 +12,11 @@ MainWindow::MainWindow(QWidget *parent) :
     resetUi();
     on_actionNew_triggered();
 
+    ui->easteregg->setAttribute(Qt::WA_UnderMouse, false);
     ui->next_student->hide();
     ui->prev_student->hide();
     ui->actionMerge_projects->setVisible(false);
+    ui->free_destinations->hide();
 
     QHeaderView *header = qobject_cast<QTableView *>(ui->students_table)->horizontalHeader();
     connect(header, &QHeaderView::sectionClicked, [this](int logicalIndex){
@@ -959,11 +961,13 @@ void MainWindow::on_easteregg_clicked()
             ui->prev_student->show();
             ui->next_student->show();
             ui->actionMerge_projects->setVisible(true);
+            ui->free_destinations->show();
             cow = "</br></br><pre>This program has supercow powers.</pre></br></br><pre>                    (__) </pre></br><pre>                    (oo) </pre></br><pre>              /------\\/ </pre></br><pre>             / |    ||   </pre></br><pre>            *  /\\---/\\ </pre></br><pre>               ~~   ~~   </pre></br><pre>   ...\"Have you mooed today?\"...</pre>";
         } else {
             ui->statusBar->showMessage("Developer mode disabled", 3000);
             ui->prev_student->hide();
             ui->next_student->hide();
+            ui->free_destinations->hide();
             ui->actionMerge_projects->setVisible(false);
             cow = "";
         }
@@ -1128,4 +1132,17 @@ QJsonArray MainWindow::merge_qja(QJsonArray db1, QJsonArray db2, int arraytype) 
         qDebug() << result;
     }*/
     return result;
+}
+
+void MainWindow::on_free_destinations_clicked()
+{
+    QString listtext = "";
+    for (int row = 0; row < ui->cities_table->rowCount(); row++) {
+        QString thiscity = ui->cities_table->item(row,citycol)->text();
+        int thisactual = findItemInColumn(ui->ranking_table,thiscity,manualdestcol).count();
+        int thisavailable = ui->cities_table->item(row,availablecol)->text().toInt();
+        int difference = thisavailable - thisactual;
+        if (difference > 0) listtext += thiscity + ": " + QString::number(difference) + "\n";
+    }
+    QMessageBox::information(this,tr("List of actually available destinations"),listtext);
 }

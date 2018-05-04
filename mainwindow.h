@@ -112,6 +112,8 @@ private slots:
 
     void on_actionMerge_projects_triggered();
 
+    void on_free_destinations_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString dbfile;
