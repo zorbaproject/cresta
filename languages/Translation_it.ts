@@ -214,25 +214,25 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="344"/>
-        <location filename="../mainwindow.ui" line="442"/>
+        <location filename="../mainwindow.ui" line="461"/>
         <source>ID</source>
         <translation>CF</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="349"/>
-        <location filename="../mainwindow.ui" line="447"/>
+        <location filename="../mainwindow.ui" line="466"/>
         <source>Name</source>
         <translation>Nome</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="354"/>
-        <location filename="../mainwindow.ui" line="452"/>
+        <location filename="../mainwindow.ui" line="471"/>
         <source>Surname</source>
         <translation>Cognome</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="359"/>
-        <location filename="../mainwindow.ui" line="457"/>
+        <location filename="../mainwindow.ui" line="476"/>
         <source>Curricula</source>
         <translation>Corso di studi</translation>
     </message>
@@ -247,44 +247,57 @@
         <translation>Media ponderata</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="467"/>
+        <location filename="../mainwindow.ui" line="434"/>
+        <source>Results:</source>
+        <translation>Risultati:</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="444"/>
+        <source>Actually available destinations</source>
+        <translation>Controlla posti attualmente liberi</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="486"/>
         <source>Auto chosen</source>
         <translation>Scelto automaticamente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="472"/>
+        <location filename="../mainwindow.ui" line="491"/>
         <source>Manually chosen</source>
         <translation>Scelto manualmente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="520"/>
-        <source>L&amp;anguage</source>
-        <translation>Lingua</translation>
+        <location filename="../mainwindow.ui" line="621"/>
+        <source>&amp;Merge projects</source>
+        <translation>Unisci progetti</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="571"/>
+        <source>L&amp;anguage</source>
+        <translation type="vanished">Lingua</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="590"/>
         <source>&amp;Import students xlsx</source>
         <translation>&amp;Importa studenti da file xlsx</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="574"/>
+        <location filename="../mainwindow.ui" line="593"/>
         <source>Ctrl+I</source>
         <translation>Ctrl+I</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="594"/>
+        <location filename="../mainwindow.ui" line="613"/>
         <source>&amp;Export ranking xslx</source>
         <translation>&amp;Esporta graduatoria su xlsx</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="597"/>
+        <location filename="../mainwindow.ui" line="616"/>
         <source>Ctrl+E</source>
         <translation>Ctrl+E</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="602"/>
         <source>Merge projects</source>
-        <translation>Unisci due progetti</translation>
+        <translation type="vanished">Unisci due progetti</translation>
     </message>
     <message>
         <source>&amp;Import xlsx</source>
@@ -316,13 +329,12 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="411"/>
-        <location filename="../mainwindow.ui" line="462"/>
+        <location filename="../mainwindow.ui" line="481"/>
         <source>Ranking</source>
         <translation>Punteggio</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="422"/>
-        <location filename="../mainwindow.ui" line="432"/>
+        <location filename="../mainwindow.ui" line="451"/>
         <source>Calculate ranking</source>
         <translation>Calcola graduatoria</translation>
     </message>
@@ -335,71 +347,72 @@
         <translation type="vanished">Scelto Manualmente</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="493"/>
+        <location filename="../mainwindow.ui" line="512"/>
         <source>Fi&amp;le</source>
         <translation>F&amp;ile</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="504"/>
+        <location filename="../mainwindow.ui" line="523"/>
         <source>Pro&amp;ject</source>
         <translation>&amp;Progetto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="512"/>
+        <location filename="../mainwindow.ui" line="531"/>
         <source>Abo&amp;ut</source>
         <translation>A&amp;bout</translation>
     </message>
     <message>
+        <location filename="../mainwindow.ui" line="539"/>
         <source>La&amp;nguage</source>
-        <translation type="vanished">&amp;Lingua</translation>
+        <translation>&amp;Lingua</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="531"/>
+        <location filename="../mainwindow.ui" line="550"/>
         <source>&amp;New project</source>
         <translation>&amp;Nuovo progetto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="534"/>
+        <location filename="../mainwindow.ui" line="553"/>
         <source>Ctrl+N</source>
         <translation>Ctrl+N</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="539"/>
+        <location filename="../mainwindow.ui" line="558"/>
         <source>&amp;Open project</source>
         <translation>Apri pr&amp;ogetto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="542"/>
+        <location filename="../mainwindow.ui" line="561"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="547"/>
+        <location filename="../mainwindow.ui" line="566"/>
         <source>&amp;Save project</source>
         <translation>&amp;Salva progetto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="550"/>
+        <location filename="../mainwindow.ui" line="569"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="555"/>
+        <location filename="../mainwindow.ui" line="574"/>
         <source>Save &amp;project as</source>
         <translation>Salva progetto &amp;con nome</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="558"/>
+        <location filename="../mainwindow.ui" line="577"/>
         <source>Ctrl+Shift+S</source>
         <translation>Ctrl+Shift+S</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="563"/>
+        <location filename="../mainwindow.ui" line="582"/>
         <source>&amp;Exit</source>
         <translation>&amp;Esci</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="566"/>
+        <location filename="../mainwindow.ui" line="585"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
@@ -408,17 +421,17 @@
         <translation type="vanished">&amp;Importa xls</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="579"/>
+        <location filename="../mainwindow.ui" line="598"/>
         <source>&amp;About Cresta</source>
         <translation>A&amp;bout Cresta</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="584"/>
+        <location filename="../mainwindow.ui" line="603"/>
         <source>&amp;Help</source>
         <translation>&amp;Aiuto</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="589"/>
+        <location filename="../mainwindow.ui" line="608"/>
         <source>About &amp;Qt</source>
         <translation>About &amp;Qt</translation>
     </message>
@@ -434,9 +447,9 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="223"/>
-        <location filename="../mainwindow.cpp" line="1091"/>
-        <location filename="../mainwindow.cpp" line="1102"/>
-        <location filename="../mainwindow.cpp" line="1120"/>
+        <location filename="../mainwindow.cpp" line="1086"/>
+        <location filename="../mainwindow.cpp" line="1097"/>
+        <location filename="../mainwindow.cpp" line="1115"/>
         <source>Close</source>
         <translation>Chiudi</translation>
     </message>
@@ -500,40 +513,50 @@
         <translation>Esporta graduatoria su XLSX</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="987"/>
+        <location filename="../mainwindow.cpp" line="982"/>
         <source>Select project to merge</source>
         <translation>Seleziona progetto da unire con quello attuale</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1090"/>
-        <location filename="../mainwindow.cpp" line="1101"/>
+        <location filename="../mainwindow.cpp" line="1085"/>
+        <location filename="../mainwindow.cpp" line="1096"/>
         <source>Actual file record:</source>
         <translation>Il dato nel file attuale:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1090"/>
+        <location filename="../mainwindow.cpp" line="1085"/>
         <source>New file record:</source>
         <translation>Il dato nel file selezionato per l&apos;unione:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1090"/>
+        <location filename="../mainwindow.cpp" line="1085"/>
         <source>Do you want to replace the first with the second?</source>
         <translation>Vuoi sostituire il primo con il secondo?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1101"/>
+        <location filename="../mainwindow.cpp" line="1096"/>
         <source>is missing in the file you selected for merging. Do you want to keep it anyway?</source>
         <translation>non esiste nel file selezionato per l&apos;unione. Vuoi tenerlo comunque?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1119"/>
+        <location filename="../mainwindow.cpp" line="1114"/>
         <source>The new file record:</source>
         <translation>Il dato del file selezionato:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1119"/>
+        <location filename="../mainwindow.cpp" line="1114"/>
         <source>is missing in the original project. Do you want to keep it anyway?</source>
         <translation>non esiste nel progetto originale. Vuoi tenerlo comunque?</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1143"/>
+        <source>List of actually available destinations</source>
+        <translation>Lista dei posti attualmente disponibili</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1159"/>
+        <source>List of students with no assigned destination</source>
+        <translation>Lista degli studenti cui non è stata assegnata una destinazione</translation>
     </message>
 </context>
 <context>

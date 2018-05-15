@@ -13,10 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
     on_actionNew_triggered();
 
     ui->easteregg->setAttribute(Qt::WA_UnderMouse, false);
-    ui->next_student->hide();
-    ui->prev_student->hide();
-    ui->actionMerge_projects->setVisible(false);
-    ui->free_destinations->hide();
+    on_easteregg_clicked();
+    easteregg--;
 
     QHeaderView *header = qobject_cast<QTableView *>(ui->students_table)->horizontalHeader();
     connect(header, &QHeaderView::sectionClicked, [this](int logicalIndex){
@@ -955,22 +953,20 @@ void MainWindow::on_actionExport_ranking_xslx_triggered()
 void MainWindow::on_easteregg_clicked()
 {
     easteregg++;
-    if (easteregg > 6) {
-        if ( easteregg % 2 != 0) {
-            ui->statusBar->showMessage("Developer mode enabled", 3000);
-            ui->prev_student->show();
-            ui->next_student->show();
-            ui->actionMerge_projects->setVisible(true);
-            ui->free_destinations->show();
-            cow = "</br></br><pre>This program has supercow powers.</pre></br></br><pre>                    (__) </pre></br><pre>                    (oo) </pre></br><pre>              /------\\/ </pre></br><pre>             / |    ||   </pre></br><pre>            *  /\\---/\\ </pre></br><pre>               ~~   ~~   </pre></br><pre>   ...\"Have you mooed today?\"...</pre>";
-        } else {
-            ui->statusBar->showMessage("Developer mode disabled", 3000);
-            ui->prev_student->hide();
-            ui->next_student->hide();
-            ui->free_destinations->hide();
-            ui->actionMerge_projects->setVisible(false);
-            cow = "";
-        }
+    if (easteregg > 6 && easteregg % 2 != 0) {
+        ui->statusBar->showMessage("Developer mode enabled", 3000);
+        ui->prev_student->show();
+        ui->next_student->show();
+        ui->actionMerge_projects->setVisible(true);
+        ui->free_destinations->show();
+        cow = "</br></br><pre>This program has supercow powers.</pre></br></br><pre>                    (__) </pre></br><pre>                    (oo) </pre></br><pre>              /------\\/ </pre></br><pre>             / |    ||   </pre></br><pre>            *  /\\---/\\ </pre></br><pre>               ~~   ~~   </pre></br><pre>   ...\"Have you mooed today?\"...</pre>";
+    } else {
+        if (easteregg > 6) ui->statusBar->showMessage("Developer mode disabled", 3000);
+        ui->prev_student->hide();
+        ui->next_student->hide();
+        ui->free_destinations->hide();
+        ui->actionMerge_projects->setVisible(false);
+        cow = "";
     }
 }
 
@@ -1145,4 +1141,20 @@ void MainWindow::on_free_destinations_clicked()
         if (difference > 0) listtext += thiscity + ": " + QString::number(difference) + "\n";
     }
     QMessageBox::information(this,tr("List of actually available destinations"),listtext);
+    QString liststudents = "";
+    for (int row = 0; row < ui->ranking_table->rowCount(); row++) {
+        QString thisdest = "";
+        if (ui->ranking_table->item(row,manualdestcol)) thisdest = ui->ranking_table->item(row,manualdestcol)->text();
+        if (thisdest == "") {
+            liststudents += ui->ranking_table->item(row,IDcol)->text();
+            liststudents += ";";
+            liststudents += ui->ranking_table->item(row,namecol)->text();
+            liststudents += ";";
+            liststudents += ui->ranking_table->item(row,surnamecol)->text();
+            liststudents += ";";
+            liststudents += "\n";
+            ui->ranking_table->item(row,manualdestcol)->setBackgroundColor(Qt::red);
+        }
+    }
+    if (liststudents != "") QMessageBox::information(this,tr("List of students with no assigned destination"),liststudents);
 }
