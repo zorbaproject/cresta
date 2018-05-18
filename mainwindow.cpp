@@ -960,6 +960,9 @@ void MainWindow::on_easteregg_clicked()
         ui->actionMerge_projects->setVisible(true);
         ui->free_destinations->show();
         cow = "</br></br><pre>This program has supercow powers.</pre></br></br><pre>                    (__) </pre></br><pre>                    (oo) </pre></br><pre>              /------\\/ </pre></br><pre>             / |    ||   </pre></br><pre>            *  /\\---/\\ </pre></br><pre>               ~~   ~~   </pre></br><pre>   ...\"Have you mooed today?\"...</pre>";
+        for (int i = 0; i < ui->menuLanguage->actions().count(); i++) {
+            ui->menuLanguage->actions().at(i)->setVisible(true);
+        }
     } else {
         if (easteregg > 6) ui->statusBar->showMessage("Developer mode disabled", 3000);
         ui->prev_student->hide();
@@ -967,6 +970,13 @@ void MainWindow::on_easteregg_clicked()
         ui->free_destinations->hide();
         ui->actionMerge_projects->setVisible(false);
         cow = "";
+        for (int i = 0; i < ui->menuLanguage->actions().count(); i++) {
+            QStringList acceptablelangs;
+            acceptablelangs << "Italian" << "English" << "&Italian" << "&English";
+            if (acceptablelangs.indexOf(ui->menuLanguage->actions().at(i)->text())<0) {
+                ui->menuLanguage->actions().at(i)->setVisible(false);
+            }
+        }
     }
 }
 
