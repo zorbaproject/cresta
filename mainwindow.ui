@@ -504,7 +504,7 @@ QPushButton#easteregg:hover
      <x>0</x>
      <y>0</y>
      <width>727</width>
-     <height>30</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

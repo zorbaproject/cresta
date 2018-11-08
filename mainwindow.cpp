@@ -750,6 +750,9 @@ void MainWindow::on_actionImport_xls_triggered()
         int xls_prioritycol = 11;
         int xls_destcol = 13;
         int xls_availablecol = 14;
+        int xls_meanvotecol = 23;
+        int xls_requisitescol = 19;
+        int xls_formercol = 24;
         QString lmtext = "LM";
 
         xlsxsettings dialog(this);
@@ -771,6 +774,9 @@ void MainWindow::on_actionImport_xls_triggered()
         dialog.set_lslm(header,xls_lslmcol);
         dialog.set_available(header,xls_availablecol);
         dialog.set_lm(lmtext);
+        dialog.set_meanvote(header,xls_meanvotecol);
+        dialog.set_requisites(header,xls_requisitescol);
+        dialog.set_former(header,xls_formercol);
         dialog.setWindowTitle(tr("XLSX file settings"));
         if(dialog.exec() == QDialog::Accepted){
             xls_IDcol = dialog.get_ID();
@@ -783,6 +789,9 @@ void MainWindow::on_actionImport_xls_triggered()
             xls_lslmcol = dialog.get_lslm();
             xls_availablecol = dialog.get_available();
             lmtext = dialog.get_lm();
+            xls_meanvotecol = dialog.get_meanvote();
+            xls_requisitescol = dialog.get_requisites();
+            xls_formercol = dialog.get_former();
         } else {
             return;
         }
@@ -848,6 +857,33 @@ void MainWindow::on_actionImport_xls_triggered()
                 ui->students_table->setItem(strow, yearcol, newItemyear);
                 ui->students_table->setCurrentCell(strow,yearcol);
 
+                QString xlsmeanvote = "";
+                if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_meanvotecol)) {
+                    xlsmeanvote = cell->value().toString();
+                }
+
+                QTableWidgetItem *newItemmeanvote = new QTableWidgetItem(xlsmeanvote);
+                ui->students_table->setItem(strow, votecol, newItemmeanvote);
+                ui->students_table->setCurrentCell(strow,votecol);
+
+                QString xlsrequisites = "";
+                if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_requisitescol)) {
+                    xlsrequisites = cell->value().toString();
+                }
+
+                QTableWidgetItem *newItemrequisites = new QTableWidgetItem(xlsrequisites);
+                ui->students_table->setItem(strow, requisitescol, newItemrequisites);
+                ui->students_table->setCurrentCell(strow,requisitescol);
+
+                QString xlsformer = "";
+                if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_formercol)) {
+                    xlsformer = cell->value().toString();
+                }
+
+                QTableWidgetItem *newItemformer = new QTableWidgetItem(xlsformer);
+                ui->students_table->setItem(strow, formercol, newItemformer);
+                ui->students_table->setCurrentCell(strow,formercol);
+
                 QString xlsavailable = "0";
                 if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_availablecol)) {
                     xlsavailable = cell->value().toString();
@@ -865,11 +901,11 @@ void MainWindow::on_actionImport_xls_triggered()
                 ui->students_table->setItem(strow, thisdestcol, newItemdest);
                 ui->students_table->setCurrentCell(strow,thisdestcol);
 
-                if (dialog.get_requisites()) {
+                /*if (dialog.get_requisites()) {
                     QTableWidgetItem *newItemrequisites = new QTableWidgetItem("1");
                     ui->students_table->setItem(strow, requisitescol, newItemrequisites);
                     ui->students_table->setCurrentCell(strow,requisitescol);
-                }
+                }*/
 
                 if (dialog.get_addcities()) {
                     if (findItemInColumn(ui->cities_table,xlsdest,citycol).count() <= 0) {
@@ -1156,11 +1192,20 @@ void MainWindow::on_free_destinations_clicked()
         QString thisdest = "";
         if (ui->ranking_table->item(row,manualdestcol)) thisdest = ui->ranking_table->item(row,manualdestcol)->text();
         if (thisdest == "") {
-            liststudents += ui->ranking_table->item(row,IDcol)->text();
+            QString stID = ui->ranking_table->item(row,IDcol)->text();
+            liststudents += stID;
             liststudents += ";";
             liststudents += ui->ranking_table->item(row,namecol)->text();
             liststudents += ";";
             liststudents += ui->ranking_table->item(row,surnamecol)->text();
+            liststudents += ";";
+            liststudents += ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest1col)->text();
+            liststudents += ";";
+            liststudents += ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest2col)->text();
+            liststudents += ";";
+            liststudents += ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest3col)->text();
+            liststudents += ";";
+            liststudents += ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest4col)->text();
             liststudents += ";";
             liststudents += "\n";
             ui->ranking_table->item(row,manualdestcol)->setBackgroundColor(Qt::red);

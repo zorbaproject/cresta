@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>511</width>
-    <height>340</height>
+    <height>436</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,6 +23,16 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="11" column="1">
+      <widget class="QComboBox" name="xs_former"/>
+     </item>
+     <item row="10" column="0">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>Average Mark:</string>
+       </property>
+      </widget>
+     </item>
      <item row="4" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
@@ -123,6 +133,26 @@
      <item row="9" column="1">
       <widget class="QComboBox" name="xs_available"/>
      </item>
+     <item row="10" column="1">
+      <widget class="QComboBox" name="xs_meanvote"/>
+     </item>
+     <item row="12" column="1">
+      <widget class="QComboBox" name="xs_requisites"/>
+     </item>
+     <item row="11" column="0">
+      <widget class="QLabel" name="label_13">
+       <property name="text">
+        <string>Former Erasmus student:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="0">
+      <widget class="QLabel" name="label_14">
+       <property name="text">
+        <string>Requisites:</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -130,12 +160,8 @@
      <property name="text">
       <string>Automatically fill list of available destinations</string>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="xs_requisites">
-     <property name="text">
-      <string>Set every student requisites as satisfied</string>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

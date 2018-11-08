@@ -45,8 +45,16 @@ public:
     void set_lm(QString text);
     QString get_lm();
 
+    void set_meanvote(QStringList options, int selected);
+    int get_meanvote();
+
     bool get_addcities();
-    bool get_requisites();
+
+    void set_requisites(QStringList options, int selected);
+    int get_requisites();
+
+    void set_former(QStringList options, int selected);
+    int get_former();
 
 private:
     Ui::xlsxsettings *ui;

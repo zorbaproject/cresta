@@ -106,6 +106,29 @@ bool xlsxsettings::get_addcities() {
     return ui->xs_addcities->isChecked();
 }
 
-bool xlsxsettings::get_requisites() {
-    return ui->xs_addcities->isChecked();
+void xlsxsettings::set_requisites(QStringList options, int selected) {
+    ui->xs_requisites->addItems(options);
+    ui->xs_requisites->setCurrentIndex(selected-1);
+}
+
+int xlsxsettings::get_requisites() {
+    return ui->xs_requisites->currentIndex()+1;
+}
+
+void xlsxsettings::set_former(QStringList options, int selected) {
+    ui->xs_former->addItems(options);
+    ui->xs_former->setCurrentIndex(selected-1);
+}
+
+int xlsxsettings::get_former() {
+    return ui->xs_former->currentIndex()+1;
+}
+
+void xlsxsettings::set_meanvote(QStringList options, int selected) {
+    ui->xs_meanvote->addItems(options);
+    ui->xs_meanvote->setCurrentIndex(selected-1);
+}
+
+int xlsxsettings::get_meanvote() {
+    return ui->xs_meanvote->currentIndex()+1;
 }
