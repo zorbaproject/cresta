@@ -640,6 +640,7 @@ void MainWindow::on_ranking_table_cellClicked(int row, int column)
                 }
             }
         }
+        editor->addItem(tr("RINUNCIATARIO"));
         if (ui->ranking_table->item(row,autodestcol)) editor->setCurrentText(ui->ranking_table->item(row,autodestcol)->text());
 
         connect(
@@ -1179,12 +1180,16 @@ QJsonArray MainWindow::merge_qja(QJsonArray db1, QJsonArray db2, int arraytype) 
 void MainWindow::on_free_destinations_clicked()
 {
     QString listtext = "";
+    QStringList tmpcities;
+    QList<int> tmpavailabe;
     for (int row = 0; row < ui->cities_table->rowCount(); row++) {
         QString thiscity = ui->cities_table->item(row,citycol)->text();
         int thisactual = findItemInColumn(ui->ranking_table,thiscity,manualdestcol).count();
         int thisavailable = ui->cities_table->item(row,availablecol)->text().toInt();
         int difference = thisavailable - thisactual;
         if (difference > 0) listtext += thiscity + ": " + QString::number(difference) + "\n";
+        tmpcities.append(thiscity);
+        tmpavailabe.append(difference);
     }
     QMessageBox::information(this,tr("List of actually available destinations"),listtext);
     QString liststudents = "";
@@ -1199,15 +1204,25 @@ void MainWindow::on_free_destinations_clicked()
             liststudents += ";";
             liststudents += ui->ranking_table->item(row,surnamecol)->text();
             liststudents += ";";
-            liststudents += ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest1col)->text();
-            liststudents += ";";
-            liststudents += ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest2col)->text();
-            liststudents += ";";
-            liststudents += ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest3col)->text();
-            liststudents += ";";
-            liststudents += ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest4col)->text();
-            liststudents += ";";
-            liststudents += "\n";
+            QStringList tmpdest;
+            tmpdest.append(ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest1col)->text());
+            tmpdest.append(ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest2col)->text());
+            tmpdest.append(ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest3col)->text());
+            tmpdest.append(ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest4col)->text());
+            for (int t = 0; t < tmpdest.count(); t++) {
+                int tmpindex = tmpcities.indexOf(tmpdest.at(t));
+                if (tmpavailabe[tmpindex] > 0) {
+                    liststudents += "<b>";
+                    liststudents += tmpdest.at(t);
+                    liststudents += "</b>";
+                    liststudents += ";";
+                    tmpavailabe[tmpindex] = tmpavailabe[tmpindex] -1;
+                } else {
+                    liststudents += tmpdest.at(t);
+                    liststudents += ";";
+                }
+            }
+            liststudents += "<br>";
             ui->ranking_table->item(row,manualdestcol)->setBackgroundColor(Qt::red);
         }
     }
