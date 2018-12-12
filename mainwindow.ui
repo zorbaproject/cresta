@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="st_tab">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="dest_tab">
        <attribute name="title">
@@ -292,6 +292,31 @@
             </item>
            </widget>
           </item>
+          <item row="3" column="4">
+           <widget class="QCheckBox" name="frm_reserved">
+            <property name="text">
+             <string>Reserved</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="4">
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Letter:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="frm_letter">
+              <property name="maximum">
+               <number>2</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
          </layout>
         </item>
         <item>
@@ -381,6 +406,16 @@
           </column>
           <column>
            <property name="text">
+            <string>Motivational letter</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Reserved</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
             <string>Destination1</string>
            </property>
           </column>
@@ -403,23 +438,54 @@
         </item>
        </layout>
       </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="groupBox">
-      <property name="title">
-       <string>Ranking</string>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QPushButton" name="easteregg">
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">Text-align:left;
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Ranking</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>Ranking</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QPushButton" name="free_destinations">
+               <property name="text">
+                <string>Actually available destinations</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="calculateRanking">
+               <property name="text">
+                <string>Calculate ranking</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupBox_3">
+             <property name="title">
+              <string/>
+             </property>
+             <property name="flat">
+              <bool>false</bool>
+             </property>
+             <property name="checkable">
+              <bool>false</bool>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <item>
+               <widget class="QPushButton" name="easteregg">
+                <property name="focusPolicy">
+                 <enum>Qt::NoFocus</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">Text-align:left;
 border:none;
 border-radius: 0px;
 border-color: rgba(255, 255, 255, 0);
@@ -429,71 +495,93 @@ QPushButton#easteregg:hover
    border-radius: 0px;
    border-color: rgba(255, 255, 255, 0);
 }</string>
-           </property>
-           <property name="text">
-            <string>Results:</string>
-           </property>
-           <property name="flat">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="free_destinations">
-           <property name="text">
-            <string>Actually available destinations</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="calculateRanking">
-           <property name="text">
-            <string>Calculate ranking</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QTableWidget" name="ranking_table">
-         <column>
-          <property name="text">
-           <string>ID</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Name</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Surname</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Curricula</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Ranking</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Auto chosen</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Manually chosen</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-      </layout>
+                </property>
+                <property name="text">
+                 <string>Find</string>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="searchthis_2">
+                <property name="text">
+                 <string notr="true">*</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_15">
+                <property name="text">
+                 <string>in</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="searchhere_2"/>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="searchfromstart_2">
+                <property name="text">
+                 <string>Start with first student</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="searchst_2">
+                <property name="text">
+                 <string>Search student</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTableWidget" name="ranking_table">
+             <column>
+              <property name="text">
+               <string>ID</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Name</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Surname</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Curricula</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Ranking</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Auto chosen</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Manually chosen</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -504,7 +592,7 @@ QPushButton#easteregg:hover
      <x>0</x>
      <y>0</y>
      <width>727</width>
-     <height>21</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -525,6 +613,7 @@ QPushButton#easteregg:hover
     <addaction name="actionImport_xls"/>
     <addaction name="actionMerge_projects"/>
     <addaction name="actionExport_ranking_xslx"/>
+    <addaction name="actionExport_ranking_by_destination"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
     <property name="title">
@@ -619,6 +708,11 @@ QPushButton#easteregg:hover
   <action name="actionMerge_projects">
    <property name="text">
     <string>&amp;Merge projects</string>
+   </property>
+  </action>
+  <action name="actionExport_ranking_by_destination">
+   <property name="text">
+    <string>Export &amp;ranking by destination</string>
    </property>
   </action>
  </widget>

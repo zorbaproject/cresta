@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>511</width>
-    <height>436</height>
+    <height>594</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,13 +23,60 @@
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="11" column="1">
-      <widget class="QComboBox" name="xs_former"/>
-     </item>
      <item row="10" column="0">
       <widget class="QLabel" name="label_12">
        <property name="text">
         <string>Average Mark:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Destination:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="1">
+      <widget class="QComboBox" name="xs_former"/>
+     </item>
+     <item row="7" column="1">
+      <widget class="QComboBox" name="xs_priority"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>ID:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Curricula:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QComboBox" name="xs_lslm"/>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>L2 or LM:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="xs_ID"/>
+     </item>
+     <item row="8" column="1">
+      <widget class="QComboBox" name="xs_dest"/>
+     </item>
+     <item row="11" column="0">
+      <widget class="QLabel" name="label_13">
+       <property name="text">
+        <string>Former Erasmus student:</string>
        </property>
       </widget>
      </item>
@@ -47,6 +94,16 @@
        </property>
       </widget>
      </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>Available:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QComboBox" name="xs_year"/>
+     </item>
      <item row="7" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
@@ -54,8 +111,15 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
-      <widget class="QComboBox" name="xs_curricula"/>
+     <item row="9" column="1">
+      <widget class="QComboBox" name="xs_available"/>
+     </item>
+     <item row="12" column="0">
+      <widget class="QLabel" name="label_14">
+       <property name="text">
+        <string>Requisites:</string>
+       </property>
+      </widget>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_5">
@@ -64,31 +128,23 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="1">
-      <widget class="QComboBox" name="xs_year"/>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="xs_name"/>
      </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="xs_ID"/>
+     <item row="6" column="1">
+      <widget class="QLineEdit" name="xs_lm"/>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>ID:</string>
-       </property>
-      </widget>
+     <item row="10" column="1">
+      <widget class="QComboBox" name="xs_meanvote"/>
      </item>
-     <item row="8" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Destination:</string>
-       </property>
-      </widget>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="xs_surname"/>
      </item>
-     <item row="5" column="1">
-      <widget class="QComboBox" name="xs_lslm"/>
+     <item row="12" column="1">
+      <widget class="QComboBox" name="xs_requisites"/>
      </item>
-     <item row="8" column="1">
-      <widget class="QComboBox" name="xs_dest"/>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="xs_curricula"/>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
@@ -97,61 +153,25 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
-      <widget class="QLineEdit" name="xs_lm"/>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="xs_name"/>
-     </item>
-     <item row="7" column="1">
-      <widget class="QComboBox" name="xs_priority"/>
-     </item>
-     <item row="2" column="1">
-      <widget class="QComboBox" name="xs_surname"/>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_4">
+     <item row="13" column="0">
+      <widget class="QLabel" name="label_15">
        <property name="text">
-        <string>Curricula:</string>
+        <string>Motivational letter:</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="label_10">
+     <item row="14" column="0">
+      <widget class="QLabel" name="label_16">
        <property name="text">
-        <string>L2 or LM:</string>
+        <string>Reserved:</string>
        </property>
       </widget>
      </item>
-     <item row="9" column="0">
-      <widget class="QLabel" name="label_11">
-       <property name="text">
-        <string>Available:</string>
-       </property>
-      </widget>
+     <item row="13" column="1">
+      <widget class="QComboBox" name="xs_letter"/>
      </item>
-     <item row="9" column="1">
-      <widget class="QComboBox" name="xs_available"/>
-     </item>
-     <item row="10" column="1">
-      <widget class="QComboBox" name="xs_meanvote"/>
-     </item>
-     <item row="12" column="1">
-      <widget class="QComboBox" name="xs_requisites"/>
-     </item>
-     <item row="11" column="0">
-      <widget class="QLabel" name="label_13">
-       <property name="text">
-        <string>Former Erasmus student:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="12" column="0">
-      <widget class="QLabel" name="label_14">
-       <property name="text">
-        <string>Requisites:</string>
-       </property>
-      </widget>
+     <item row="14" column="1">
+      <widget class="QComboBox" name="xs_reserved"/>
      </item>
     </layout>
    </item>

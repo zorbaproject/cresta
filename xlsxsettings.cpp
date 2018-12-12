@@ -132,3 +132,21 @@ void xlsxsettings::set_meanvote(QStringList options, int selected) {
 int xlsxsettings::get_meanvote() {
     return ui->xs_meanvote->currentIndex()+1;
 }
+
+void xlsxsettings::set_letter(QStringList options, int selected) {
+    ui->xs_letter->addItems(options);
+    ui->xs_letter->setCurrentIndex(selected-1);
+}
+
+int xlsxsettings::get_letter() {
+    return ui->xs_letter->currentIndex()+1;
+}
+
+void xlsxsettings::set_reserved(QStringList options, int selected) {
+    ui->xs_reserved->addItems(options);
+    ui->xs_reserved->setCurrentIndex(selected-1);
+}
+
+int xlsxsettings::get_reserved() {
+    return ui->xs_reserved->currentIndex()+1;
+}

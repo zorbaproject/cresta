@@ -56,6 +56,12 @@ public:
     void set_former(QStringList options, int selected);
     int get_former();
 
+    void set_letter(QStringList options, int selected);
+    int get_letter();
+
+    void set_reserved(QStringList options, int selected);
+    int get_reserved();
+
 private:
     Ui::xlsxsettings *ui;
 };

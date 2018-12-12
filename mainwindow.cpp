@@ -45,6 +45,10 @@ void MainWindow::resetUi()
     for (int i = 0; i < ui->students_table->columnCount(); i++) {
         ui->searchhere->addItem(ui->students_table->horizontalHeaderItem(i)->text());
     }
+    ui->searchhere_2->clear();
+    for (int i = 0; i < ui->ranking_table->columnCount(); i++) {
+        ui->searchhere_2->addItem(ui->ranking_table->horizontalHeaderItem(i)->text());
+    }
 }
 
 void MainWindow::createLanguageMenu(void)
@@ -257,6 +261,9 @@ void MainWindow::on_save_student_clicked()
             if (column == requisitescol && ui->frm_requisites->isChecked()) mytext = "1";
             if (column == requisitescol && !ui->frm_requisites->isChecked()) mytext = "0";
             if (column == surnamecol) mytext = ui->frm_surname->text();
+            if (column == reservedcol && ui->frm_reserved->isChecked()) mytext = "1";
+            if (column == reservedcol && !ui->frm_reserved->isChecked()) mytext = "0";
+            if (column == lettercol) mytext = ui->frm_letter->text();
             QTableWidgetItem *newItem = new QTableWidgetItem(mytext);
             ui->students_table->setItem(row, column, newItem);
         }
@@ -387,7 +394,7 @@ void MainWindow::on_checkincomplete_clicked()
             ui->students_table->item(row, col)->setBackgroundColor(Qt::white);
             if (ui->students_table->item(row,col)->text().isEmpty() && col != dest2col && col != dest3col && col != dest4col) {
                 ui->students_table->item(row, col)->setBackgroundColor(Qt::red);
-                if (col != votecol && col != formercol && col != requisitescol) return;
+                if (col != votecol && col != formercol && col != requisitescol && col != lettercol && col != reservedcol) return;
             }
             ui->students_table->setCurrentCell(row,col);
         }
@@ -434,6 +441,7 @@ void MainWindow::on_students_table_cellClicked(int row, int column)
     if (row >= ui->students_table->rowCount() || column >= ui->students_table->columnCount()) return;
     if (ui->students_table->selectedItems().count() > 0) {
         for (int column = 0; column < ui->students_table->columnCount(); column++) {
+            if (!ui->students_table->item(row,column)) sanitizeTable(ui->students_table);
             if(ui->students_table->item(row,column)){
                 QString mytext = ui->students_table->item(row,column)->text();
                 if (column == curriculacol) ui->frm_curricola->setText(mytext);
@@ -447,8 +455,11 @@ void MainWindow::on_students_table_cellClicked(int row, int column)
                 if (column == votecol) ui->frm_meanvote->setText(mytext);
                 if (column == namecol) ui->frm_name->setText(mytext);
                 if (column == yearcol) ui->frm_registration->setCurrentText(mytext);
+                if (column == lettercol) ui->frm_letter->setValue(mytext.toInt());
                 if (column == requisitescol && mytext == "1") ui->frm_requisites->setChecked(true);
                 if (column == requisitescol && !(mytext == "1")) ui->frm_requisites->setChecked(false);
+                if (column == reservedcol && mytext == "1") ui->frm_reserved->setChecked(true);
+                if (column == reservedcol && !(mytext == "1")) ui->frm_reserved->setChecked(false);
                 if (column == surnamecol) ui->frm_surname->setText(mytext);
             }
         }
@@ -505,9 +516,15 @@ void MainWindow::on_calculateRanking_clicked()
     sanitizeTable(ui->cities_table);
     sanitizeTable(ui->students_table);
     on_checkincomplete_clicked();
-    if (checkvalid == false) return;
+    if (checkvalid == false) {
+        QMessageBox::information(this,tr("Problem"), tr("Something's wrong in students data. You might need to check cells with red background."));
+        return;
+    }
     on_check_cities_clicked();
-    if (checkvalid == false) return;
+    if (checkvalid == false) {
+        QMessageBox::information(this,tr("Problem"), tr("Something's wrong in students data. You might need to check cells with red background."));
+        return;
+    }
     ui->ranking_table->setRowCount(0);
     do_ranking();
     assign_destinations();
@@ -545,8 +562,14 @@ void MainWindow::do_ranking()
         if (vote < 18.0) vote = 18.0;
         if (vote > 31.0) vote = 31.0;
         ranking += map(vote,18,31,1,20);
-        if (ui->students_table->item(row,formercol)->text().toDouble() == 0) ranking  =  map(ranking,0,100,100,200); //former erasmus student or not
+        //former erasmus student or not
+        //if (ui->students_table->item(row,formercol)->text().toDouble() == 0) ranking  =  map(ranking,0,100,100,200);
+        if (ui->students_table->item(row,formercol)->text().toDouble() == 0) ranking  =  ranking -1;
+        // lettera motivazione da 0 a 2, si somma al punteggio (nel range 0-1)
+        ranking  =  ranking + (ui->students_table->item(row,lettercol)->text().toDouble()/2);
         ranking = ranking*ui->students_table->item(row,requisitescol)->text().toDouble(); //requisites
+        // per alcuni studenti bisogna dare subito il punteggio massimo perché hanno già posti riservati (ese: studentu di Regensburg)
+        if (ui->students_table->item(row,reservedcol)->text() == "1") ranking = 103;
 
         QTableWidgetItem *titem = new QTableWidgetItem ;
         titem->setData(Qt::EditRole,ranking);
@@ -560,6 +583,8 @@ void MainWindow::assign_destinations()
 {
     ui->ranking_table->sortByColumn(rankingcol,Qt::DescendingOrder);
     for (int row = 0; row < ui->ranking_table->rowCount(); row++) {
+        // se il punteggio è 0, non assegno la destinazione
+        if (ui->ranking_table->item(row,rankingcol)->text().toDouble() > 0) {
         int strow = findItemInColumn(ui->students_table,ui->ranking_table->item(row,IDcol)->text(),IDcol)[0]->row();
         QStringList destinations;
         destinations.append(ui->students_table->item(strow,dest1col)->text());
@@ -585,6 +610,7 @@ void MainWindow::assign_destinations()
             titem->setText("");
             titem->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
             ui->ranking_table->setItem(row,autodestcol,titem);
+        }
         }
     }
 
@@ -754,6 +780,8 @@ void MainWindow::on_actionImport_xls_triggered()
         int xls_meanvotecol = 23;
         int xls_requisitescol = 19;
         int xls_formercol = 24;
+        int xls_lettercol = 26;
+        int xls_reservedcol = 27;
         QString lmtext = "LM";
 
         xlsxsettings dialog(this);
@@ -778,6 +806,8 @@ void MainWindow::on_actionImport_xls_triggered()
         dialog.set_meanvote(header,xls_meanvotecol);
         dialog.set_requisites(header,xls_requisitescol);
         dialog.set_former(header,xls_formercol);
+        dialog.set_letter(header,xls_lettercol);
+        dialog.set_reserved(header,xls_reservedcol);
         dialog.setWindowTitle(tr("XLSX file settings"));
         if(dialog.exec() == QDialog::Accepted){
             xls_IDcol = dialog.get_ID();
@@ -793,6 +823,8 @@ void MainWindow::on_actionImport_xls_triggered()
             xls_meanvotecol = dialog.get_meanvote();
             xls_requisitescol = dialog.get_requisites();
             xls_formercol = dialog.get_former();
+            xls_lettercol = dialog.get_letter();
+            xls_reservedcol = dialog.get_reserved();
         } else {
             return;
         }
@@ -885,6 +917,24 @@ void MainWindow::on_actionImport_xls_triggered()
                 ui->students_table->setItem(strow, formercol, newItemformer);
                 ui->students_table->setCurrentCell(strow,formercol);
 
+                QString xlsletter = "";
+                if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_lettercol)) {
+                    xlsletter = cell->value().toString();
+                }
+
+                QTableWidgetItem *newItemletter = new QTableWidgetItem(xlsletter);
+                ui->students_table->setItem(strow, lettercol, newItemletter);
+                ui->students_table->setCurrentCell(strow,lettercol);
+
+                QString xlsreserved = "";
+                if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_reservedcol)) {
+                    xlsreserved = cell->value().toString();
+                }
+
+                QTableWidgetItem *newItemreserved = new QTableWidgetItem(xlsreserved);
+                ui->students_table->setItem(strow, reservedcol, newItemreserved);
+                ui->students_table->setCurrentCell(strow,reservedcol);
+
                 QString xlsavailable = "0";
                 if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_availablecol)) {
                     xlsavailable = cell->value().toString();
@@ -897,6 +947,8 @@ void MainWindow::on_actionImport_xls_triggered()
                 int thisdestcol = dest1col;
                 if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_prioritycol)) {
                     if (cell->value().toString() == "2") thisdestcol = dest2col;
+                    if (cell->value().toString() == "3") thisdestcol = dest3col;
+                    if (cell->value().toString() == "4") thisdestcol = dest4col;
                 }
                 QTableWidgetItem *newItemdest = new QTableWidgetItem(xlsdest);
                 ui->students_table->setItem(strow, thisdestcol, newItemdest);
@@ -985,6 +1037,7 @@ void MainWindow::on_actionExport_ranking_xslx_triggered()
         }
         xlsx.saveAs(xlsxfile);
     }
+    // TODO: inserisci riserve come da fac simile (colonna A,R,E), gli esclusi sono quelli che non hanno il requisito, (R1, R2, R3, R4 all'interno della destinazione)
 }
 
 void MainWindow::on_easteregg_clicked()
@@ -995,7 +1048,7 @@ void MainWindow::on_easteregg_clicked()
         ui->prev_student->show();
         ui->next_student->show();
         ui->actionMerge_projects->setVisible(true);
-        ui->free_destinations->show();
+        //ui->free_destinations->show();
         cow = "</br></br><pre>This program has supercow powers.</pre></br></br><pre>                    (__) </pre></br><pre>                    (oo) </pre></br><pre>              /------\\/ </pre></br><pre>             / |    ||   </pre></br><pre>            *  /\\---/\\ </pre></br><pre>               ~~   ~~   </pre></br><pre>   ...\"Have you mooed today?\"...</pre>";
         for (int i = 0; i < ui->menuLanguage->actions().count(); i++) {
             ui->menuLanguage->actions().at(i)->setVisible(true);
@@ -1004,7 +1057,7 @@ void MainWindow::on_easteregg_clicked()
         if (easteregg > 6) ui->statusBar->showMessage("Developer mode disabled", 3000);
         ui->prev_student->hide();
         ui->next_student->hide();
-        ui->free_destinations->hide();
+        //ui->free_destinations->hide();
         ui->actionMerge_projects->setVisible(false);
         cow = "";
         for (int i = 0; i < ui->menuLanguage->actions().count(); i++) {
@@ -1211,6 +1264,7 @@ void MainWindow::on_free_destinations_clicked()
             tmpdest.append(ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest4col)->text());
             for (int t = 0; t < tmpdest.count(); t++) {
                 int tmpindex = tmpcities.indexOf(tmpdest.at(t));
+                if (tmpindex > 0 && tmpindex < tmpavailabe.count()){
                 if (tmpavailabe[tmpindex] > 0) {
                     liststudents += "<b>";
                     liststudents += tmpdest.at(t);
@@ -1221,10 +1275,36 @@ void MainWindow::on_free_destinations_clicked()
                     liststudents += tmpdest.at(t);
                     liststudents += ";";
                 }
+                }
             }
             liststudents += "<br>";
             ui->ranking_table->item(row,manualdestcol)->setBackgroundColor(Qt::red);
         }
     }
     if (liststudents != "") QMessageBox::information(this,tr("List of students with no assigned destination"),liststudents);
+}
+
+void MainWindow::on_actionExport_ranking_by_destination_triggered()
+{
+        // TODO: estrai una tabella per ogni destinazione, con assegnatari e riserve. Unica cartella di lavoro, un foglio per ogni destinazione
+}
+
+void MainWindow::on_searchst_2_clicked()
+{
+    //Qt::MatchFlags match = Qt::MatchContains;
+    Qt::MatchFlags match = Qt::MatchWildcard;
+    QList<QTableWidgetItem *> result = findItemInColumn(ui->ranking_table,ui->searchthis_2->text(),ui->searchhere_2->currentIndex(),match);
+    if (result.count() > 0) {
+        int i = 0;
+        int row = result[i]->row();
+        if (!ui->searchfromstart_2->isChecked() && ui->ranking_table->selectedItems().count() > 0) {
+            while (row <= ui->ranking_table->selectedItems()[0]->row()) {
+                i++;
+                if (i>=result.count()) break;
+                row = result[i]->row();
+            }
+        }
+        ui->ranking_table->setCurrentCell(row,ui->searchhere_2->currentIndex());
+    }
+
 }

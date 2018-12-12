@@ -114,6 +114,10 @@ private slots:
 
     void on_free_destinations_clicked();
 
+    void on_actionExport_ranking_by_destination_triggered();
+
+    void on_searchst_2_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString dbfile;
@@ -144,10 +148,12 @@ private:
     int votecol = 5;
     int requisitescol = 6;
     int formercol = 7;
-    int dest1col = 8;
-    int dest2col = 9;
-    int dest3col = 10;
-    int dest4col = 11;
+    int lettercol = 8;
+    int reservedcol = 9;
+    int dest1col = 10;
+    int dest2col = 11;
+    int dest3col = 12;
+    int dest4col = 13;
 
     //columns in ranking table
     int rankingcol= 4;
