@@ -150,3 +150,12 @@ void xlsxsettings::set_reserved(QStringList options, int selected) {
 int xlsxsettings::get_reserved() {
     return ui->xs_reserved->currentIndex()+1;
 }
+
+void xlsxsettings::set_teacher(QStringList options, int selected) {
+    ui->xs_teacher->addItems(options);
+    ui->xs_teacher->setCurrentIndex(selected-1);
+}
+
+int xlsxsettings::get_teacher() {
+    return ui->xs_teacher->currentIndex()+1;
+}

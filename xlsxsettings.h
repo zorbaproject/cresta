@@ -62,6 +62,9 @@ public:
     void set_reserved(QStringList options, int selected);
     int get_reserved();
 
+    void set_teacher(QStringList options, int selected);
+    int get_teacher();
+
 private:
     Ui::xlsxsettings *ui;
 };
