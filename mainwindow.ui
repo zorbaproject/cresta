@@ -17,8 +17,11 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QTabWidget" name="st_tab">
+      <property name="styleSheet">
+       <string notr="true">QMessageBox { messagebox-text-interaction-flags: 5; }</string>
+      </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="dest_tab">
        <attribute name="title">

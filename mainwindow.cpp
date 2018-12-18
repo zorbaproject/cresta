@@ -631,8 +631,7 @@ void MainWindow::on_actionAbout_Cresta_triggered()
 
 void MainWindow::on_actionHelp_triggered()
 {
-    QString message = "THIS IS THE RECOMMENDED WORKFLOW: \nImport students data from XLSX (Project/Import), please check that all column names are correct in the importing dialog window. If you leave the destinations checkbox checked, destinations data will also be imported. \nNow, edit students or destinations data directly from Cresta, using the tables available. Then, you can calculate the ranking using the button in Ranking tab. If there are severe errors in your data, the program will refuse to perform calculation and highlight in red all the cells that contain some kind of error in the tables. \n When the ranking is done, you can change destinations manually, but you are offered only places still available. This allows you to set a student as RINUNCIATARIO or just blank, if needed. Then you can give his place in the destination that has been freed to another student.\nTo find out if there are students eligible for a seat, just press the Actually available destinations button: you'll see al the students that currently have no destination assigned, and those eligible for a seat will be shown in bold. \nAfter you're done, you can export data in XLSX format from Project menù.";
-    QMessageBox::information(this,tr("About Cresta"), tr(qPrintable(message)));
+    QMessageBox::information(this,tr("About Cresta"), tr("THIS IS THE RECOMMENDED WORKFLOW: \nImport students data from XLSX (Project/Import), please check that all column names are correct in the importing dialog window. If you leave the destinations checkbox checked, destinations data will also be imported. \nNow, edit students or destinations data directly from Cresta, using the tables available. Then, you can calculate the ranking using the button in Ranking tab. If there are severe errors in your data, the program will refuse to perform calculation and highlight in red all the cells that contain some kind of error in the tables. \n When the ranking is done, you can change destinations manually, but you are offered only places still available. This allows you to set a student as RINUNCIATARIO or just blank, if needed. Then you can give his place in the destination that has been freed to another student.\nTo find out if there are students eligible for a seat, just press the Actually available destinations button: you'll see al the students that currently have no destination assigned, and those eligible for a seat will be shown in bold. \nAfter you're done, you can export data in XLSX format from Project menù."));
 }
 
 void MainWindow::on_actionAbout_Qt_triggered()
@@ -1365,14 +1364,14 @@ void MainWindow::on_free_destinations_clicked()
         tmpcities.append(thiscity);
         tmpavailabe.append(difference);
     }
-    QMessageBox::information(this,tr("List of actually available destinations"),listtext);
+    //QMessageBox::information(this,tr("List of actually available destinations"),listtext);
     QString liststudents = "";
     for (int row = 0; row < ui->ranking_table->rowCount(); row++) {
         QString thisdest = "";
         if (ui->ranking_table->item(row,manualdestcol)) thisdest = ui->ranking_table->item(row,manualdestcol)->text();
         if (thisdest == "") {
             QString stID = ui->ranking_table->item(row,IDcol)->text();
-            liststudents += stID;
+            liststudents += "<u>" + stID + "</u>";
             liststudents += ";";
             liststudents += ui->ranking_table->item(row,namecol)->text();
             liststudents += ";";
