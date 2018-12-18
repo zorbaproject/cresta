@@ -65,6 +65,9 @@ public:
     void set_teacher(QStringList options, int selected);
     int get_teacher();
 
+    void set_months(QStringList options, int selected);
+    int get_months();
+
 private:
     Ui::xlsxsettings *ui;
 };

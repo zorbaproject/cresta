@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="st_tab">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="dest_tab">
        <attribute name="title">
@@ -70,6 +70,11 @@
           <column>
            <property name="text">
             <string>Teacher</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Months</string>
            </property>
           </column>
          </widget>

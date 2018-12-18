@@ -159,3 +159,12 @@ void xlsxsettings::set_teacher(QStringList options, int selected) {
 int xlsxsettings::get_teacher() {
     return ui->xs_teacher->currentIndex()+1;
 }
+
+void xlsxsettings::set_months(QStringList options, int selected) {
+    ui->xs_months->addItems(options);
+    ui->xs_months->setCurrentIndex(selected-1);
+}
+
+int xlsxsettings::get_months() {
+    return ui->xs_months->currentIndex()+1;
+}

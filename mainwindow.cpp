@@ -631,7 +631,7 @@ void MainWindow::on_actionAbout_Cresta_triggered()
 
 void MainWindow::on_actionHelp_triggered()
 {
-    QString message = "Votes should be a number between 18 and 31 (which is 30 + laude). You can change destinations manually, but you are offered only places still available.";
+    QString message = "THIS IS THE RECOMMENDED WORKFLOW: \nImport students data from XLSX (Project/Import), please check that all column names are correct in the importing dialog window. If you leave the destinations checkbox checked, destinations data will also be imported. \nNow, edit students or destinations data directly from Cresta, using the tables available. Then, you can calculate the ranking using the button in Ranking tab. If there are severe errors in your data, the program will refuse to perform calculation and highlight in red all the cells that contain some kind of error in the tables. \n When the ranking is done, you can change destinations manually, but you are offered only places still available. This allows you to set a student as RINUNCIATARIO or just blank, if needed. Then you can give his place in the destination that has been freed to another student.\nTo find out if there are students eligible for a seat, just press the Actually available destinations button: you'll see al the students that currently have no destination assigned, and those eligible for a seat will be shown in bold. \nAfter you're done, you can export data in XLSX format from Project menù.";
     QMessageBox::information(this,tr("About Cresta"), tr(qPrintable(message)));
 }
 
@@ -728,7 +728,7 @@ void MainWindow::on_check_cities_clicked()
     for (int row = 0; row < ui->cities_table->rowCount(); row++) {
         for (int col = 0; col < ui->cities_table->columnCount(); col++) {
             ui->cities_table->item(row, col)->setBackgroundColor(Qt::white);
-            if (ui->cities_table->item(row,col)->text().isEmpty() && col != teachercol) {
+            if (ui->cities_table->item(row,col)->text().isEmpty() && col != teachercol && col != monthscol) {
                 ui->cities_table->item(row, col)->setBackgroundColor(Qt::red);
                 return;
             }
@@ -783,6 +783,7 @@ void MainWindow::on_actionImport_xls_triggered()
         int xls_lettercol = 26;
         int xls_reservedcol = 27;
         int xls_teachercol = 17;
+        int xls_monthscol = 15;
         QString lmtext = "LM";
 
         xlsxsettings dialog(this);
@@ -810,6 +811,7 @@ void MainWindow::on_actionImport_xls_triggered()
         dialog.set_letter(header,xls_lettercol);
         dialog.set_reserved(header,xls_reservedcol);
         dialog.set_teacher(header,xls_teachercol);
+        dialog.set_months(header,xls_monthscol);
         dialog.setWindowTitle(tr("XLSX file settings"));
         if(dialog.exec() == QDialog::Accepted){
             xls_IDcol = dialog.get_ID();
@@ -828,6 +830,7 @@ void MainWindow::on_actionImport_xls_triggered()
             xls_formercol = dialog.get_former();
             xls_lettercol = dialog.get_letter();
             xls_reservedcol = dialog.get_reserved();
+            xls_monthscol = dialog.get_months();
         } else {
             return;
         }
@@ -961,6 +964,11 @@ void MainWindow::on_actionImport_xls_triggered()
                     xlsteacher = cell->value().toString();
                 }
 
+                QString xlsmonths = "";
+                if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_monthscol)) {
+                    xlsmonths = cell->value().toString();
+                }
+
                 QString xlsdest = "";
                 if (QXlsx::Cell *cell=xlsx.cellAt(row, xls_destcol)) {
                     xlsdest = cell->value().toString();
@@ -996,6 +1004,8 @@ void MainWindow::on_actionImport_xls_triggered()
                         ui->cities_table->setItem(crow, countycol, newItemcountry);
                         QTableWidgetItem *newItemteacher = new QTableWidgetItem(xlsteacher);
                         ui->cities_table->setItem(crow, teachercol, newItemteacher);
+                        QTableWidgetItem *newItemmonths = new QTableWidgetItem(xlsmonths);
+                        ui->cities_table->setItem(crow, monthscol, newItemmonths);
                     }
                 }
             }
@@ -1043,6 +1053,8 @@ void MainWindow::on_students_table_currentCellChanged(int currentRow, int curren
 
 void MainWindow::on_actionExport_ranking_xslx_triggered()
 {
+    if (ui->cities_table->rowCount() == 0 || ui->students_table->rowCount() == 0 || ui->ranking_table->rowCount() == 0) return;
+    sanitizeTable(ui->ranking_table);
     QString xlsxfile = QFileDialog::getSaveFileName(this, tr("Export ranking on xlsx file"), QDir::currentPath(), "*.xslx|Excel Spreadsheet (*.xlsx)");
     if (!xlsxfile.isEmpty()) {
         if (xlsxfile.right(5)!=".xlsx") {
@@ -1060,6 +1072,7 @@ void MainWindow::on_actionExport_ranking_xslx_triggered()
         mycolumns.append("mesi assegnati da selezione"); //5
         mycolumns.append("NOTE COMMISSIONE"); //6
         mycolumns.append("punteggio"); //7
+        mycolumns.append("nome"); //8
         for (int col = 0; col < mycolumns.count(); col++) {
             xlsx.write(1,col+1,mycolumns.at(col));
         }
@@ -1087,6 +1100,11 @@ void MainWindow::on_actionExport_ranking_xslx_triggered()
                         val = ui->students_table->item(row,tmpcol)->text();
                         xlsx.write(outrow+2,mycol+1,val);
 
+                        tmpcol = namecol;
+                        mycol = 8;
+                        val = ui->students_table->item(row,tmpcol)->text();
+                        xlsx.write(outrow+2,mycol+1,val);
+
                         int rrow = findItemInColumn(ui->ranking_table,ui->students_table->item(row,IDcol)->text(),IDcol)[0]->row();
                         mycol = 7;
                         val = ui->ranking_table->item(rrow,rankingcol)->text();
@@ -1108,7 +1126,11 @@ void MainWindow::on_actionExport_ranking_xslx_triggered()
                             int tmprow = -1;
                             if (findItemInColumn(ui->cities_table,tmpdest,citycol).count()>0) tmprow = findItemInColumn(ui->cities_table,tmpdest,citycol)[0]->row();
                             if (tmprow >=0) {
-                                QVariant val(ui->cities_table->item(tmprow,tmpcol)->text());
+                                val = ui->cities_table->item(tmprow,tmpcol)->text();
+                                if (ui->cities_table->item(tmprow,tmpcol)) xlsx.write(outrow+2,mycol+1,val);
+                                mycol = 5;
+                                tmpcol = monthscol;
+                                val = ui->cities_table->item(tmprow,tmpcol)->text();
                                 if (ui->cities_table->item(tmprow,tmpcol)) xlsx.write(outrow+2,mycol+1,val);
                             }
                         }
@@ -1136,7 +1158,6 @@ void MainWindow::on_actionExport_ranking_xslx_triggered()
         }*/
         xlsx.saveAs(xlsxfile);
     }
-    // TODO: inserisci riserve come da fac simile (colonna A,R,E), gli esclusi sono quelli che non hanno il requisito, (R1, R2, R3, R4 all'interno della destinazione)
 
 }
 
@@ -1386,7 +1407,8 @@ void MainWindow::on_free_destinations_clicked()
 
 void MainWindow::on_actionExport_ranking_by_destination_triggered()
 {
-        // TODO: estrai una tabella per ogni destinazione, con assegnatari e riserve. Unica cartella di lavoro, un foglio per ogni destinazione
+    if (ui->cities_table->rowCount() == 0 || ui->students_table->rowCount() == 0 || ui->ranking_table->rowCount() == 0) return;
+    sanitizeTable(ui->ranking_table);
     QString xlsxfile = QFileDialog::getSaveFileName(this, tr("Export ranking by destinations"), QDir::currentPath(), "*.xslx|Excel Spreadsheet (*.xlsx)");
     if (!xlsxfile.isEmpty()) {
         if (xlsxfile.right(5)!=".xlsx") {

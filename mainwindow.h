@@ -139,6 +139,7 @@ private:
     int citycol = 1;
     int availablecol =2;
     int teachercol =3;
+    int monthscol =4;
 
     //columns in students table
     int IDcol = 0;
