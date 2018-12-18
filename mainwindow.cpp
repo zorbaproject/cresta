@@ -153,6 +153,9 @@ void MainWindow::on_actionSave_project_triggered()
     }
 
     if (!(dbfile.isEmpty())) {
+        sanitizeTable(ui->cities_table);
+        sanitizeTable(ui->students_table);
+        sanitizeTable(ui->ranking_table);
         cities2db();
         students2db();
         ranking2db();
@@ -405,13 +408,35 @@ void MainWindow::on_checkincomplete_clicked()
             return;
         }
         ui->students_table->item(row, votecol)->setBackgroundColor(Qt::white);
-        if (ui->students_table->item(row,votecol)->text().toDouble() < 18 || ui->students_table->item(row,votecol)->text().toDouble() > 31) ui->students_table->item(row, votecol)->setBackgroundColor(Qt::red);
+        if (ui->students_table->item(row,votecol)->text().toDouble() < 18 || ui->students_table->item(row,votecol)->text().toDouble() > 31) {
+            ui->students_table->item(row, votecol)->setBackgroundColor(Qt::red);
+            return;
+        }
         ui->students_table->item(row, yearcol)->setBackgroundColor(Qt::white);
-        if (ui->students_table->item(row,yearcol)->text() != "1" && ui->students_table->item(row,yearcol)->text() != "2" && ui->students_table->item(row,yearcol)->text() != "3" && ui->students_table->item(row,yearcol)->text() != "4" && ui->students_table->item(row,yearcol)->text() != "5") ui->students_table->item(row, yearcol)->setBackgroundColor(Qt::red);
+        if (ui->students_table->item(row,yearcol)->text() != "1" && ui->students_table->item(row,yearcol)->text() != "2" && ui->students_table->item(row,yearcol)->text() != "3" && ui->students_table->item(row,yearcol)->text() != "4" && ui->students_table->item(row,yearcol)->text() != "5") {
+            ui->students_table->item(row, yearcol)->setBackgroundColor(Qt::red);
+            return;
+        }
         ui->students_table->item(row, requisitescol)->setBackgroundColor(Qt::white);
-        if (ui->students_table->item(row,requisitescol)->text() != "1" && ui->students_table->item(row,requisitescol)->text() != "0") ui->students_table->item(row, requisitescol)->setBackgroundColor(Qt::red);
+        if (ui->students_table->item(row,requisitescol)->text() != "1" && ui->students_table->item(row,requisitescol)->text() != "0" && ui->students_table->item(row,requisitescol)->text() != "")  {
+            ui->students_table->item(row, requisitescol)->setBackgroundColor(Qt::red);
+            return;
+        }
         ui->students_table->item(row, formercol)->setBackgroundColor(Qt::white);
-        if (ui->students_table->item(row,formercol)->text() != "1" && ui->students_table->item(row,formercol)->text() != "0") ui->students_table->item(row, formercol)->setBackgroundColor(Qt::red);
+        if (ui->students_table->item(row,formercol)->text() != "1" && ui->students_table->item(row,formercol)->text() != "0"  && ui->students_table->item(row,formercol)->text() != "") {
+            ui->students_table->item(row, formercol)->setBackgroundColor(Qt::red);
+            return;
+        }
+        ui->students_table->item(row, reservedcol)->setBackgroundColor(Qt::white);
+        if (ui->students_table->item(row,reservedcol)->text() != "1" && ui->students_table->item(row,reservedcol)->text() != "0"  && ui->students_table->item(row,reservedcol)->text() != "") {
+            ui->students_table->item(row, reservedcol)->setBackgroundColor(Qt::red);
+            return;
+        }
+        ui->students_table->item(row, lettercol)->setBackgroundColor(Qt::white);
+        if (ui->students_table->item(row,lettercol)->text() != "1" && ui->students_table->item(row,lettercol)->text() != "0"  && ui->students_table->item(row,lettercol)->text() != "" && ui->students_table->item(row,lettercol)->text() != "2") {
+            ui->students_table->item(row, lettercol)->setBackgroundColor(Qt::red);
+            return;
+        }
     }
     checkvalid = true;
 }
@@ -1352,6 +1377,7 @@ QJsonArray MainWindow::merge_qja(QJsonArray db1, QJsonArray db2, int arraytype) 
 
 void MainWindow::on_free_destinations_clicked()
 {
+    sanitizeTable(ui->ranking_table);
     QString listtext = "";
     QStringList tmpcities;
     QList<int> tmpavailabe;
