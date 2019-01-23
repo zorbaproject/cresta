@@ -408,7 +408,7 @@ void MainWindow::on_checkincomplete_clicked()
             return;
         }
         ui->students_table->item(row, votecol)->setBackgroundColor(Qt::white);
-        if (ui->students_table->item(row,votecol)->text().toDouble() < 18 || ui->students_table->item(row,votecol)->text().toDouble() > 31) {
+        if (ui->students_table->item(row,votecol)->text().toDouble() < 18 || ui->students_table->item(row,votecol)->text().toDouble() > 101) {
             ui->students_table->item(row, votecol)->setBackgroundColor(Qt::red);
             return;
         }
@@ -422,11 +422,11 @@ void MainWindow::on_checkincomplete_clicked()
             ui->students_table->item(row, requisitescol)->setBackgroundColor(Qt::red);
             return;
         }
-        ui->students_table->item(row, formercol)->setBackgroundColor(Qt::white);
+        /*ui->students_table->item(row, formercol)->setBackgroundColor(Qt::white);
         if (ui->students_table->item(row,formercol)->text() != "1" && ui->students_table->item(row,formercol)->text() != "0"  && ui->students_table->item(row,formercol)->text() != "") {
             ui->students_table->item(row, formercol)->setBackgroundColor(Qt::red);
             return;
-        }
+        }*/
         ui->students_table->item(row, reservedcol)->setBackgroundColor(Qt::white);
         if (ui->students_table->item(row,reservedcol)->text() != "1" && ui->students_table->item(row,reservedcol)->text() != "0"  && ui->students_table->item(row,reservedcol)->text() != "") {
             ui->students_table->item(row, reservedcol)->setBackgroundColor(Qt::red);
@@ -584,12 +584,18 @@ void MainWindow::do_ranking()
         if (year != "1" && year != "2" && year != "3" && year != "4" && year != "5") ranking += 10;
         //mean vote
         double vote = ui->students_table->item(row,votecol)->text().toDouble();
+        if (year == "1") {
+            ranking += map(vote,60,101,1,20);
+        } else if (year == "4") {
+            ranking += map(vote,66,111,1,20);
+        } else {
         if (vote < 18.0) vote = 18.0;
         if (vote > 31.0) vote = 31.0;
         ranking += map(vote,18,31,1,20);
+        }
         //former erasmus student or not
         //if (ui->students_table->item(row,formercol)->text().toDouble() == 0) ranking  =  map(ranking,0,100,100,200);
-        if (ui->students_table->item(row,formercol)->text().toDouble() == 0) ranking  =  ranking -1;
+        if (ui->students_table->item(ui->students_table->item(row,formercol)->text() != "" && row,formercol)->text().toDouble() != 0) ranking  =  ranking -1;
         // lettera motivazione da 0 a 2, si somma al punteggio (nel range 0-1)
         ranking  =  ranking + (ui->students_table->item(row,lettercol)->text().toDouble()/2);
         ranking = ranking*ui->students_table->item(row,requisitescol)->text().toDouble(); //requisites
@@ -792,23 +798,23 @@ void MainWindow::on_actionImport_xls_triggered()
         //qDebug()<<xlsx.read("B1");
 
         //int xls_IDcol = 1;
-        int xls_IDcol = 2;
-        int xls_surnamecol = 3;
-        int xls_namecol = 4;
-        int xls_curriculacol = 7;
+        int xls_IDcol = 3;
+        int xls_surnamecol = 4;
+        int xls_namecol = 5;
+        int xls_curriculacol = 8;
         int xls_yearcol = 10;
         int xls_lslmcol = 9;
-        int xls_prioritycol = 11;
-        int xls_destcol = 13;
-        int xls_availablecol = 14;
-        int xls_meanvotecol = 23;
-        int xls_requisitescol = 19;
-        int xls_formercol = 24;
-        int xls_lettercol = 26;
-        int xls_reservedcol = 27;
-        int xls_teachercol = 17;
-        int xls_monthscol = 15;
-        QString lmtext = "LM";
+        int xls_prioritycol = 14;
+        int xls_destcol = 15;
+        int xls_availablecol = 17;
+        int xls_meanvotecol = 13;
+        int xls_requisitescol = 30;
+        int xls_formercol = 23;
+        int xls_lettercol = 31;
+        int xls_reservedcol = 32;
+        int xls_teachercol = 21;
+        int xls_monthscol = 18;
+        QString lmtext = "magistrale";
 
         xlsxsettings dialog(this);
         QStringList header;
