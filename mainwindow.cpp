@@ -408,7 +408,7 @@ void MainWindow::on_checkincomplete_clicked()
             return;
         }
         ui->students_table->item(row, votecol)->setBackgroundColor(Qt::white);
-        if (ui->students_table->item(row,votecol)->text().toDouble() < 18 || ui->students_table->item(row,votecol)->text().toDouble() > 101) {
+        if (ui->students_table->item(row,votecol)->text().toDouble() < 18 || ui->students_table->item(row,votecol)->text().toDouble() > 111) {
             ui->students_table->item(row, votecol)->setBackgroundColor(Qt::red);
             return;
         }
