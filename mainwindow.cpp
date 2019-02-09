@@ -407,11 +407,11 @@ void MainWindow::on_checkincomplete_clicked()
             ui->students_table->item(row, IDcol)->setBackgroundColor(Qt::red);
             return;
         }
-        ui->students_table->item(row, votecol)->setBackgroundColor(Qt::white);
+        /*ui->students_table->item(row, votecol)->setBackgroundColor(Qt::white);
         if (ui->students_table->item(row,votecol)->text().toDouble() < 18 || ui->students_table->item(row,votecol)->text().toDouble() > 111) {
             ui->students_table->item(row, votecol)->setBackgroundColor(Qt::red);
             return;
-        }
+        }*/
         ui->students_table->item(row, yearcol)->setBackgroundColor(Qt::white);
         if (ui->students_table->item(row,yearcol)->text() != "1" && ui->students_table->item(row,yearcol)->text() != "2" && ui->students_table->item(row,yearcol)->text() != "3" && ui->students_table->item(row,yearcol)->text() != "4" && ui->students_table->item(row,yearcol)->text() != "5") {
             ui->students_table->item(row, yearcol)->setBackgroundColor(Qt::red);
@@ -585,8 +585,12 @@ void MainWindow::do_ranking()
         //mean vote
         double vote = ui->students_table->item(row,votecol)->text().toDouble();
         if (year == "1") {
+            if (vote < 60) vote= 60;
+            if (vote > 101) vote= 101;
             ranking += map(vote,60,101,1,20);
         } else if (year == "4") {
+            if (vote < 66) vote= 66;
+            if (vote > 111) vote= 111;
             ranking += map(vote,66,111,1,20);
         } else {
         if (vote < 18.0) vote = 18.0;
