@@ -1107,6 +1107,8 @@ void MainWindow::on_actionExport_ranking_xslx_triggered()
         mycolumns.append("NOTE COMMISSIONE"); //6
         mycolumns.append("punteggio"); //7
         mycolumns.append("nome"); //8
+        mycolumns.append("PRIORITA_DEST_SCE"); //9
+
         for (int col = 0; col < mycolumns.count(); col++) {
             xlsx.write(1,col+1,mycolumns.at(col));
         }
@@ -1137,6 +1139,10 @@ void MainWindow::on_actionExport_ranking_xslx_triggered()
                         tmpcol = namecol;
                         mycol = 8;
                         val = ui->students_table->item(row,tmpcol)->text();
+                        xlsx.write(outrow+2,mycol+1,val);
+
+                        mycol = 9;
+                        val = QString::number(dcol+1);
                         xlsx.write(outrow+2,mycol+1,val);
 
                         int rrow = findItemInColumn(ui->ranking_table,ui->students_table->item(row,IDcol)->text(),IDcol)[0]->row();
@@ -1459,14 +1465,41 @@ void MainWindow::on_actionExport_ranking_by_destination_triggered()
             for (int col = 0; col < ui->ranking_table->columnCount(); col++) {
                 xlsx.write(thisrow,col+1,ui->ranking_table->horizontalHeaderItem(col)->text());
             }
+            xlsx.write(thisrow,ui->ranking_table->columnCount()+1,QString("ESITO"));
             for (int row = 0; row < ui->ranking_table->rowCount(); row++) {
                 if (ui->ranking_table->item(row,manualdestcol)->text() == thiscity) {
                     thisrow = thisrow +1;
-                    for (int col = 0; col < ui->ranking_table->columnCount(); col++) {
+                    int col = 0;
+                    for (col = 0; col < ui->ranking_table->columnCount(); col++) {
                         QVariant val(ui->ranking_table->item(row,col)->text());
                         if (col == rankingcol) val = ui->ranking_table->item(row,col)->text().toDouble();
                         if (ui->ranking_table->item(row,col)) xlsx.write(thisrow,col+1,val);
                     }
+                     xlsx.write(thisrow,col+1,QString("A"));
+                }
+            }
+            for (int row = 0; row < ui->ranking_table->rowCount(); row++) {
+                if (ui->ranking_table->item(row,manualdestcol)->text() == "" || ui->ranking_table->item(row,manualdestcol)->text() == "RINUNCIATARIO") {
+                    QString stID = ui->ranking_table->item(row,IDcol)->text();
+                    QStringList tmpdest;
+                    tmpdest.append(ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest1col)->text());
+                    tmpdest.append(ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest2col)->text());
+                    tmpdest.append(ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest3col)->text());
+                    tmpdest.append(ui->students_table->item(findItemInColumn(ui->students_table,stID,IDcol).at(0)->row(),dest4col)->text());
+                    for (int t = 0; t < tmpdest.count(); t++) {
+                        if (tmpdest.at(t) == thiscity) {
+                            thisrow = thisrow +1;
+                            int col = 0;
+                            for (col = 0; col < ui->ranking_table->columnCount(); col++) {
+                                QVariant val(ui->ranking_table->item(row,col)->text());
+                                if (col == rankingcol) val = ui->ranking_table->item(row,col)->text().toDouble();
+                                if (ui->ranking_table->item(row,col)) xlsx.write(thisrow,col+1,val);
+                            }
+                             if (ui->ranking_table->item(row,manualdestcol)->text() == "RINUNCIATARIO") xlsx.write(thisrow,col+1,QString("E"));
+                             if (ui->ranking_table->item(row,manualdestcol)->text() == "") xlsx.write(thisrow,col+1,QString("R"));
+                        }
+                    }
+
                 }
             }
         }
